@@ -1,10 +1,18 @@
-const LoginForm = ({
+import { useNavigate } from "react-router-dom";
+
+function LoginForm({
   handleSubmit,
   handleUsernameChange,
   handlePasswordChange,
   username,
   password,
-}) => {
+  user,
+  setUsername,
+  setPassword,
+  setUser,
+}) {
+
+
   return (
     <div>
       <h2>Login</h2>
@@ -31,6 +39,6 @@ const LoginForm = ({
       </form>
     </div>
   );
-};
+}
 
 export default LoginForm;

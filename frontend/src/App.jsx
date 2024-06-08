@@ -1,21 +1,17 @@
 import { useState, useEffect, useRef } from "react";
-import Note from "./components/Note";
-import Notification from "./components/Notification";
-import Footer from "./components/Footer";
 import noteService from "./services/notes";
 import loginService from "./services/login";
 import LoginForm from "./components/loginForm";
-import Togglable from "./components/Togglable";
-import NoteForm from "./components/NoteForm";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import Layout from "./components/Layout";
+import NoteList from "./components/NoteList";
 
 const App = () => {
   const [notes, setNotes] = useState([]);
-  const [showAll, setShowAll] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
-  const [loginVisible, setLoginVisible] = useState(false);
 
   useEffect(() => {
     noteService.getAll().then((initialNotes) => {
@@ -33,6 +29,7 @@ const App = () => {
   }, []);
 
   const noteFormRef = useRef();
+  const navigate = useNavigate();
 
   const addNote = (noteObject) => {
     noteFormRef.current.toggleVisibility();
@@ -41,7 +38,7 @@ const App = () => {
     });
   };
 
-  const toggleImportanceOf = (id) => {
+  const toggleImportance = (id) => {
     const note = notes.find((n) => n.id === id);
     const changedNote = { ...note, important: !note.important };
 
@@ -60,9 +57,9 @@ const App = () => {
       });
   };
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
+  const handleLogin = async (e) => {
     try {
+      e.preventDefault();
       const user = await loginService.login({
         username,
         password,
@@ -70,7 +67,9 @@ const App = () => {
 
       window.localStorage.setItem("loggedNoteappUser", JSON.stringify(user));
       noteService.setToken(user.token);
+
       setUser(user);
+      navigate("/notes");
       setUsername("");
       setPassword("");
     } catch (exception) {
@@ -81,67 +80,47 @@ const App = () => {
     }
   };
 
-  const notesToShow = showAll ? notes : notes.filter((note) => note.important);
-
-  const loginForm = () => {
-    const hideWhenVisible = { display: loginVisible ? "none" : "" };
-    const showWhenVisible = { display: loginVisible ? "" : "none" };
-    return (
-      <div>
-        <div style={hideWhenVisible}>
-          <button onClick={() => setLoginVisible(true)}>log in</button>
-        </div>
-        <div style={showWhenVisible}>
-          <LoginForm
-            username={username}
-            password={password}
-            handleUsernameChange={({ target }) => setUsername(target.value)}
-            handlePasswordChange={({ target }) => setPassword(target.value)}
-            handleSubmit={handleLogin}
-          />
-          <button onClick={() => setLoginVisible(false)}>cancel</button>
-        </div>
-      </div>
-    );
-  };
-
-  const noteForm = () => {
-    return (
-      <Togglable buttonLabel="new note" ref={noteFormRef}>
-        <NoteForm createNote={addNote} />
-      </Togglable>
-    );
+  const handleLogout = async () => {
+    window.localStorage.removeItem("loggedNoteappUser");
+    setUser(null);
+    navigate("/");
   };
 
   return (
-    <div>
-      <h1>Notes</h1>
-      <Notification message={errorMessage} />
-
-      {!user && loginForm()}
-      {user && (
-        <div>
-          <p>{user.name} logged in</p>
-          {noteForm()}
-        </div>
-      )}
-
-      <div>
-        <button onClick={() => setShowAll(!showAll)}>
-          show {showAll ? "important" : "all"}
-        </button>
-      </div>
-      <ul>
-        {notesToShow.map((note) => (
-          <Note
-            key={note.id}
-            note={note}
-            toggleImportance={() => toggleImportanceOf(note.id)}
-          />
-        ))}
-      </ul>
-      <Footer />
-    </div>
+    <Routes>
+      <Route element={<Layout message={errorMessage} />}>
+        <Route
+          path="/"
+          element={
+            <LoginForm
+              username={username}
+              password={password}
+              handleUsernameChange={({ target }) => setUsername(target.value)}
+              handlePasswordChange={({ target }) => setPassword(target.value)}
+              handleSubmit={handleLogin}
+              user={user}
+              setUsername={setUsername}
+              setUser={setUser}
+              setPassword={setPassword}
+            />
+          }
+        />
+        <Route
+          path="/notes"
+          element={
+            <NoteList
+              notes={notes}
+              toggleImportance={toggleImportance}
+              noteFormRef={noteFormRef}
+              addNote={addNote}
+              user={user}
+              handleLogout={handleLogout}
+              setUser={setUser}
+            />
+          }
+        />
+      </Route>
+    </Routes>
   );
 };
 
