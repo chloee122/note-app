@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 function LoginForm({
   handleSubmit,
@@ -7,11 +7,10 @@ function LoginForm({
   username,
   password,
   user,
-  setUsername,
-  setPassword,
-  setUser,
 }) {
-
+  if (user) {
+    return <Navigate to="/notes" />;
+  }
 
   return (
     <div>

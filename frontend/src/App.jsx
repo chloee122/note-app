@@ -5,6 +5,7 @@ import LoginForm from "./components/loginForm";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Layout from "./components/Layout";
 import NoteList from "./components/NoteList";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   const [notes, setNotes] = useState([]);
@@ -24,6 +25,7 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
       setUser(user);
+
       noteService.setToken(user.token);
     }
   }, []);
@@ -108,15 +110,17 @@ const App = () => {
         <Route
           path="/notes"
           element={
-            <NoteList
-              notes={notes}
-              toggleImportance={toggleImportance}
-              noteFormRef={noteFormRef}
-              addNote={addNote}
-              user={user}
-              handleLogout={handleLogout}
-              setUser={setUser}
-            />
+            <ProtectedRoute user={user}>
+              <NoteList
+                notes={notes}
+                toggleImportance={toggleImportance}
+                noteFormRef={noteFormRef}
+                addNote={addNote}
+                user={user}
+                handleLogout={handleLogout}
+                setUser={setUser}
+              />
+            </ProtectedRoute>
           }
         />
       </Route>

@@ -3,7 +3,6 @@ import Note from "./Note";
 import NoteForm from "./NoteForm";
 import Togglable from "./Togglable";
 import { useNavigate } from "react-router-dom";
-import noteService from "../services/notes";
 
 function NoteList({
   notes,
@@ -12,9 +11,9 @@ function NoteList({
   addNote,
   user,
   handleLogout,
-  setUser,
 }) {
   const [showAll, setShowAll] = useState(true);
+  const navigate = useNavigate();
 
   const noteForm = () => {
     return (
@@ -24,15 +23,13 @@ function NoteList({
     );
   };
 
-  const navigate = useNavigate();
-  const notesToShow = showAll ? notes : notes.filter((note) => note.important);
   const logout = () => {
     handleLogout();
     navigate("/");
   };
-  if (!user) {
-   return
-  }
+
+  const notesToShow = showAll ? notes : notes.filter((note) => note.important);
+
   return (
     <div>
       <div>
