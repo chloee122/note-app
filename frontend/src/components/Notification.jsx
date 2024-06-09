@@ -1,13 +1,12 @@
-const Notification = ({ message }) => {
-    if (message === null) {
-      return null
-    }
-  
-    return (
-      <div className="error">
-        {message}
-      </div>
-    )
+import { useAppContext } from "../context/AppContext";
+
+function Notification() {
+  const { errorMessage } = useAppContext();
+  if (errorMessage === null) {
+    return null;
   }
-  
-  export default Notification
+
+  return <div className="error">{errorMessage}</div>;
+}
+
+export default Notification;

@@ -1,4 +1,4 @@
-const Footer = () => {
+function Footer() {
   const footerStyle = {
     color: "green",
     fontStyle: "italic",
@@ -13,6 +13,6 @@ const Footer = () => {
       </em>
     </div>
   );
-};
+}
 
 export default Footer;

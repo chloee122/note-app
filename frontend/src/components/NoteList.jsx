@@ -1,30 +1,25 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Note from "./Note";
 import NoteForm from "./NoteForm";
 import Togglable from "./Togglable";
 import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../context/AppContext";
 
-function NoteList({
-  notes,
-  toggleImportance,
-  noteFormRef,
-  addNote,
-  user,
-  handleLogout,
-}) {
+function NoteList({ toggleImportance, noteFormRef }) {
   const [showAll, setShowAll] = useState(true);
   const navigate = useNavigate();
+  const { notes, logout, user } = useAppContext();
 
   const noteForm = () => {
     return (
       <Togglable buttonLabel="new note" ref={noteFormRef}>
-        <NoteForm createNote={addNote} />
+        <NoteForm />
       </Togglable>
     );
   };
 
-  const logout = () => {
-    handleLogout();
+  const handleLogout = () => {
+    logout();
     navigate("/");
   };
 
@@ -34,7 +29,7 @@ function NoteList({
     <div>
       <div>
         <p>{user.name} logged in</p>
-        <button onClick={logout}>Log out</button>
+        <button onClick={handleLogout}>Log out</button>
       </div>
       {noteForm()}
       <button onClick={() => setShowAll(!showAll)}>

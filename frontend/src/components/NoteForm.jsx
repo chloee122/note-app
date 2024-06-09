@@ -1,11 +1,13 @@
 import { useState } from "react";
+import { useAppContext } from "../context/AppContext";
 
-const NoteForm = ({ createNote }) => {
+function NoteForm() {
   const [newNote, setNewNote] = useState("");
+  const { addNote } = useAppContext();
 
-  const addNote = (event) => {
+  const handleAddNote = (event) => {
     event.preventDefault();
-    createNote({
+    addNote({
       content: newNote,
       important: true,
     });
@@ -17,7 +19,7 @@ const NoteForm = ({ createNote }) => {
     <div className="formDiv">
       <h2>Create a new note</h2>
 
-      <form onSubmit={addNote}>
+      <form onSubmit={handleAddNote}>
         <input
           value={newNote}
           onChange={(event) => setNewNote(event.target.value)}
@@ -27,6 +29,6 @@ const NoteForm = ({ createNote }) => {
       </form>
     </div>
   );
-};
+}
 
 export default NoteForm;
