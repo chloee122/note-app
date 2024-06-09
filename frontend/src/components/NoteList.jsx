@@ -1,43 +1,35 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Note from "./Note";
 import NoteForm from "./NoteForm";
 import Togglable from "./Togglable";
 import { useNavigate } from "react-router-dom";
-import noteService from "../services/notes";
+import { useAppContext } from "../context/AppContext";
 
-function NoteList({
-  notes,
-  toggleImportance,
-  noteFormRef,
-  addNote,
-  user,
-  handleLogout,
-  setUser,
-}) {
+function NoteList({ toggleImportance, noteFormRef }) {
   const [showAll, setShowAll] = useState(true);
+  const navigate = useNavigate();
+  const { notes, logout, user } = useAppContext();
 
   const noteForm = () => {
     return (
       <Togglable buttonLabel="new note" ref={noteFormRef}>
-        <NoteForm createNote={addNote} />
+        <NoteForm />
       </Togglable>
     );
   };
 
-  const navigate = useNavigate();
-  const notesToShow = showAll ? notes : notes.filter((note) => note.important);
-  const logout = () => {
-    handleLogout();
+  const handleLogout = () => {
+    logout();
     navigate("/");
   };
-  if (!user) {
-   return
-  }
+
+  const notesToShow = showAll ? notes : notes.filter((note) => note.important);
+
   return (
     <div>
       <div>
         <p>{user.name} logged in</p>
-        <button onClick={logout}>Log out</button>
+        <button onClick={handleLogout}>Log out</button>
       </div>
       {noteForm()}
       <button onClick={() => setShowAll(!showAll)}>

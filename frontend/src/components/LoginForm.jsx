@@ -1,17 +1,25 @@
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+import { useAppContext } from "../context/AppContext";
 
-function LoginForm({
-  handleSubmit,
-  handleUsernameChange,
-  handlePasswordChange,
-  username,
-  password,
-  user,
-  setUsername,
-  setPassword,
-  setUser,
-}) {
+function LoginForm() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
+  const { user, login } = useAppContext();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await login(username, password);
+    navigate("/notes");
+    setUsername("");
+    setPassword("");
+  };
+
+  if (user) {
+    return <Navigate to="/notes" />;
+  }
 
   return (
     <div>
@@ -23,7 +31,7 @@ function LoginForm({
           <input
             data-testid="username"
             value={username}
-            onChange={handleUsernameChange}
+            onChange={({ target }) => setUsername(target.value)}
           />
         </div>
         <div>
@@ -32,7 +40,7 @@ function LoginForm({
             data-testid="password"
             type="password"
             value={password}
-            onChange={handlePasswordChange}
+            onChange={({ target }) => setPassword(target.value)}
           />
         </div>
         <button type="submit">login</button>
