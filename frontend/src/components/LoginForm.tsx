@@ -9,7 +9,7 @@ function LoginForm() {
   const { user, login } = useAppContext();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await login(username, password);
     navigate("/notes");

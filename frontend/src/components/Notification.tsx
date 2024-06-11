@@ -2,7 +2,7 @@ import { useAppContext } from "../context/AppContext";
 
 function Notification() {
   const { errorMessage } = useAppContext();
-  if (errorMessage === null) {
+  if (!errorMessage) {
     return null;
   }
 
