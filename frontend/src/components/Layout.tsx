@@ -6,7 +6,7 @@ function Layout() {
   return (
     <div>
       <h1>Note App</h1>
-      <Notification  />
+      <Notification />
       <Outlet />
       <Footer />
     </div>

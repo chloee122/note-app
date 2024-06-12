@@ -7,9 +7,9 @@ export interface TogglableHandle {
 interface Props {
   children: React.ReactNode;
   buttonLabel: string;
-};
+}
 
-const Togglable = forwardRef< TogglableHandle, Props>((props, refs) => {
+const Togglable = forwardRef<TogglableHandle, Props>((props, refs) => {
   const [visible, setVisible] = useState(false);
 
   const hideWhenVisible = { display: visible ? "none" : "" };
@@ -37,5 +37,7 @@ const Togglable = forwardRef< TogglableHandle, Props>((props, refs) => {
     </div>
   );
 });
+
+Togglable.displayName = "Togglable";
 
 export default Togglable;

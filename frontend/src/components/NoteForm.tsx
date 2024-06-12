@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { useAppContext } from "../context/AppContext";
-
+import useAppContext from "../hooks/useAppContext";
 
 function NoteForm() {
   const [newNote, setNewNote] = useState("");
-  const {addNote} = useAppContext();
+  const { addNote } = useAppContext();
 
   const handleAddNote = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

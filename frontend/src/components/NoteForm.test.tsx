@@ -3,22 +3,23 @@ import NoteForm from "./NoteForm";
 import userEvent from "@testing-library/user-event";
 import { AppContext } from "../context/AppContext";
 
-
 test("<NoteForm/> updates parent state and calls onSubmit", async () => {
   const mockAddNote = vi.fn();
 
-  const mockToggle = vi.fn()
+  const mockToggle = vi.fn();
   const contextValue = {
     addNote: mockAddNote,
-    user: {id: "1", name: "Chloe", username: "chloeng"},
+    user: { token: "testtoken", name: "Chloe", username: "chloeng" },
     notes: [],
     login: () => {},
     logout: () => {},
     toggleImportance: () => {},
-    errorMessage: null,
-    noteFormRef: {current: {
-      toggleVisibility: mockToggle
-    }}
+    errorMessage: "",
+    noteFormRef: {
+      current: {
+        toggleVisibility: mockToggle,
+      },
+    },
   };
   const user = userEvent.setup();
 

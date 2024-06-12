@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { useAppContext } from "../context/AppContext";
+import useAppContext from "../hooks/useAppContext";
 
 function LoginForm() {
   const [username, setUsername] = useState("");
@@ -9,9 +9,9 @@ function LoginForm() {
   const { user, login } = useAppContext();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await login(username, password);
+    login(username, password);
     navigate("/notes");
     setUsername("");
     setPassword("");

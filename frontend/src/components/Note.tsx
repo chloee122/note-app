@@ -1,4 +1,4 @@
-import { useAppContext } from "../context/AppContext";
+import useAppContext from "../hooks/useAppContext";
 import type { Note } from "../common/internal";
 
 interface NoteProps {
