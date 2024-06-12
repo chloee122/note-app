@@ -1,6 +1,15 @@
 import { useState, forwardRef, useImperativeHandle } from "react";
 
-const Togglable = forwardRef((props, refs) => {
+export interface TogglableHandle {
+  toggleVisibility: () => void;
+}
+
+interface Props {
+  children: React.ReactNode;
+  buttonLabel: string;
+};
+
+const Togglable = forwardRef< TogglableHandle, Props>((props, refs) => {
   const [visible, setVisible] = useState(false);
 
   const hideWhenVisible = { display: visible ? "none" : "" };

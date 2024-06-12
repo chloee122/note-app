@@ -1,9 +1,12 @@
 import axios from "axios";
+import type { Note } from "../common/internal";
+import type { NoteToSend } from "../common/api.types";
+
 const baseUrl = "/api/notes";
 
-let token = null;
+let token:string|null = null;
 
-const setToken = (newToken) => {
+const setToken = (newToken: string) => {
   token = `Bearer ${newToken}`;
 };
 
@@ -12,7 +15,7 @@ const getAll = () => {
   return request.then((response) => response.data);
 };
 
-const create = async (newObject) => {
+const create = async (newObject: NoteToSend) => {
   const config = {
     headers: {
       Authorization: token,
@@ -23,7 +26,7 @@ const create = async (newObject) => {
   return response.data;
 };
 
-const update = (id, newObject) => {
+const update = (id: string, newObject: Note) => {
   const request = axios.put(`${baseUrl}/${id}`, newObject);
   return request.then((response) => response.data);
 };

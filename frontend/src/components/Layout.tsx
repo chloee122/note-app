@@ -2,11 +2,11 @@ import { Outlet } from "react-router-dom";
 import Footer from "./Footer";
 import Notification from "./Notification";
 
-function Layout({ message }) {
+function Layout() {
   return (
     <div>
       <h1>Note App</h1>
-      <Notification message={message} />
+      <Notification  />
       <Outlet />
       <Footer />
     </div>

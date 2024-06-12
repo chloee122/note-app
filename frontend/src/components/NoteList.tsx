@@ -5,10 +5,11 @@ import Togglable from "./Togglable";
 import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 
-function NoteList({ toggleImportance, noteFormRef }) {
+
+function NoteList() {
   const [showAll, setShowAll] = useState(true);
   const navigate = useNavigate();
-  const { notes, logout, user } = useAppContext();
+  const { notes, logout, user, noteFormRef } = useAppContext();
 
   const noteForm = () => {
     return (
@@ -24,7 +25,7 @@ function NoteList({ toggleImportance, noteFormRef }) {
   };
 
   const notesToShow = showAll ? notes : notes.filter((note) => note.important);
-
+if (!user) return
   return (
     <div>
       <div>
@@ -40,7 +41,7 @@ function NoteList({ toggleImportance, noteFormRef }) {
           <Note
             key={note.id}
             note={note}
-            toggleImportance={() => toggleImportance(note.id)}
+            
           />
         ))}
       </ul>
