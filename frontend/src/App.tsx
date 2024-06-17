@@ -1,12 +1,10 @@
 import LoginForm from "./components/LoginForm";
 import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
-import NoteList from "./components/NoteList";
+import MainPage from "./components/MainPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 
-
 function App() {
-
   return (
     <Routes>
       <Route element={<Layout />}>
@@ -15,7 +13,7 @@ function App() {
           path="/notes"
           element={
             <ProtectedRoute>
-              <NoteList />
+              <MainPage />
             </ProtectedRoute>
           }
         />

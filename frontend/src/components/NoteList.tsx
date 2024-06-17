@@ -1,42 +1,16 @@
-import { useState } from "react";
-import Note from "./Note";
-import NoteForm from "./NoteForm";
-import { useNavigate } from "react-router-dom";
-import useAppContext from "../hooks/useAppContext";
+import { Note } from "../common/internal";
+import NoteDetails from "./NoteDetails";
 
-function NoteList() {
-  const [showAll, setShowAll] = useState(true);
-  const navigate = useNavigate();
-  const { notes, logout, user } = useAppContext();
+interface NoteListProps {
+  notes: Note[];
+}
 
-  const noteForm = () => {
-    return <NoteForm />;
-  };
+function NoteList({ notes }: NoteListProps) {
+  const listOfNotes = notes.map((note) => (
+    <NoteDetails key={note.id} note={note} />
+  ));
 
-  const handleLogout = () => {
-    logout();
-    navigate("/");
-  };
-
-  const notesToShow = showAll ? notes : notes.filter((note) => note.important);
-  if (!user) return;
-  return (
-    <div>
-      <div>
-        <p>{user.name} logged in</p>
-        <button onClick={handleLogout}>Log out</button>
-      </div>
-      {noteForm()}
-      <button onClick={() => setShowAll(!showAll)}>
-        show {showAll ? "important" : "all"}
-      </button>
-      <ul>
-        {notesToShow.map((note) => (
-          <Note key={note.id} note={note} />
-        ))}
-      </ul>
-    </div>
-  );
+  return <ul>{listOfNotes}</ul>;
 }
 
 export default NoteList;

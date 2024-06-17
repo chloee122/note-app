@@ -1,11 +1,11 @@
 import useAppContext from "../hooks/useAppContext";
 import type { Note } from "../common/internal";
 
-interface NoteProps {
+interface NoteDetailsProps {
   note: Note;
 }
 
-export default function Note({ note }: NoteProps) {
+function NoteDetails({ note }: NoteDetailsProps) {
   const { toggleImportance } = useAppContext();
 
   const label = note.important ? "make not important" : "make important";
@@ -17,3 +17,5 @@ export default function Note({ note }: NoteProps) {
     </li>
   );
 }
+
+export default NoteDetails;
