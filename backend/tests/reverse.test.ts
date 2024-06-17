@@ -1,7 +1,6 @@
-const { test } = require("node:test");
-const assert = require("node:assert");
-
-const reverse = require("../utils/for_testing").reverse;
+import { reverse } from "../utils/test_util";
+import { test } from "node:test";
+import assert from "node:assert";
 
 test("reverse of a", () => {
   const result = reverse("a");

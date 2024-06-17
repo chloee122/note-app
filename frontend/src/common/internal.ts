@@ -3,9 +3,9 @@ export interface Note {
     content: string;
     important: boolean;
   }
-  
-  export interface User {
-    id: string;
+
+export interface User {
+    token: string;
     name: string;
     username: string;
   }

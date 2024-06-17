@@ -1,6 +1,19 @@
 import axios from "axios";
-import type { Note } from "../common/internal";
-import type { NoteToSend } from "../common/api.types";
+import { Note } from "../common/internal";
+import { NoteToSend } from "../common/api.types";
+
+
+interface GetAllResponse {
+  data: Note[];
+}
+
+interface CreateResponse {
+data: Note;
+}
+
+interface UpdateResponse {
+  data: Note;
+}
 
 const baseUrl = "/api/notes";
 
@@ -10,25 +23,25 @@ const setToken = (newToken: string) => {
   token = `Bearer ${newToken}`;
 };
 
-const getAll = () => {
-  const request = axios.get(baseUrl);
-  return request.then((response) => response.data);
+const getAll = async (): Promise<Note[]> => {
+  const response: GetAllResponse = await axios.get(baseUrl);
+  return response.data;
 };
 
-const create = async (newObject: NoteToSend) => {
+const create = async (newObject: NoteToSend): Promise<Note> => {
   const config = {
     headers: {
       Authorization: token,
     },
   };
 
-  const response = await axios.post(baseUrl, newObject, config);
+  const response: CreateResponse = await axios.post(baseUrl, newObject, config);
   return response.data;
 };
 
-const update = (id: string, newObject: Note) => {
-  const request = axios.put(`${baseUrl}/${id}`, newObject);
-  return request.then((response) => response.data);
+const update = async(id: string, newObject: Note): Promise<Note> => {
+  const response: UpdateResponse = await axios.put(`${baseUrl}/${id}`, newObject);
+  return response.data;
 };
 
 export default {

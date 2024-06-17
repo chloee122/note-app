@@ -6,7 +6,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 
 function App() {
- 
+
   return (
     <Routes>
       <Route element={<Layout />}>

@@ -10,19 +10,21 @@ test("renders content", () => {
     important: true,
   };
 
-  const mockToggle = vi.fn()
+  const mockToggle = vi.fn();
 
   const contextValue = {
     addNote: () => {},
-    user: {id: "1", name: "Chloe", username: "chloeng"},
+    user: { token: "testtoken1", name: "Chloe", username: "chloeng" },
     notes: [],
     login: () => {},
     logout: () => {},
     toggleImportance: () => {},
-    errorMessage: null,
-    noteFormRef: {current: {
-      toggleVisibility: mockToggle
-    }}
+    errorMessage: "",
+    noteFormRef: {
+      current: {
+        toggleVisibility: mockToggle,
+      },
+    },
   };
 
   render(
@@ -44,21 +46,23 @@ test("clicking the button calls event handler once", async () => {
     important: true,
   };
 
-  const mockToggle = vi.fn()
+  const mockToggle = vi.fn();
 
   const mockToggleImportance = vi.fn();
 
   const contextValue = {
     addNote: () => {},
-    user: {id: "1", name: "Chloe", username: "chloeng"},
+    user: { token: "testtoken", name: "Chloe", username: "chloeng" },
     notes: [],
     login: () => {},
     logout: () => {},
     toggleImportance: mockToggleImportance,
-    errorMessage: null,
-    noteFormRef: {current: {
-      toggleVisibility: mockToggle
-    }}
+    errorMessage: "",
+    noteFormRef: {
+      current: {
+        toggleVisibility: mockToggle,
+      },
+    },
   };
 
   render(
@@ -71,6 +75,5 @@ test("clicking the button calls event handler once", async () => {
   const button = screen.getByText("make not important");
   await user.click(button);
 
-  console.log(mockToggleImportance.mock.calls);
   expect(mockToggleImportance.mock.calls).toHaveLength(1);
 });

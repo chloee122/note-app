@@ -1,6 +1,13 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
+interface IUser {
+  username: string;
+  name: string;
+  passwordHash: string;
+    notes: mongoose.Types.ObjectId[];
+}
+
+const userSchema = new mongoose.Schema<IUser>({
   username: { type: String, required: true, unique: true },
   name: String,
   passwordHash: String,
@@ -8,7 +15,7 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.set("toJSON", {
-  transform: (document, returnedObject) => {
+  transform: (_document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;
@@ -17,6 +24,6 @@ userSchema.set("toJSON", {
   },
 });
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model<IUser>("User", userSchema);
 
-module.exports = User;
+export default User;

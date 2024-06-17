@@ -1,6 +1,13 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const noteSchema = new mongoose.Schema({
+interface INote {
+  id: string;
+  content: string;
+  important: boolean;
+  user: mongoose.Types.ObjectId;
+}
+
+const noteSchema = new mongoose.Schema<INote>({
   content: {
     type: String,
     minLength: 5,
@@ -14,11 +21,12 @@ const noteSchema = new mongoose.Schema({
 });
 
 noteSchema.set("toJSON", {
-  transform: (document, returnedObject) => {
+  transform: (_document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;
   },
 });
 
-module.exports = mongoose.model("Note", noteSchema);
+const Note = mongoose.model<INote>("Note", noteSchema);
+export default Note;

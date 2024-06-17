@@ -3,8 +3,7 @@ import Note from "./Note";
 import NoteForm from "./NoteForm";
 import Togglable from "./Togglable";
 import { useNavigate } from "react-router-dom";
-import { useAppContext } from "../context/AppContext";
-
+import useAppContext from "../hooks/useAppContext";
 
 function NoteList() {
   const [showAll, setShowAll] = useState(true);
@@ -25,7 +24,7 @@ function NoteList() {
   };
 
   const notesToShow = showAll ? notes : notes.filter((note) => note.important);
-if (!user) return
+  if (!user) return;
   return (
     <div>
       <div>
@@ -38,11 +37,7 @@ if (!user) return
       </button>
       <ul>
         {notesToShow.map((note) => (
-          <Note
-            key={note.id}
-            note={note}
-            
-          />
+          <Note key={note.id} note={note} />
         ))}
       </ul>
     </div>
