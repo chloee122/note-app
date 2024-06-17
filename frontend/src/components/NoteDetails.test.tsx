@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import Note from "./Note";
+import NoteDetails from "./NoteDetails";
 import { AppContext } from "../context/AppContext";
 
 test("renders content", () => {
@@ -29,7 +29,7 @@ test("renders content", () => {
 
   render(
     <AppContext.Provider value={contextValue}>
-      <Note note={note} />
+      <NoteDetails note={note} />
     </AppContext.Provider>
   );
 
@@ -67,7 +67,7 @@ test("clicking the button calls event handler once", async () => {
 
   render(
     <AppContext.Provider value={contextValue}>
-      <Note note={note} />
+      <NoteDetails note={note} />
     </AppContext.Provider>
   );
 
