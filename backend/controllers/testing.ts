@@ -1,7 +1,3 @@
-// const router = require("express").Router();
-// const Note = require("../models/note");
-// const User = require("../models/user");
-
 import { Router } from "express";
 import Note from "../models/note";
 import User from "../models/user";
@@ -15,5 +11,4 @@ router.post("/reset", async (_request, response) => {
 	response.status(204).end();
 });
 
-// module.exports = router;
 export default router;

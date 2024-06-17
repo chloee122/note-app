@@ -5,16 +5,9 @@ import mongoose from "mongoose";
 import helper from "./test_helper";
 import app from "../app";
 import Note from "../models/note";
+import User from "../models/user";
 
-// const { test, after, beforeEach, describe } = require("node:test");
-// const assert = require("node:assert");
-// const supertest = require("supertest");
-// const mongoose = require("mongoose");
-// const helper = require("./test_helper");
-// const app = require("../app");
 const api = supertest(app);
-
-// const Note = require("../models/note");
 
 describe("when there are initially some notes saved", () => {
 	beforeEach(async () => {
@@ -39,10 +32,12 @@ describe("when there are initially some notes saved", () => {
 		assert.strictEqual(response.body.length, helper.initialNotes.length);
 	});
 
-	test.only("a specific note is within the returned notes", async () => {
+	test("a specific note is within the returned notes", async () => {
 		const response = await api.get("/api/notes");
 
-		const contents = response.body.map((e: {content: string, important: boolean}) => e.content);
+		const contents = response.body.map(
+			(e: { content: string; important: boolean }) => e.content
+		);
 		assert(contents.includes("HTML is easy"));
 	});
 
@@ -53,7 +48,7 @@ describe("when there are initially some notes saved", () => {
 			const noteToView = notesAtStart[0];
 
 			const resultNote = await api
-				.get(`/api/notes/${noteToView._id}`)
+				.get(`/api/notes/${noteToView.id}`)
 				.expect(200)
 				.expect("Content-Type", /application\/json/);
 
@@ -67,7 +62,28 @@ describe("when there are initially some notes saved", () => {
 		});
 	});
 
+	let token: string;
 	describe("addition of new note", () => {
+		beforeEach(async () => {
+			// Reset
+			await User.deleteMany({});
+
+			// Create user
+			const userToCreate = {
+				username: "test",
+				password: "salainen",
+				name: "test",
+			};
+			await api.post("/api/users").send(userToCreate);
+
+			// Login to get token
+			const user = {
+				username: "test",
+				password: "salainen",
+			};
+			const result = await api.post("/api/login").send(user);
+			token = result.body.token;
+		});
 		test("succeeds with valid data", async () => {
 			const newNote = {
 				content: "async/await simplifies making async calls",
@@ -76,6 +92,7 @@ describe("when there are initially some notes saved", () => {
 
 			await api
 				.post("/api/notes")
+				.set("Authorization", `Bearer ${token}`)
 				.send(newNote)
 				.expect(201)
 				.expect("Content-Type", /application\/json/);
@@ -92,10 +109,13 @@ describe("when there are initially some notes saved", () => {
 				important: true,
 			};
 
-			await api.post("/api/notes").send(newNote).expect(400);
+			await api
+				.post("/api/notes")
+				.set("Authorization", `Bearer ${token}`)
+				.send(newNote)
+				.expect(400);
 
 			const notesAtEnd = await helper.notesInDb();
-
 			assert.strictEqual(notesAtEnd.length, helper.initialNotes.length);
 		});
 	});
@@ -105,7 +125,7 @@ describe("when there are initially some notes saved", () => {
 			const notesAtStart = await helper.notesInDb();
 			const noteToDelete = notesAtStart[0];
 
-			await api.delete(`/api/notes/${noteToDelete._id}`).expect(204);
+			await api.delete(`/api/notes/${noteToDelete.id}`).expect(204);
 
 			const notesAtEnd = await helper.notesInDb();
 			assert.strictEqual(notesAtEnd.length, notesAtStart.length - 1);

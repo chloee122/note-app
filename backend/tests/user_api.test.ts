@@ -7,17 +7,7 @@ import helper from "./test_helper";
 import app from "../app";
 import User from "../models/user";
 
-
-// const bcrypt = require("bcrypt");
-// const { test, beforeEach, after, describe } = require("node:test");
-// const assert = require("node:assert");
-// const supertest = require("supertest");
-// const mongoose = require("mongoose");
-// const helper = require("./test_helper");
-// const app = require("../app");
 const api = supertest(app);
-
-// const User = require("../models/user");
 
 describe("when there is initally one user in db", () => {
 	beforeEach(async () => {

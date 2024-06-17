@@ -1,8 +1,3 @@
-// const notesRouter = require("express").Router();
-// const Note = require("../models/note");
-// const User = require("../models/user");
-// const jwt = require("jsonwebtoken");
-
 import { Router, Request } from "express";
 import Note from "../models/note";
 import User from "../models/user";
@@ -10,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 const notesRouter = Router();
 
-const getTokenFrom = (request: Request) => {  // Check
+const getTokenFrom = (request: Request) => {
 	const authorization = request.get("authorization");
 	if (authorization && authorization.startsWith("Bearer ")) {
 		return authorization.replace("Bearer ", "");
@@ -36,8 +31,12 @@ notesRouter.get("/:id", async (request, response) => {
 notesRouter.post("/", async (request, response) => {
 	const body = request.body;
 	const token = getTokenFrom(request);
-	if (process.env.SECRET && token) { // CHECK
-		const decodedToken = jwt.verify(token, process.env.SECRET) as jwt.JwtPayload; // Check again
+	if (process.env.SECRET && token) {
+		// CHECK
+		const decodedToken = jwt.verify(
+			token,
+			process.env.SECRET
+		) as jwt.JwtPayload; // Check again
 		if (!decodedToken.id) {
 			return response.status(401).json({ error: "token invalid" });
 		}
@@ -45,7 +44,6 @@ notesRouter.post("/", async (request, response) => {
 		const user = await User.findById(decodedToken.id);
 
 		if (user) {
-
 			const note = new Note({
 				content: body.content,
 				important: body.important || false,
@@ -81,5 +79,4 @@ notesRouter.put("/:id", (request, response, next) => {
 		.catch((error) => next(error));
 });
 
-// module.exports = notesRouter;
 export default notesRouter;

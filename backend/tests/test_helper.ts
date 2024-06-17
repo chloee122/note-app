@@ -1,5 +1,3 @@
-// const Note = require("../models/note");
-// const User = require("../models/user");
 import User from "../models/user";
 import Note from "../models/note";
 
@@ -31,13 +29,6 @@ const usersInDb = async () => {
 	const users = await User.find({});
 	return users.map((user) => user.toJSON());
 };
-
-// module.exports = {
-// 	nonExistingId,
-// 	notesInDb,
-// 	initialNotes,
-// 	usersInDb,
-// };
 
 export default {
 	nonExistingId,

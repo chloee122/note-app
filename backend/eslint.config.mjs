@@ -7,6 +7,7 @@ export default tseslint.config(
 	js.configs.recommended,
 	...tseslint.configs.recommended,
 	...tseslint.configs.recommendedTypeChecked,
+
 	{
 		languageOptions: {
 			parser: tseslint.parser,
@@ -23,7 +24,7 @@ export default tseslint.config(
 			"no-console": "warn",
 		},
 	},
-	{ ignores: ["dist/*"] },
+	{ ignores: ["dist/*", "build/*"] },
 	{
 		plugins: {
 			"@typescript-eslint": tseslint.plugin,

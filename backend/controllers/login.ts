@@ -1,12 +1,7 @@
-// export {};
-
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-// const jwt = require("jsonwebtoken");
-// const bcrypt = require("bcrypt");
-// const loginRouter = require("express").Router();
-// const User = require("../models/user");
+
 import User from "../models/user";
 import { Router } from "express";
 
@@ -32,8 +27,7 @@ loginRouter.post("/", async (request, response) => {
 		id: user._id,
 	};
 
-	if (process.env.SECRET) {   ///////// HERE WILL THROW NO IMPLICIT RETURN ERROR
-
+	if (process.env.SECRET) {   
 		const token = jwt.sign(userForToken, process.env.SECRET, {
 			expiresIn: 60 * 60,
 		});
@@ -46,5 +40,4 @@ loginRouter.post("/", async (request, response) => {
 	}
 });
 
-// module.exports = loginRouter;
 export default loginRouter;

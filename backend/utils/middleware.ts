@@ -1,8 +1,11 @@
-// const logger = require("./logger");
 import logger from "./logger";
 import { Request, Response, NextFunction } from "express";
 
-const requestLogger = (request: Request, _response: Response, next:NextFunction) => {
+const requestLogger = (
+	request: Request,
+	_response: Response,
+	next: NextFunction
+) => {
 	logger.info("Method:", request.method);
 	logger.info("Path:  ", request.path);
 	logger.info("Body:  ", request.body);
@@ -10,11 +13,16 @@ const requestLogger = (request: Request, _response: Response, next:NextFunction)
 	next();
 };
 
-const unknownEndpoint = (_request:Request, response:Response) => {
+const unknownEndpoint = (_request: Request, response: Response) => {
 	response.status(404).send({ error: "unknown endpoint" });
 };
 
-const errorHandler = (error: Error, _request:Request, response:Response, next:NextFunction) => {
+const errorHandler = (
+	error: Error,
+	_request: Request,
+	response: Response,
+	next: NextFunction
+) => {
 	console.error(error.message);
 
 	if (error.name === "CastError") {
@@ -28,6 +36,10 @@ const errorHandler = (error: Error, _request:Request, response:Response, next:Ne
 		return response
 			.status(400)
 			.json({ error: "expected `username` to be unique" });
+	} else if (error.name === "MongoServerError") {
+		return response
+			.status(400)
+			.json({ error: "expected `username` to be unique" });
 	} else if (error.name === "JsonWebTokenError") {
 		return response.status(401).json({ error: "token invalid" });
 	} else if (error.name === "TokenExpiredError") {
@@ -37,13 +49,6 @@ const errorHandler = (error: Error, _request:Request, response:Response, next:Ne
 	}
 	next(error);
 };
-
-// module.exports = {
-// 	requestLogger,
-// 	errorHandler,
-// 	unknownEndpoint,
-// };
-
 
 export default {
 	requestLogger,
