@@ -26,7 +26,6 @@ describe("<Togglable />", () => {
     const user = userEvent.setup();
     const button = screen.getByText("show...");
     await user.click(button);
-
     const div = container.querySelector(".togglableContent");
     expect(div).not.toHaveStyle("display: none");
   });

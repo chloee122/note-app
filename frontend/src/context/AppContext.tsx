@@ -38,7 +38,7 @@ export function AppProvider({ children }: AppProviderProps) {
       }
     };
 
-    void getNotes();
+    getNotes();
   }, []);
 
   useEffect(() => {
@@ -46,9 +46,7 @@ export function AppProvider({ children }: AppProviderProps) {
     if (loggedUserJSON) {
       const loggedUser = JSON.parse(loggedUserJSON) as User;
       setUser(loggedUser);
-      if (user) {
-        noteService.setToken(user.token);
-      }
+      noteService.setToken(loggedUser.token);
     }
   }, []);
 
@@ -79,13 +77,21 @@ export function AppProvider({ children }: AppProviderProps) {
 
   const noteFormRef = useRef<TogglableHandle>(null);
 
-  const addNote = (noteObject: NoteToSend) => {
+  const addNote = async (noteObject: NoteToSend) => {
     if (noteFormRef.current) {
       noteFormRef.current.toggleVisibility();
     }
-    void noteService.create(noteObject).then((returnedNote: Note) => {
+    try {
+      const returnedNote: Note = await noteService.create(noteObject);
       setNotes(notes.concat(returnedNote));
-    });
+    } catch (error) {
+      if (error instanceof Error) {
+        setErrorMessage(error.message);
+        setTimeout(() => {
+          setErrorMessage("");
+        }, 5000);
+      }
+    }
   };
 
   const toggleImportance = async (id: string): Promise<void> => {
@@ -94,9 +100,8 @@ export function AppProvider({ children }: AppProviderProps) {
     const changedNote = { ...note, important: !note.important };
 
     try {
-      await noteService.update(id, changedNote).then((returnedNote: Note) => {
-        setNotes(notes.map((note) => (note.id !== id ? note : returnedNote)));
-      });
+      const returnedNote = await noteService.update(id, changedNote);
+      setNotes(notes.map((note) => (note.id !== id ? note : returnedNote)));
     } catch (error) {
       if (error instanceof Error) {
         setErrorMessage(
