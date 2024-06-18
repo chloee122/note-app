@@ -4,7 +4,6 @@ h1 {
 }
 
 .note {
-  color: grey;
   padding-top: 3px;
   font-size: 15px;
 }
@@ -17,4 +16,12 @@ h1 {
   border-radius: 5px;
   padding: 10px;
   margin-bottom: 10px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: white;
 }
