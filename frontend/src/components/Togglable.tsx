@@ -26,7 +26,7 @@ const Togglable = forwardRef<TogglableHandle, Props>((props, refs) => {
   });
 
   return (
-    <div>
+    <>
       <div style={hideWhenVisible}>
         <button onClick={toggleVisibility}>{props.buttonLabel}</button>
       </div>
@@ -34,7 +34,7 @@ const Togglable = forwardRef<TogglableHandle, Props>((props, refs) => {
         {props.children}
         <button onClick={toggleVisibility}>cancel</button>
       </div>
-    </div>
+    </>
   );
 });
 

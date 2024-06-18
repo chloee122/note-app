@@ -4,6 +4,9 @@ import NoteForm from "./NoteForm";
 import Togglable from "./Togglable";
 import useAppContext from "../hooks/useAppContext";
 import NoteList from "./NoteList";
+import Container from "./styles/Container.styled";
+import User from "./styles/User.styled";
+import Button from "./styles/Button.styled";
 
 function MainPage() {
   const [showAll, setShowAll] = useState(true);
@@ -26,22 +29,17 @@ function MainPage() {
   const notesToShow = showAll ? notes : notes.filter((note) => note.important);
   if (!user) return;
   return (
-    <div>
-      <div>
+    <Container>
+      <User>
         <p>{user.name} logged in</p>
         <button onClick={handleLogout}>Log out</button>
-      </div>
+      </User>
       {noteForm()}
-      <button onClick={() => setShowAll(!showAll)}>
-        show {showAll ? "important" : "all"}
-      </button>
-      {/* <ul>
-        {notesToShow.map((note) => (
-          <Note key={note.id} note={note} />
-        ))}
-      </ul> */}
+      <Button onClick={() => setShowAll(!showAll)}>
+        Show {showAll ? "important" : "all"}
+      </Button>
       <NoteList notes={notesToShow} />
-    </div>
+    </Container>
   );
 }
 
