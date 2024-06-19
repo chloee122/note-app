@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import NoteForm from "./NoteForm";
-import Togglable from "./Togglable";
 import useAppContext from "../hooks/useAppContext";
 import NoteList from "./NoteList";
 import Container from "./styles/Container.styled";
@@ -11,15 +10,7 @@ import Button from "./styles/Button.styled";
 function MainPage() {
   const [showAll, setShowAll] = useState(true);
   const navigate = useNavigate();
-  const { notes, logout, user, noteFormRef } = useAppContext();
-
-  const noteForm = () => {
-    return (
-      <Togglable buttonLabel="new note" ref={noteFormRef}>
-        <NoteForm />
-      </Togglable>
-    );
-  };
+  const { notes, logout, user } = useAppContext();
 
   const handleLogout = () => {
     logout();
@@ -34,7 +25,7 @@ function MainPage() {
         <p>{user.name} logged in</p>
         <button onClick={handleLogout}>Log out</button>
       </User>
-      {noteForm()}
+      <NoteForm />
       <Button onClick={() => setShowAll(!showAll)}>
         Show {showAll ? "important" : "all"}
       </Button>
