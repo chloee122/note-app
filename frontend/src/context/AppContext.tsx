@@ -1,7 +1,7 @@
-import { createContext, useState, useEffect, useRef, ReactNode } from "react";
+import { createContext, useState, useEffect, ReactNode } from "react";
 import noteService from "../services/notes";
 import loginService from "../services/login";
-import { TogglableHandle } from "../components/Togglable";
+
 import type { Note, User } from "../common/internal";
 import type { NoteToSend } from "../common/api.types";
 
@@ -17,7 +17,6 @@ interface AppContextType {
   addNote: (note: NoteToSend) => void;
   toggleImportance: (id: string) => void;
   errorMessage: string;
-  noteFormRef: React.RefObject<TogglableHandle>;
 }
 
 export const AppContext = createContext<null | AppContextType>(null);
@@ -75,12 +74,7 @@ export function AppProvider({ children }: AppProviderProps) {
     setUser(null);
   };
 
-  const noteFormRef = useRef<TogglableHandle>(null);
-
   const addNote = async (noteObject: NoteToSend) => {
-    if (noteFormRef.current) {
-      noteFormRef.current.toggleVisibility();
-    }
     try {
       const returnedNote: Note = await noteService.create(noteObject);
       setNotes(notes.concat(returnedNote));
@@ -124,7 +118,6 @@ export function AppProvider({ children }: AppProviderProps) {
         addNote,
         toggleImportance,
         errorMessage,
-        noteFormRef,
       }}
     >
       {children}
