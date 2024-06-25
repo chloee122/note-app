@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import useAppContext from "../hooks/useAppContext";
-import LoginFormContainer from "./styles/LoginFormContainer";
-import Form from "./styles/Form.styled";
-import Input from "./styles/Input.styled";
-import Button from "./styles/Button.styled";
-import StyledLoginForm from "./styles/LoginForm.styled";
+import Input from "./styles/shared/Input.styled";
+import Button from "./styles/shared/Button.styled";
+import { LoginFormWrapper, FormWrapper, Form } from "./styles/LoginForm.styled";
 
 function LoginForm() {
   const [username, setUsername] = useState("");
@@ -27,9 +25,9 @@ function LoginForm() {
   }
 
   return (
-    <StyledLoginForm>
+    <LoginFormWrapper>
       <h2>&quot;The Palest Ink Is Better Than the Best Memory.&quot;</h2>
-      <LoginFormContainer>
+      <FormWrapper>
         <h2>Log in to your account</h2>
         <Form onSubmit={handleSubmit}>
           <div>
@@ -53,8 +51,8 @@ function LoginForm() {
             Login
           </Button>
         </Form>
-      </LoginFormContainer>
-    </StyledLoginForm>
+      </FormWrapper>
+    </LoginFormWrapper>
   );
 }
 

@@ -1,19 +1,18 @@
 import { Outlet } from "react-router-dom";
 import Footer from "./Footer";
 import Notification from "./Notification";
-import StyledHeader from "./styles/Header.styled";
-import AppContainer from "./styles/AppContainer.styled";
+import { LayoutWrapper, HeaderWrapper } from "./styles/Layout.styled";
 
 function Layout() {
   return (
-    <AppContainer>
-      <StyledHeader>
+    <LayoutWrapper>
+      <HeaderWrapper>
         <h1>Note App</h1>
-      </StyledHeader>
+      </HeaderWrapper>
       <Notification />
       <Outlet />
       <Footer />
-    </AppContainer>
+    </LayoutWrapper>
   );
 }
 

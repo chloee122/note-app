@@ -1,6 +1,6 @@
 import useAppContext from "../hooks/useAppContext";
 import type { Note } from "../common/internal";
-import NoteItem from "./styles/NoteDetails.styled";
+import { NoteItem } from "./styles/NoteDetails.styled";
 import { IoCloseSharp } from "react-icons/io5";
 
 interface NoteDetailsProps {

@@ -1,10 +1,10 @@
-import StyledFooter from "./styles/Footer.styled";
+import FooterWrapper from "./styles/Footer.styled";
 
 function Footer() {
   return (
-    <StyledFooter>
+    <FooterWrapper>
       <p>Note App by Chloe, Helsinki 2024</p>
-    </StyledFooter>
+    </FooterWrapper>
   );
 }
 

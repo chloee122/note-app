@@ -1,5 +1,5 @@
 import useAppContext from "../hooks/useAppContext";
-import StyledNotification from "./styles/Notification.styled";
+import { NotificationWrapper } from "./styles/Notification.styled";
 
 function Notification() {
   const { errorMessage } = useAppContext();
@@ -8,7 +8,7 @@ function Notification() {
   }
 
   return (
-    <StyledNotification className="error">{errorMessage}</StyledNotification>
+    <NotificationWrapper className="error">{errorMessage}</NotificationWrapper>
   );
 }
 

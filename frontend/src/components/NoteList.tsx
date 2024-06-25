@@ -1,7 +1,6 @@
 import { Note } from "../common/internal";
 import NoteDetails from "./NoteDetails";
-import List from "./styles/NoteList.styled";
-import ListContainer from "./styles/ListContainer.styled";
+import { NoteListWrapper, List } from "./styles/NoteList.styled";
 
 interface NoteListProps {
   notes: Note[];
@@ -13,9 +12,9 @@ function NoteList({ notes }: NoteListProps) {
   ));
 
   return (
-    <ListContainer>
+    <NoteListWrapper>
       <List>{listOfNotes}</List>
-    </ListContainer>
+    </NoteListWrapper>
   );
 }
 

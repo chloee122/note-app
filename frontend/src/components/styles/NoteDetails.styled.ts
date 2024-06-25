@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const NoteItem = styled.li<{ $important?: boolean }>`
+export const NoteItem = styled.li<{ $important?: boolean }>`
   border: 1.5px solid black;
   list-style: none;
   min-height: 100px;
@@ -34,5 +34,3 @@ const NoteItem = styled.li<{ $important?: boolean }>`
     min-width: auto;
   }
 `;
-
-export default NoteItem;

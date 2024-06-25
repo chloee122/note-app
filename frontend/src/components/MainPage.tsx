@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import NoteForm from "./NoteForm";
 import useAppContext from "../hooks/useAppContext";
 import NoteList from "./NoteList";
-import StyledMainPage from "./styles/MainPage.styled";
-import User from "./styles/User.styled";
-import Button from "./styles/Button.styled";
-import NoteView from "./styles/NoteView.styled";
+import { MainPageWrapper, User, NoteView } from "./styles/MainPage.styled";
+
+import Button from "./styles/shared/Button.styled";
+
 
 function MainPage() {
   const [showAll, setShowAll] = useState(true);
@@ -21,7 +21,7 @@ function MainPage() {
   const notesToShow = showAll ? notes : notes.filter((note) => note.important);
   if (!user) return;
   return (
-    <StyledMainPage>
+    <MainPageWrapper>
       <User>
         <p>{user.name} logged in</p>
         <Button
@@ -40,7 +40,7 @@ function MainPage() {
         </Button>
         <NoteList notes={notesToShow} />
       </NoteView>
-    </StyledMainPage>
+    </MainPageWrapper>
   );
 }
 

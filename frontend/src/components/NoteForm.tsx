@@ -1,8 +1,8 @@
 import { useState } from "react";
 import useAppContext from "../hooks/useAppContext";
-import NoteFormContainer from "./styles/NoteFormContainer.styled";
-import Input from "./styles/Input.styled";
-import Button from "./styles/Button.styled";
+import { NoteFormWrapper, Form } from "./styles/NoteForm.styled";
+import Input from "./styles/shared/Input.styled";
+import Button from "./styles/shared/Button.styled";
 
 function NoteForm() {
   const [newNote, setNewNote] = useState("");
@@ -19,16 +19,16 @@ function NoteForm() {
   };
 
   return (
-    <NoteFormContainer className="formDiv">
-      <form onSubmit={handleAddNote}>
+    <NoteFormWrapper className="formDiv">
+      <Form onSubmit={handleAddNote}>
         <Input
           value={newNote}
           onChange={(event) => setNewNote(event.target.value)}
           placeholder="Write note content here"
         />
         <Button type="submit">Save</Button>
-      </form>
-    </NoteFormContainer>
+      </Form>
+    </NoteFormWrapper>
   );
 }
 
