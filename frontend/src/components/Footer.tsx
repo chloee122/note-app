@@ -1,15 +1,10 @@
-function Footer() {
-  const footerStyle = {
-    color: "green",
-    fontStyle: "italic",
-    fontSize: 16,
-  };
+import StyledFooter from "./styles/Footer.styled";
 
+function Footer() {
   return (
-    <div style={footerStyle}>
-      <br />
-      <em>Note app, Helsinki 2024</em>
-    </div>
+    <StyledFooter>
+      <p>Note App by Chloe, Helsinki 2024</p>
+    </StyledFooter>
   );
 }
 
