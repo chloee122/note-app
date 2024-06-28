@@ -1,6 +1,6 @@
 import { Note } from "../common/internal";
-import NoteDetails from "./NoteDetails";
-import { NoteListWrapper, List } from "./styles/NoteList.styled";
+import NoteItem from "./NoteItem";
+import { NoteListWrapper, ListWrapper } from "./styles/NoteList.styled";
 
 interface NoteListProps {
   notes: Note[];
@@ -8,12 +8,12 @@ interface NoteListProps {
 
 function NoteList({ notes }: NoteListProps) {
   const listOfNotes = notes.map((note) => (
-    <NoteDetails key={note.id} note={note} />
+    <NoteItem key={note.id} note={note} />
   ));
 
   return (
     <NoteListWrapper>
-      <List>{listOfNotes}</List>
+      <ListWrapper>{listOfNotes}</ListWrapper>
     </NoteListWrapper>
   );
 }

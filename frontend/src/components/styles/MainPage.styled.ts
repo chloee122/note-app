@@ -4,7 +4,7 @@ export const MainPageWrapper = styled.div`
   background-color: #f3f0ff;
 `;
 
-export const User = styled.div`
+export const UserSection = styled.div`
   display: flex;
   align-items: center;
   justify-content: end;

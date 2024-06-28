@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const NoteItem = styled.li<{ $important?: boolean }>`
+export const NoteItemWrapper = styled.li<{ $important?: boolean }>`
   border: 1.5px solid black;
   list-style: none;
   min-height: 100px;

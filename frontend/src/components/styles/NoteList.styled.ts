@@ -9,7 +9,7 @@ export const NoteListWrapper = styled.div`
   padding: 40px 0;
 `;
 
-export const List = styled.ul`
+export const ListWrapper = styled.ul`
   width: 95%;
   margin: 0 0 0 35px;
   max-height: 550px;

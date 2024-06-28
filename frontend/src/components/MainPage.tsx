@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import NoteForm from "./NoteForm";
 import useAppContext from "../hooks/useAppContext";
 import NoteList from "./NoteList";
-import { MainPageWrapper, User, NoteView } from "./styles/MainPage.styled";
+import { MainPageWrapper, UserSection, NoteView } from "./styles/MainPage.styled";
 
 import Button from "./styles/shared/Button.styled";
 
@@ -22,7 +22,7 @@ function MainPage() {
   if (!user) return;
   return (
     <MainPageWrapper>
-      <User>
+      <UserSection>
         <p>{user.name} logged in</p>
         <Button
           $width={100}
@@ -32,7 +32,7 @@ function MainPage() {
         >
           Log out
         </Button>
-      </User>
+      </UserSection>
       <NoteForm />
       <NoteView>
         <Button $width={180} onClick={() => setShowAll(!showAll)}>

@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import NoteDetails from "./NoteDetails";
+import NoteDetails from "./NoteItem";
 import { AppContext } from "../context/AppContext";
 
 test("renders content", () => {
