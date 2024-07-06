@@ -1,7 +1,7 @@
-import LoginForm from "./components/loginForm/LoginForm";
+import LoginForm from "./components/LoginForm/LoginForm";
 import { Routes, Route } from "react-router-dom";
-import Layout from "./components/layout/Layout";
-import MainPage from "./components/mainPage/MainPage";
+import Layout from "./components/Layout/Layout";
+import MainPage from "./components/MainPage/MainPage";
 import ProtectedRoute from "./ProtectedRoute";
 import GlobalStyles from "./globalStyle";
 

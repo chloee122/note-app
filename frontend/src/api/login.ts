@@ -1,6 +1,7 @@
 import axios from "axios";
-const baseUrl = "api/login";
 import { User } from "../common/internal";
+
+const baseUrl = "api/login";
 
 interface CredentialsType {
   username: string;

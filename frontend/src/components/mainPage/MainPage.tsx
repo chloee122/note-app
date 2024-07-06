@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import NoteForm from "../noteForm/NoteForm";
+import NoteForm from "../NoteForm/NoteForm";
 import useAppContext from "../../hooks/useAppContext";
-import NoteList from "../noteList/NoteList";
+import NoteList from "../NoteList/NoteList";
 import {
   MainPageWrapper,
   UserSection,
