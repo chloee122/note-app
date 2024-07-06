@@ -9,6 +9,7 @@ import testingRouter from "./controllers/testing";
 import mongoose from "mongoose";
 import logger from "./utils/logger";
 import middleware from "./utils/middleware";
+import redirectRouter from "./controllers/redirect";
 
 const app = express();
 
@@ -38,6 +39,7 @@ app.use(middleware.requestLogger);
 app.use("/api/notes", notesRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/login", loginRouter);
+app.use("/notes", redirectRouter);
 
 if (process.env.NODE_ENV === "test") {
   app.use("/api/end-to-end-testing", testingRouter);
