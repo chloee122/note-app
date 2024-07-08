@@ -14,7 +14,7 @@ const testing_1 = __importDefault(require("./controllers/testing"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const logger_1 = __importDefault(require("./utils/logger"));
 const middleware_1 = __importDefault(require("./utils/middleware"));
-const redirect_1 = __importDefault(require("./controllers/redirect"));
+const redirectToRoot_1 = __importDefault(require("./controllers/redirectToRoot"));
 const app = (0, express_1.default)();
 if (config_1.default.MONGODB_URI) {
     mongoose_1.default.set("strictQuery", false);
@@ -37,7 +37,7 @@ app.use(middleware_1.default.requestLogger);
 app.use("/api/notes", notes_1.default);
 app.use("/api/users", users_1.default);
 app.use("/api/login", login_1.default);
-app.use("/notes", redirect_1.default);
+app.use("*", redirectToRoot_1.default);
 if (process.env.NODE_ENV === "test") {
     app.use("/api/end-to-end-testing", testing_1.default);
 }
