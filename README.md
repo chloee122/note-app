@@ -59,7 +59,7 @@ PORT = 3001
 SECRET = "YOUR PASSWORD" 
 ```
 
-3. To run the app, start frontend and backend separately. You will then be able to access it at localhost:5173
+3. To run the app, start both frontend and backend with below command. You will then be able to access it at localhost:5173
 
 ```bash
 // For backend & frontend
