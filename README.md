@@ -47,7 +47,7 @@ In order to run the app locally, you need to specify `MONGODB_URI` environment v
 1. Clone the repo and install NPM packages
 
 ```bash
-git clone https://github.com/chloee122/forkify-react.git
+git clone https://github.com/chloee122/NoteApp.git
 npm ci
 ```
 
