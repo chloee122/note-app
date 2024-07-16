@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-
-
-import User from "../models/user";
 import { Router } from "express";
+import User from "../models/user";
+import getEnvVar from "../utils/getEnvVar";
+
 
 
 const loginRouter = Router();
@@ -27,17 +27,15 @@ loginRouter.post("/", async (request, response) => {
 		id: user._id,
 	};
 
-	if (process.env.SECRET) {   
-		const token = jwt.sign(userForToken, process.env.SECRET, {
-			expiresIn: 60 * 60,
-		});
+	const token = jwt.sign(userForToken, getEnvVar("SECRET"), {
+		expiresIn: 60 * 60,
+	});
 
-		response.status(200).send({
-			token,
-			username: user.username,
-			name: user.name,
-		});
-	}
+	response.status(200).send({
+		token,
+		username: user.username,
+		name: user.name,
+	});
 });
 
 export default loginRouter;

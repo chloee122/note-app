@@ -1,7 +1,8 @@
 import { Router, Request } from "express";
+import jwt from "jsonwebtoken";
 import Note from "../models/note";
 import User from "../models/user";
-import jwt from "jsonwebtoken";
+import getEnvVar from "../utils/getEnvVar";
 
 const notesRouter = Router();
 
@@ -31,12 +32,11 @@ notesRouter.get("/:id", async (request, response) => {
 notesRouter.post("/", async (request, response) => {
 	const body = request.body;
 	const token = getTokenFrom(request);
-	if (process.env.SECRET && token) {
-		// CHECK
+	if (token) {
 		const decodedToken = jwt.verify(
 			token,
-			process.env.SECRET
-		) as jwt.JwtPayload; // Check again
+			getEnvVar("SECRET")
+		) as jwt.JwtPayload;
 		if (!decodedToken.id) {
 			return response.status(401).json({ error: "token invalid" });
 		}
