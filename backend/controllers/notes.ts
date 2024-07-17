@@ -30,7 +30,6 @@ notesRouter.post("/", middleware.validateToken, async (request: ExtendedRequest,
 		});
 
 		const savedNote = await note.save();
-		user.notes = user.notes.concat(savedNote._id);
 		await user.save();
 
 		response.status(201).json(savedNote);
