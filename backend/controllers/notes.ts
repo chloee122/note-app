@@ -1,19 +1,9 @@
-import { Router, Request } from "express";
-import jwt from "jsonwebtoken";
+import { Router } from "express";
 import Note from "../models/note";
 import User from "../models/user";
-import getEnvVar from "../utils/getEnvVar";
+import middleware, { ExtendedRequest } from "../utils/middleware";
 
 const notesRouter = Router();
-
-const getTokenFrom = (request: Request) => {
-	const authorization = request.get("authorization");
-	if (authorization && authorization.startsWith("Bearer ")) {
-		return authorization.replace("Bearer ", "");
-	}
-
-	return null;
-};
 
 notesRouter.get("/", async (_request, response) => {
 	const notes = await Note.find({});
@@ -29,33 +19,21 @@ notesRouter.get("/:id", async (request, response) => {
 	}
 });
 
-notesRouter.post("/", async (request, response) => {
+notesRouter.post("/", middleware.validateToken, async (request: ExtendedRequest, response) => {
 	const body = request.body;
-	const token = getTokenFrom(request);
-	if (token) {
-		const decodedToken = jwt.verify(
-			token,
-			getEnvVar("SECRET")
-		) as jwt.JwtPayload;
-		if (!decodedToken.id) {
-			return response.status(401).json({ error: "token invalid" });
-		}
+	const user = await User.findById(request.userId);
+	if (user) {
+		const note = new Note({
+			content: body.content,
+			important: body.important || false,
+			user: user.id,
+		});
 
-		const user = await User.findById(decodedToken.id);
+		const savedNote = await note.save();
+		user.notes = user.notes.concat(savedNote._id);
+		await user.save();
 
-		if (user) {
-			const note = new Note({
-				content: body.content,
-				important: body.important || false,
-				user: user.id,
-			});
-
-			const savedNote = await note.save();
-			user.notes = user.notes.concat(savedNote._id);
-			await user.save();
-
-			response.status(201).json(savedNote);
-		}
+		response.status(201).json(savedNote);
 	}
 });
 

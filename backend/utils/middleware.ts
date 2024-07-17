@@ -1,5 +1,7 @@
-import logger from "./logger";
 import { Request, Response, NextFunction } from "express";
+import jwt from "jsonwebtoken";
+import logger from "./logger";
+import getEnvVar from "./getEnvVar";
 
 const requestLogger = (
 	request: Request,
@@ -50,8 +52,36 @@ const errorHandler = (
 	next(error);
 };
 
+const getTokenFrom = (request: Request) => {
+	const authorization = request.get("authorization");
+	if (authorization && authorization.startsWith("Bearer ")) {
+		return authorization.replace("Bearer ", "");
+	}
+
+	return null;
+};
+
+export interface ExtendedRequest extends Request {
+	userId?: string;
+}
+
+const validateToken = (
+	request: ExtendedRequest,
+	response: Response,
+	next: NextFunction
+) => {
+	const token = getTokenFrom(request);
+	if (!token) {
+		return response.status(401).json({ error: "Token is not provided" });
+	}
+	const decodedToken = jwt.verify(token, getEnvVar("SECRET")) as jwt.JwtPayload;
+	request.userId = decodedToken.id;
+	next();
+};
+
 export default {
 	requestLogger,
 	errorHandler,
 	unknownEndpoint,
+	validateToken,
 };
