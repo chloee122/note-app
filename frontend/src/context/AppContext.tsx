@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
+import { toast } from "react-toastify";
 import noteService from "../api/notes";
 import loginService from "../api/login";
 import type { Note, User } from "../common/internal";
@@ -15,7 +16,6 @@ interface AppContextType {
   logout: () => void;
   addNote: (note: NoteToSend) => void;
   toggleImportance: (id: string) => void;
-  errorMessage: string;
 }
 
 export const AppContext = createContext<null | AppContextType>(null);
@@ -23,8 +23,6 @@ export const AppContext = createContext<null | AppContextType>(null);
 export function AppProvider({ children }: AppProviderProps) {
   const [user, setUser] = useState<AppContextType["user"]>(null);
   const [notes, setNotes] = useState<AppContextType["notes"]>([]);
-  const [errorMessage, setErrorMessage] =
-    useState<AppContextType["errorMessage"]>("");
 
   useEffect(() => {
     const getNotes = async () => {
@@ -32,7 +30,9 @@ export function AppProvider({ children }: AppProviderProps) {
         const response: Note[] = await noteService.getAll();
         setNotes(response);
       } catch (err) {
-        if (err instanceof Error) setErrorMessage(err.message);
+        if (err instanceof Error) {
+          toast.error(err.message, { autoClose: false });
+        }
       }
     };
 
@@ -60,10 +60,7 @@ export function AppProvider({ children }: AppProviderProps) {
       setUser(user);
     } catch (error) {
       if (error instanceof Error) {
-        setErrorMessage("Wrong credentials");
-        setTimeout(() => {
-          setErrorMessage("");
-        }, 5000);
+        toast.error("Wrong credentials");
       }
     }
   };
@@ -78,12 +75,7 @@ export function AppProvider({ children }: AppProviderProps) {
       const returnedNote: Note = await noteService.create(noteObject);
       setNotes(notes.concat(returnedNote));
     } catch (error) {
-      if (error instanceof Error) {
-        setErrorMessage(error.message);
-        setTimeout(() => {
-          setErrorMessage("");
-        }, 5000);
-      }
+      if (error instanceof Error) toast.error(error.message);
     }
   };
 
@@ -97,12 +89,7 @@ export function AppProvider({ children }: AppProviderProps) {
       setNotes(notes.map((note) => (note.id !== id ? note : returnedNote)));
     } catch (error) {
       if (error instanceof Error) {
-        setErrorMessage(
-          `Note '${note.content}' was already removed from server`
-        );
-        setTimeout(() => {
-          setErrorMessage("");
-        }, 5000);
+        toast.error(`Note '${note.content}' was already removed from server`);
       }
     }
   };
@@ -115,8 +102,7 @@ export function AppProvider({ children }: AppProviderProps) {
         login,
         logout,
         addNote,
-        toggleImportance,
-        errorMessage,
+        toggleImportance
       }}
     >
       {children}
