@@ -72,7 +72,7 @@ test("clicking the button calls event handler once", async () => {
   );
 
   const user = userEvent.setup();
-  const button = screen.getByText("make not important");
+  const button = screen.getByText("Make not important");
   await user.click(button);
 
   expect(mockToggleImportance.mock.calls).toHaveLength(1);

@@ -29,8 +29,8 @@ test("<NoteForm/> updates parent state and calls onSubmit", async () => {
     </AppContext.Provider>
   );
 
-  const input = screen.getByPlaceholderText("write note content here");
-  const sendButton = screen.getByText("save");
+  const input = screen.getByPlaceholderText("Write note content here");
+  const sendButton = screen.getByText("Save");
 
   await user.type(input, "testing a form...");
   await user.click(sendButton);
