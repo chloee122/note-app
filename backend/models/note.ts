@@ -4,6 +4,7 @@ interface INote {
   id: string;
   content: string;
   important: boolean;
+  userId: mongoose.Types.ObjectId;
 }
 
 const noteSchema = new mongoose.Schema<INote>({
@@ -13,13 +14,8 @@ const noteSchema = new mongoose.Schema<INote>({
     required: true,
   },
   important: Boolean,
-});
-
-noteSchema.set("toJSON", {
-  transform: (_document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString();
-    delete returnedObject._id;
-    delete returnedObject.__v;
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
   },
 });
 

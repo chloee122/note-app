@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import logger from "./logger";
-import getEnvVar from "./getEnvVar";
+import logger from "./utils/logger";
+import getEnvVar from "./utils/getEnvVar";
 
 const requestLogger = (
 	request: Request,
@@ -61,12 +61,12 @@ const getTokenFrom = (request: Request) => {
 	return null;
 };
 
-export interface ExtendedRequest extends Request {
+export interface RequestWithUserId extends Request {
 	userId?: string;
 }
 
 const validateToken = (
-	request: ExtendedRequest,
+	request: RequestWithUserId,
 	response: Response,
 	next: NextFunction
 ) => {

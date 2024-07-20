@@ -4,10 +4,7 @@ import { Router } from "express";
 import User from "../models/user";
 import getEnvVar from "../utils/getEnvVar";
 
-
-
 const loginRouter = Router();
-
 
 loginRouter.post("/", async (request, response) => {
 	const { username, password } = request.body;
