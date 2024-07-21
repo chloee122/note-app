@@ -2,32 +2,30 @@ import { Router } from "express";
 import Note from "../models/note";
 import User from "../models/user";
 import middleware, { RequestWithUserId } from "../middleware";
+import convertNoteFromDatabaseToNoteToResponse from "../utils/convertNoteFromDatabaseToNoteToResponse";
 
 const notesRouter = Router();
 
-interface NoteResponse {
-	content: string,
-	important: boolean,
-	id: string
+export interface NoteResponse {
+	content: string;
+	important: boolean;
+	id: string;
 }
 
 notesRouter.get("/", async (_request, response) => {
 	const notes = await Note.find({});
-	const returnedNotes: NoteResponse[] = notes.map((note) => {
-		return { content: note.content, important: note.important, id: note.id };
-	});
-	response.json(returnedNotes);
+	const notesToReponse: NoteResponse[] = notes.map(
+		convertNoteFromDatabaseToNoteToResponse
+	);
+	response.json(notesToReponse);
 });
 
 notesRouter.get("/:id", async (request, response) => {
 	const note = await Note.findById(request.params.id);
 	if (note) {
-		const returnedNote: NoteResponse = {
-			content: note.content,
-			important: note.important,
-			id: note.id,
-		};
-		response.json(returnedNote);
+		const noteToReponse: NoteResponse =
+      convertNoteFromDatabaseToNoteToResponse(note);
+		response.json(noteToReponse);
 	} else {
 		response.status(404).end();
 	}
@@ -47,15 +45,12 @@ notesRouter.post(
 				important: body.important || false,
 				userId: user.id,
 			});
-			const savedNote = await note.save();
+			const createdNote = await note.save();
 
-			const returnedNote: NoteResponse = {
-				content: savedNote.content,
-				important: savedNote.important,
-				id: savedNote.id,
-			};
+			const noteToResponse: NoteResponse =
+        convertNoteFromDatabaseToNoteToResponse(createdNote);
 
-			response.status(201).json(returnedNote);
+			response.status(201).json(noteToResponse);
 		}
 	}
 );
@@ -77,12 +72,9 @@ notesRouter.put("/:id", async (request, response) => {
 		new: true,
 	});
 	if (updatedNote) {
-		const returnedNote: NoteResponse = {
-			content: updatedNote.content,
-			important: updatedNote.important,
-			id: updatedNote.id,
-		};
-		response.json(returnedNote);
+		const noteToReponse: NoteResponse =
+      convertNoteFromDatabaseToNoteToResponse(updatedNote);
+		response.json(noteToReponse);
 	} else {
 		response.status(404).end();
 	}
