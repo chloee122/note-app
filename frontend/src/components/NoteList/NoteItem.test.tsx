@@ -10,8 +10,6 @@ test("renders content", () => {
     important: true,
   };
 
-  const mockToggle = vi.fn();
-
   const contextValue = {
     addNote: () => {},
     user: { token: "testtoken1", name: "Chloe", username: "chloeng" },
@@ -19,12 +17,7 @@ test("renders content", () => {
     login: () => {},
     logout: () => {},
     toggleImportance: () => {},
-    errorMessage: "",
-    noteFormRef: {
-      current: {
-        toggleVisibility: mockToggle,
-      },
-    },
+    removeNote: () => {},
   };
 
   render(
@@ -46,8 +39,6 @@ test("clicking the button calls event handler once", async () => {
     important: true,
   };
 
-  const mockToggle = vi.fn();
-
   const mockToggleImportance = vi.fn();
 
   const contextValue = {
@@ -57,12 +48,7 @@ test("clicking the button calls event handler once", async () => {
     login: () => {},
     logout: () => {},
     toggleImportance: mockToggleImportance,
-    errorMessage: "",
-    noteFormRef: {
-      current: {
-        toggleVisibility: mockToggle,
-      },
-    },
+    removeNote: () => {},
   };
 
   render(

@@ -56,7 +56,11 @@ notesRouter.post(
 );
 
 notesRouter.delete("/:id", async (request, response) => {
-	await Note.findByIdAndDelete(request.params.id);
+	const deletedNote = await Note.findByIdAndDelete(request.params.id);
+	if(!deletedNote) {
+		return response.status(404).json({ error: "Failed to remove note. Note not found." });
+	}
+
 	response.status(204).end();
 });
 
