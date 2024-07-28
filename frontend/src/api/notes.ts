@@ -2,13 +2,12 @@ import axios from "axios";
 import { Note } from "../common/internal";
 import { NoteToSend } from "../common/api.types";
 
-
 interface GetAllResponse {
   data: Note[];
 }
 
 interface CreateResponse {
-data: Note;
+  data: Note;
 }
 
 interface UpdateResponse {
@@ -17,7 +16,7 @@ interface UpdateResponse {
 
 const baseUrl = "/api/notes";
 
-let token:string|null = null;
+let token: string | null = null;
 
 const setToken = (newToken: string) => {
   token = `Bearer ${newToken}`;
@@ -39,8 +38,11 @@ const create = async (newObject: NoteToSend): Promise<Note> => {
   return response.data;
 };
 
-const update = async(id: string, newObject: Note): Promise<Note> => {
-  const response: UpdateResponse = await axios.put(`${baseUrl}/${id}`, newObject);
+const update = async (id: string, newObject: Note): Promise<Note> => {
+  const response: UpdateResponse = await axios.put(
+    `${baseUrl}/${id}`,
+    newObject
+  );
   return response.data;
 };
 

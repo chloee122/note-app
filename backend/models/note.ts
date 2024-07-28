@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
-interface INote {
+export interface INote {
   id: string;
   content: string;
   important: boolean;
-  user: mongoose.Types.ObjectId;
+  userId: mongoose.Types.ObjectId;
 }
 
 const noteSchema = new mongoose.Schema<INote>({
@@ -14,17 +14,8 @@ const noteSchema = new mongoose.Schema<INote>({
     required: true,
   },
   important: Boolean,
-  user: {
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-  },
-});
-
-noteSchema.set("toJSON", {
-  transform: (_document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString();
-    delete returnedObject._id;
-    delete returnedObject.__v;
   },
 });
 
