@@ -2,7 +2,7 @@ import { Router } from "express";
 import Note from "../models/note";
 import User from "../models/user";
 import middleware, { RequestWithUserId } from "../middleware";
-import convertNoteFromDatabaseToNoteToResponse from "../utils/convertNoteFromDatabaseToNoteToResponse";
+import convertNoteModelToNoteResponse from "../utils/convertNoteModelToNoteResponse";
 
 const notesRouter = Router();
 
@@ -15,7 +15,7 @@ export interface NoteResponse {
 notesRouter.get("/", async (_request, response) => {
 	const notes = await Note.find({});
 	const notesToReponse: NoteResponse[] = notes.map(
-		convertNoteFromDatabaseToNoteToResponse
+		convertNoteModelToNoteResponse
 	);
 	response.json(notesToReponse);
 });
@@ -24,7 +24,7 @@ notesRouter.get("/:id", async (request, response) => {
 	const note = await Note.findById(request.params.id);
 	if (note) {
 		const noteToReponse: NoteResponse =
-      convertNoteFromDatabaseToNoteToResponse(note);
+      convertNoteModelToNoteResponse(note);
 		response.json(noteToReponse);
 	} else {
 		response.status(404).end();
@@ -48,7 +48,7 @@ notesRouter.post(
 			const createdNote = await note.save();
 
 			const noteToResponse: NoteResponse =
-        convertNoteFromDatabaseToNoteToResponse(createdNote);
+        convertNoteModelToNoteResponse(createdNote);
 
 			response.status(201).json(noteToResponse);
 		}
@@ -73,7 +73,7 @@ notesRouter.put("/:id", async (request, response) => {
 	});
 	if (updatedNote) {
 		const noteToReponse: NoteResponse =
-      convertNoteFromDatabaseToNoteToResponse(updatedNote);
+      convertNoteModelToNoteResponse(updatedNote);
 		response.json(noteToReponse);
 	} else {
 		response.status(404).end();

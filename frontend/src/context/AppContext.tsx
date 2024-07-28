@@ -1,10 +1,9 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
-import { toast } from "react-toastify";
 import noteService from "../api/notes";
 import loginService from "../api/login";
 import type { Note, User } from "../common/internal";
 import type { NoteToSend } from "../common/api.types";
-import { AxiosError } from "axios";
+import toastError from "../utils/toastError";
 
 interface AppProviderProps {
   children: ReactNode;
@@ -31,14 +30,7 @@ export function AppProvider({ children }: AppProviderProps) {
         const response: Note[] = await noteService.getAll();
         setNotes(response);
       } catch (error) {
-        if (error instanceof AxiosError) {
-          const message: unknown = error.response?.data.error;
-          if (typeof message === "string" || message instanceof String) {
-            toast.error(message, { autoClose: false });
-          } else {
-            toast.error(error.message, { autoClose: false });
-          }
-        }
+        toastError(error, false);
       }
     };
 
@@ -65,14 +57,7 @@ export function AppProvider({ children }: AppProviderProps) {
       noteService.setToken(user.token);
       setUser(user);
     } catch (error) {
-      if (error instanceof AxiosError) {
-        const message: unknown = error.response?.data.error;
-        if (typeof message === "string" || message instanceof String) {
-          toast.error(message);
-        } else {
-          toast.error(error.message);
-        }
-      }
+      toastError(error);
     }
   };
 
@@ -86,14 +71,7 @@ export function AppProvider({ children }: AppProviderProps) {
       const returnedNote: Note = await noteService.create(noteObject);
       setNotes(notes.concat(returnedNote));
     } catch (error) {
-      if (error instanceof AxiosError) {
-        const message: unknown = error.response?.data.error;
-        if (typeof message === "string" || message instanceof String) {
-          toast.error(message);
-        } else {
-          toast.error(error.message);
-        }
-      }
+      toastError(error);
     }
   };
 
@@ -106,14 +84,7 @@ export function AppProvider({ children }: AppProviderProps) {
       const returnedNote = await noteService.update(id, changedNote);
       setNotes(notes.map((note) => (note.id !== id ? note : returnedNote)));
     } catch (error) {
-      if (error instanceof AxiosError) {
-        const message: unknown = error.response?.data.error;
-        if (typeof message === "string" || message instanceof String) {
-          toast.error(message);
-        } else {
-          toast.error(error.message);
-        }
-      }
+      toastError(error);
     }
   };
 
