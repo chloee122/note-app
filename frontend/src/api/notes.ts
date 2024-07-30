@@ -48,5 +48,4 @@ export const update = async (id: string, newObject: Note): Promise<Note> => {
 
 export const remove = async (id: string): Promise<void> => {
   await axios.delete(`${baseUrl}/${id}`);
-  return;
 };
