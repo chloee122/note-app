@@ -8,7 +8,7 @@ interface NoteDetailsProps {
 }
 
 function NoteItem({ note }: NoteDetailsProps) {
-  const { toggleImportance } = useAppContext();
+  const { toggleImportance, removeNote } = useAppContext();
 
   const label = note.important ? "Make not important" : "Make important";
 
@@ -19,7 +19,7 @@ function NoteItem({ note }: NoteDetailsProps) {
       </div>
       <div className="btns">
         <button className="delete">
-          <IoCloseSharp />
+          <IoCloseSharp onClick={() => removeNote(note.id)} />
         </button>
         <button onClick={() => toggleImportance(note.id)}>{label}</button>
       </div>

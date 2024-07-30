@@ -18,16 +18,16 @@ const baseUrl = "/api/notes";
 
 let token: string | null = null;
 
-const setToken = (newToken: string) => {
+export const setToken = (newToken: string) => {
   token = `Bearer ${newToken}`;
 };
 
-const getAll = async (): Promise<Note[]> => {
+export const getAll = async (): Promise<Note[]> => {
   const response: GetAllResponse = await axios.get(baseUrl);
   return response.data;
 };
 
-const create = async (newObject: NoteToSend): Promise<Note> => {
+export const create = async (newObject: NoteToSend): Promise<Note> => {
   const config = {
     headers: {
       Authorization: token,
@@ -38,7 +38,7 @@ const create = async (newObject: NoteToSend): Promise<Note> => {
   return response.data;
 };
 
-const update = async (id: string, newObject: Note): Promise<Note> => {
+export const update = async (id: string, newObject: Note): Promise<Note> => {
   const response: UpdateResponse = await axios.put(
     `${baseUrl}/${id}`,
     newObject
@@ -46,9 +46,6 @@ const update = async (id: string, newObject: Note): Promise<Note> => {
   return response.data;
 };
 
-export default {
-  getAll,
-  create,
-  update,
-  setToken,
+export const remove = async (id: string): Promise<void> => {
+  await axios.delete(`${baseUrl}/${id}`);
 };

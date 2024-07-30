@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
-import noteService from "../api/notes";
+import * as noteService from "../api/notes";
 import loginService from "../api/login";
 import type { Note, User } from "../common/internal";
 import type { NoteToSend } from "../common/api.types";
@@ -16,6 +16,7 @@ interface AppContextType {
   logout: () => void;
   addNote: (note: NoteToSend) => void;
   toggleImportance: (id: string) => void;
+  removeNote: (id: string) => void;
 }
 
 export const AppContext = createContext<null | AppContextType>(null);
@@ -88,6 +89,16 @@ export function AppProvider({ children }: AppProviderProps) {
     }
   };
 
+  const removeNote = async (id: string) => {
+    try {
+      await noteService.remove(id);
+      const filteredNotes = notes.filter((note) => note.id !== id);
+      setNotes(filteredNotes);
+    } catch (error) {
+      showToastError(error);
+    }
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -97,6 +108,7 @@ export function AppProvider({ children }: AppProviderProps) {
         logout,
         addNote,
         toggleImportance,
+        removeNote,
       }}
     >
       {children}
