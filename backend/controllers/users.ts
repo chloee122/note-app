@@ -40,7 +40,9 @@ usersRouter.post("/sign-up", middleware.validateSignUpData ,async (request, resp
 
 	const createdUser = await user.save();
 
-	const token = jwt.sign({ userId: user.id }, getEnvVar("SECRET"));
+	const token = jwt.sign({ id: user.id }, getEnvVar("SECRET"), {
+		expiresIn: 60 * 60,
+	});
 
 	response.status(201).json({
 		token,
