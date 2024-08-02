@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
 import * as noteService from "../api/notes";
 import loginService from "../api/login";
+import * as userService from "../api/users";
 import type { Note, User } from "../common/internal";
 import type { NoteToSend } from "../common/api.types";
 import showToastError from "../utils/showToastError";
@@ -12,6 +13,12 @@ interface AppProviderProps {
 interface AppContextType {
   user: User | null;
   notes: Note[];
+  signup: (
+    name: string,
+    email: string,
+    username: string,
+    password: string
+  ) => void;
   login: (username: string, password: string) => void;
   logout: () => void;
   addNote: (note: NoteToSend) => void;
@@ -47,9 +54,30 @@ export function AppProvider({ children }: AppProviderProps) {
     }
   }, []);
 
+  const signup = async (
+    name: string,
+    email: string,
+    username: string,
+    password: string
+  ) => {
+    try {
+      const user: User = await userService.create({
+        name,
+        email,
+        username,
+        password,
+      });
+      window.localStorage.setItem("loggedNoteappUser", JSON.stringify(user));
+      noteService.setToken(user.token);
+      setUser(user);
+    } catch (error) {
+      showToastError(error);
+    }
+  };
+
   const login = async (username: string, password: string) => {
     try {
-      const user: User = await loginService.login({
+      const user: User = await loginService({
         username,
         password,
       });
@@ -104,6 +132,7 @@ export function AppProvider({ children }: AppProviderProps) {
       value={{
         user,
         notes,
+        signup,
         login,
         logout,
         addNote,

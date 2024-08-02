@@ -21,4 +21,4 @@ const login = async (credentials: CredentialsType): Promise<User> => {
   return response.data;
 };
 
-export default { login };
+export default login;
