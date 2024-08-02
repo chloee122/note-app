@@ -8,7 +8,7 @@ import usersRouter from "./controllers/users";
 import testingRouter from "./controllers/testing";
 import mongoose from "mongoose";
 import logger from "./utils/logger";
-import middleware from "./middleware";
+import * as middleware from "./middleware";
 import redirectToRootRouter from "./controllers/redirectToRoot";
 
 const app = express();
