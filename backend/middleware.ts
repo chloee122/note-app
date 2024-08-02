@@ -13,7 +13,7 @@ export const requestLogger = (
   logger.info("Body:  ", request.body);
   logger.info("---");
   next();
-  };
+};
 
 export const unknownEndpoint = (_request: Request, response: Response) => {
   response.status(404).send({ error: "unknown endpoint" });
