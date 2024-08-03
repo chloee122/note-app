@@ -3,7 +3,7 @@ import * as noteService from "../api/notes";
 import loginService from "../api/login";
 import * as userService from "../api/users";
 import type { Note, User } from "../common/internal";
-import type { NoteToSend } from "../common/api.types";
+import type { LoginInData, NoteToSend, SignUpData } from "../common/api.types";
 import showToastError from "../utils/showToastError";
 
 interface AppProviderProps {
@@ -13,13 +13,8 @@ interface AppProviderProps {
 interface AppContextType {
   user: User | null;
   notes: Note[];
-  signup: (
-    name: string,
-    email: string,
-    username: string,
-    password: string
-  ) => void;
-  login: (username: string, password: string) => void;
+  signup: (data: SignUpData) => void;
+  login: (credentials: LoginInData) => void;
   logout: () => void;
   addNote: (note: NoteToSend) => void;
   toggleImportance: (id: string) => void;
@@ -54,19 +49,9 @@ export function AppProvider({ children }: AppProviderProps) {
     }
   }, []);
 
-  const signup = async (
-    name: string,
-    email: string,
-    username: string,
-    password: string
-  ) => {
+  const signup = async (data: SignUpData) => {
     try {
-      const user: User = await userService.create({
-        name,
-        email,
-        username,
-        password,
-      });
+      const user: User = await userService.create(data);
       window.localStorage.setItem("loggedNoteappUser", JSON.stringify(user));
       noteService.setToken(user.token);
       setUser(user);
@@ -75,12 +60,9 @@ export function AppProvider({ children }: AppProviderProps) {
     }
   };
 
-  const login = async (username: string, password: string) => {
+  const login = async (credentials: LoginInData) => {
     try {
-      const user: User = await loginService({
-        username,
-        password,
-      });
+      const user: User = await loginService(credentials);
 
       window.localStorage.setItem("loggedNoteappUser", JSON.stringify(user));
       noteService.setToken(user.token);
