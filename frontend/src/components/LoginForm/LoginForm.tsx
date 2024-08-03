@@ -1,39 +1,31 @@
 import { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
 import useAppContext from "../../hooks/useAppContext";
 import Input from "../styles/shared/Input.styled";
 import Button from "../styles/shared/Button.styled";
-import {
-  LoginFormWrapper,
-  FormWrapper,
-  Form,
-} from "../styles/LoginForm.styled";
+import Form from "../styles/shared/Form.styled";
+import FormWrapper from "../styles/shared/FormWrapper.styled";
+import { AuthMode } from "../AuthPage/AuthPage";
 
-function LoginForm() {
+interface LoginFormProps {
+  switchForm: (form: AuthMode) => void;
+}
+
+function LoginForm({ switchForm }: LoginFormProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const { user, login } = useAppContext();
-  const navigate = useNavigate();
+  const { login } = useAppContext();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    login(username, password);
-    navigate("/notes");
-    setUsername("");
-    setPassword("");
+    login({ username, password });
   };
 
-  if (user) {
-    return <Navigate to="/notes" />;
-  }
-
   return (
-    <LoginFormWrapper>
-      <h2>&quot;The Palest Ink Is Better Than the Best Memory.&quot;</h2>
-      <FormWrapper>
-        <h2>Log in to your account</h2>
-        <Form onSubmit={handleSubmit}>
+    <FormWrapper>
+      <h2>Log in to your account</h2>
+      <Form onSubmit={handleSubmit}>
+        <div>
           <div>
             <label>Username</label>
             <Input
@@ -42,6 +34,10 @@ function LoginForm() {
               onChange={({ target }) => setUsername(target.value)}
             />
           </div>
+          {/* for rendering validation error */}
+          {/* <span></span> */}
+        </div>
+        <div>
           <div>
             <label>Password</label>
             <Input
@@ -51,12 +47,17 @@ function LoginForm() {
               onChange={({ target }) => setPassword(target.value)}
             />
           </div>
-          <Button $width={100} $noBorder={true} $color={"white"} type="submit">
-            Login
-          </Button>
-        </Form>
-      </FormWrapper>
-    </LoginFormWrapper>
+          {/* <span></span> */}
+        </div>
+        <p>
+          Not registered?{" "}
+          <span onClick={() => switchForm(AuthMode.SIGNUP)}>Sign up here</span>
+        </p>
+        <Button $width={100} $noBorder={true} $color={"white"} type="submit">
+          Log In
+        </Button>
+      </Form>
+    </FormWrapper>
   );
 }
 

@@ -4,7 +4,6 @@ export const LayoutWrapper = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 `;
 
 export const HeaderWrapper = styled.div`
@@ -14,4 +13,8 @@ export const HeaderWrapper = styled.div`
   h1 {
     font-size: 3rem;
   }
+`;
+
+export const OutletWrapper = styled.div`
+  flex: 1 1 0%;
 `;
