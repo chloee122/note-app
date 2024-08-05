@@ -8,15 +8,7 @@ const validateForm = (
   (Object.keys(formInputData) as (keyof FormState["inputData"])[]).forEach(
     (key) => {
       let error = "";
-      if (key === "confirmPassword") {
-        error = validateFormField(
-          key,
-          formInputData[key],
-          formInputData.password
-        );
-      } else {
-        error = validateFormField(key, formInputData[key]);
-      }
+      error = validateFormField(key, formInputData[key], formInputData.password);
       if (error) errors[key] = error;
     }
   );

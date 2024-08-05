@@ -5,7 +5,7 @@ import SignUpForm from "../SignUpForm/SignUpForm";
 import { Navigate } from "react-router-dom";
 import useAppContext from "../../hooks/useAppContext";
 
-export enum AuthMode {
+enum AuthMode {
   LOGIN = "login",
   SIGNUP = "signup",
 }
@@ -26,9 +26,9 @@ function AuthPage() {
     <AuthFormWrapper>
       <h1>&quot;The Palest Ink Is Better Than The Best Memory.&quot;</h1>
       {authMode === AuthMode.SIGNUP ? (
-        <SignUpForm switchForm={switchForm} />
+        <SignUpForm switchForm={() => switchForm(AuthMode.LOGIN)} />
       ) : (
-        <LoginForm switchForm={switchForm} />
+        <LoginForm switchForm={() => switchForm(AuthMode.SIGNUP)} />
       )}
     </AuthFormWrapper>
   );

@@ -4,13 +4,12 @@ import Input from "../styles/shared/Input.styled";
 import Button from "../styles/shared/Button.styled";
 import Form from "../styles/shared/Form.styled";
 import FormWrapper from "../styles/shared/FormWrapper.styled";
-import { AuthMode } from "../AuthPage/AuthPage";
 import validateFormField from "../../utils/validateFormField";
 import { FormAction, FormActionType, FormState } from "./SignUpForm.types";
 import validateForm from "../../utils/validateForm";
 
 interface SignUpFormProps {
-  switchForm: (form: AuthMode) => void;
+  switchForm: () => void;
 }
 
 const formReducer = (state: FormState, action: FormAction): FormState => {
@@ -64,10 +63,7 @@ function SignUpForm({ switchForm }: SignUpFormProps) {
     const { name, value } = e.target;
     let error = "";
     if (formState.submitted) {
-      error =
-        name === "confirmPassword"
-          ? validateFormField(name, value, formState.inputData.password)
-          : validateFormField(name, value);
+      error = validateFormField(name, value, formState.inputData.password);
     }
 
     dispatch({
@@ -137,12 +133,13 @@ function SignUpForm({ switchForm }: SignUpFormProps) {
         {formFields}
         <p>
           Already registered?{" "}
-          <span onClick={() => switchForm(AuthMode.LOGIN)}>Log in here</span>
+          <span onClick={() => switchForm()}>Log in here</span>
         </p>
         <Button
           $width={100}
           $noBorder={true}
           $color={"white"}
+          $disable={!isFormDataValid}
           type="submit"
           disabled={!isFormDataValid}
         >

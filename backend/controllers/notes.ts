@@ -2,7 +2,7 @@ import { Router } from "express";
 import Note from "../models/note";
 import User from "../models/user";
 import * as middleware from "../middleware";
-import { RequestWithUserId } from "../middleware";
+import type { RequestWithUserId } from "../middleware";
 import convertNoteModelToNoteResponse from "../utils/convertNoteModelToNoteResponse";
 
 const notesRouter = Router();

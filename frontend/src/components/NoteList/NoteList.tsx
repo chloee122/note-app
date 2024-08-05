@@ -1,4 +1,4 @@
-import { Note } from "../../common/internal";
+import type { Note } from "../../common/internal";
 import NoteItem from "./NoteItem";
 import { NoteListWrapper, ListWrapper } from "../styles/NoteList.styled";
 

@@ -4,10 +4,9 @@ import Input from "../styles/shared/Input.styled";
 import Button from "../styles/shared/Button.styled";
 import Form from "../styles/shared/Form.styled";
 import FormWrapper from "../styles/shared/FormWrapper.styled";
-import { AuthMode } from "../AuthPage/AuthPage";
 
 interface LoginFormProps {
-  switchForm: (form: AuthMode) => void;
+  switchForm: () => void;
 }
 
 function LoginForm({ switchForm }: LoginFormProps) {
@@ -51,7 +50,7 @@ function LoginForm({ switchForm }: LoginFormProps) {
         </div>
         <p>
           Not registered?{" "}
-          <span onClick={() => switchForm(AuthMode.SIGNUP)}>Sign up here</span>
+          <span onClick={() => switchForm()}>Sign up here</span>
         </p>
         <Button $width={100} $noBorder={true} $color={"white"} type="submit">
           Log In

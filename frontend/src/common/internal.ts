@@ -9,15 +9,3 @@ export interface User {
   name: string;
   username: string;
 }
-
-export interface SignUpResponse {
-  data: User;
-}
-
-export interface LoginResponse {
-  data: {
-    name: string;
-    token: string;
-    username: string;
-  };
-}

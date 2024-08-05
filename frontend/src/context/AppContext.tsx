@@ -1,9 +1,8 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
 import * as noteService from "../api/notes";
-import loginService from "../api/login";
-import * as userService from "../api/users";
+import * as authService from "../api/auth";
 import type { Note, User } from "../common/internal";
-import type { LoginInData, NoteToSend, SignUpData } from "../common/api.types";
+import type { LoginInFormData, NoteToSend, SignUpFormData } from "../common/api.types";
 import showToastError from "../utils/showToastError";
 
 interface AppProviderProps {
@@ -13,8 +12,8 @@ interface AppProviderProps {
 interface AppContextType {
   user: User | null;
   notes: Note[];
-  signup: (data: SignUpData) => void;
-  login: (credentials: LoginInData) => void;
+  signup: (signUpFormData: SignUpFormData) => void;
+  login: (logInFormData: LoginInFormData) => void;
   logout: () => void;
   addNote: (note: NoteToSend) => void;
   toggleImportance: (id: string) => void;
@@ -49,9 +48,9 @@ export function AppProvider({ children }: AppProviderProps) {
     }
   }, []);
 
-  const signup = async (data: SignUpData) => {
+  const signup = async (signUpFormData: SignUpFormData) => {
     try {
-      const user: User = await userService.create(data);
+      const user: User = await authService.createUser(signUpFormData);
       window.localStorage.setItem("loggedNoteappUser", JSON.stringify(user));
       noteService.setToken(user.token);
       setUser(user);
@@ -60,9 +59,9 @@ export function AppProvider({ children }: AppProviderProps) {
     }
   };
 
-  const login = async (credentials: LoginInData) => {
+  const login = async (logInFormData: LoginInFormData) => {
     try {
-      const user: User = await loginService(credentials);
+      const user: User = await authService.login(logInFormData);
 
       window.localStorage.setItem("loggedNoteappUser", JSON.stringify(user));
       noteService.setToken(user.token);

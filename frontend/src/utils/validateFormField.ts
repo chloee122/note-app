@@ -1,7 +1,7 @@
 const validateFormField = (
   field: string,
   value: string,
-  password: string = "default"
+  password: string
 ) => {
   let error = "";
 
@@ -31,14 +31,14 @@ const validateFormField = (
     if (!value.trim()) {
       error = "Password is required";
     } else if (value.trim().length < 6) {
-      error = "Username must be longer than 6 characters";
+      error = "Password must be longer than 6 characters";
     }
   }
 
   if (field === "confirmPassword") {
     if (!value.trim()) {
       error = "Confirm password is required";
-    } else if (value !== password) {
+    } else if (!password || value !== password) {
       error = "Password does not match";
     }
   }

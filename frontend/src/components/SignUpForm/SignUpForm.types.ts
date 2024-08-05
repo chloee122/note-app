@@ -22,20 +22,20 @@ export enum FormActionType {
   SET_SUBMITTED = "set_submitted",
 }
 
-interface HandleInputData {
+interface HandleInputDataAction {
   type: FormActionType.HANDLE_INPUT_DATA;
   field: keyof FormState["inputData"];
   payload: string;
   error: string;
 }
 
-interface SetValidationError {
+interface SetValidationErrorAction {
   type: FormActionType.SET_VALIDATION_ERROR;
   payload: FormState["validationErrors"];
 }
 
-interface SetSubmitted {
+interface SetSubmittedAction {
   type: FormActionType.SET_SUBMITTED;
 }
 
-export type FormAction = HandleInputData | SetValidationError | SetSubmitted;
+export type FormAction = HandleInputDataAction | SetValidationErrorAction | SetSubmittedAction;
