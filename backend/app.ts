@@ -3,12 +3,12 @@ import config from "./utils/config";
 import "express-async-errors";
 import cors from "cors";
 import notesRouter from "./controllers/notes";
-import loginRouter from "./controllers/login";
+import authRouter from "./controllers/auth";
 import usersRouter from "./controllers/users";
 import testingRouter from "./controllers/testing";
 import mongoose from "mongoose";
 import logger from "./utils/logger";
-import middleware from "./middleware";
+import * as middleware from "./middleware";
 import redirectToRootRouter from "./controllers/redirectToRoot";
 
 const app = express();
@@ -38,7 +38,7 @@ app.use(middleware.requestLogger);
 
 app.use("/api/notes", notesRouter);
 app.use("/api/users", usersRouter);
-app.use("/api/login", loginRouter);
+app.use("/api/auth", authRouter);
 app.use("*", redirectToRootRouter);
 
 if (process.env.NODE_ENV === "test") {

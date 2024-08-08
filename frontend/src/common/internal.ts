@@ -1,11 +1,11 @@
 export interface Note {
-    id: string;
-    content: string;
-    important: boolean;
-  }
+  id: string;
+  content: string;
+  important: boolean;
+}
 
 export interface User {
-    token: string;
-    name: string;
-    username: string;
-  }
+  token: string;
+  name: string;
+  username: string;
+}

@@ -1,18 +1,6 @@
 import axios from "axios";
-import { Note } from "../common/internal";
-import { NoteToSend } from "../common/api.types";
-
-interface GetAllResponse {
-  data: Note[];
-}
-
-interface CreateResponse {
-  data: Note;
-}
-
-interface UpdateResponse {
-  data: Note;
-}
+import type { Note } from "../common/internal";
+import type { NoteToSend } from "../common/api.types";
 
 const baseUrl = "/api/notes";
 
@@ -23,7 +11,7 @@ export const setToken = (newToken: string) => {
 };
 
 export const getAll = async (): Promise<Note[]> => {
-  const response: GetAllResponse = await axios.get(baseUrl);
+  const response = await axios.get<Note[]>(baseUrl);
   return response.data;
 };
 
@@ -34,12 +22,12 @@ export const create = async (newObject: NoteToSend): Promise<Note> => {
     },
   };
 
-  const response: CreateResponse = await axios.post(baseUrl, newObject, config);
+  const response = await axios.post<Note>(baseUrl, newObject, config);
   return response.data;
 };
 
 export const update = async (id: string, newObject: Note): Promise<Note> => {
-  const response: UpdateResponse = await axios.put(
+  const response = await axios.put<Note>(
     `${baseUrl}/${id}`,
     newObject
   );
