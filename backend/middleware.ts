@@ -117,3 +117,25 @@ export const validateSignUpData = (
 
   next();
 };
+
+export const validateLogInData = (
+  request: Request,
+  response: Response,
+  next: NextFunction
+) => {
+  const { username, password } = request.body;
+
+  if (!username || username.trim().length < 6) {
+    return response
+      .status(400)
+      .json({ error: "Username with 6 or more characters is required" });
+  }
+
+  if (!password || password.trim().length < 6) {
+    return response
+      .status(400)
+      .json({ error: "Password with 6 or more characters is required" });
+  }
+
+  next();
+};
