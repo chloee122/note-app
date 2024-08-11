@@ -4,7 +4,7 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from "axios";
-import { noteApiClient } from "../api/notes";
+import { noteAxiosClient } from "../api/notes";
 import useAppContext from "./useAppContext";
 import showToastError from "../utils/showToastError";
 import getTokens from "../utils/getTokens";
@@ -17,11 +17,13 @@ const useAxiosInterceptors = () => {
   const { logout } = useAppContext();
 
   useEffect(() => {
-    const requestInterceptor = noteApiClient.interceptors.request.use(
+    const requestInterceptor = noteAxiosClient.interceptors.request.use(
       (config: InternalAxiosRequestConfig) => {
         const { accessToken } = getTokens();
 
-        config.headers["authorization"] = `Bearer ${accessToken}`;
+        if (accessToken) {
+          config.headers["authorization"] = `Bearer ${accessToken}`;
+        }
 
         return config;
       },
@@ -30,7 +32,7 @@ const useAxiosInterceptors = () => {
       }
     );
 
-    const responseInterceptor = noteApiClient.interceptors.response.use(
+    const responseInterceptor = noteAxiosClient.interceptors.response.use(
       (response: AxiosResponse) => {
         return response;
       },
@@ -39,10 +41,14 @@ const useAxiosInterceptors = () => {
           _retry?: boolean;
         };
 
-        if (error.response?.status === 403 && !originalRequest._retry) {
+        if (error.response?.status === 401 && !originalRequest._retry) {
           originalRequest._retry = true;
+
           try {
             const { refreshToken } = getTokens();
+
+            if (!refreshToken) throw new Error("Something went wrong");
+
             const response = await axios.post<AccessTokenResponse>(
               "/api/auth/refresh",
               { refreshToken }
@@ -56,11 +62,12 @@ const useAxiosInterceptors = () => {
               JSON.stringify(updatedTokens)
             );
 
-            noteApiClient.defaults.headers.common[
+            noteAxiosClient.defaults.headers.common[
               "authorization"
             ] = `Bearer ${accessToken}`;
             originalRequest.headers["authorization"] = `Bearer ${accessToken}`;
-            return noteApiClient(originalRequest);
+
+            return noteAxiosClient(originalRequest);
           } catch (err) {
             showToastError(err);
             logout();
@@ -72,8 +79,8 @@ const useAxiosInterceptors = () => {
     );
 
     return () => {
-      noteApiClient.interceptors.request.eject(requestInterceptor);
-      noteApiClient.interceptors.response.eject(responseInterceptor);
+      noteAxiosClient.interceptors.request.eject(requestInterceptor);
+      noteAxiosClient.interceptors.response.eject(responseInterceptor);
     };
   }, [logout]);
 };

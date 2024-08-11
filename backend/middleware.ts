@@ -82,7 +82,7 @@ export const validateToken = (
 		request.userId = decodedToken.id;
 		next();
 	} catch (error) {
-		response.status(403).json({ error: "Unauthorized" });
+		response.status(401).json({ error: "Unauthorized" });
 	}
 };
 

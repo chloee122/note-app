@@ -27,7 +27,6 @@ export function AppProvider({ children }: AppProviderProps) {
   const [notes, setNotes] = useState<AppContextType["notes"]>([]);
 
   useEffect(() => {
-    if (!user) return;
     const getNotes = async () => {
       try {
         const response: Note[] = await noteService.getAll();
@@ -37,7 +36,9 @@ export function AppProvider({ children }: AppProviderProps) {
       }
     };
 
-    getNotes();
+    if (user) {
+      getNotes();
+    }
   }, [user]);
 
   useEffect(() => {

@@ -8,7 +8,7 @@ import createTokens from "../utils/createTokens";
 
 const authRouter = Router();
 
-authRouter.post("/log-in", async (request: Request, response: Response) => {
+authRouter.post("/login", async (request: Request, response: Response) => {
 	const { username, password } = request.body;
 
 	const user = await User.findOne({ username });
@@ -34,7 +34,7 @@ authRouter.post("/log-in", async (request: Request, response: Response) => {
 	});
 });
 
-authRouter.post("/sign-up", middleware.validateSignUpData ,async (request, response) => {
+authRouter.post("/signup", middleware.validateSignUpData ,async (request, response) => {
 	const { name, email, username, password } = request.body;
 
 	const emailExists = await User.findOne({
@@ -86,8 +86,10 @@ authRouter.post("/refresh", async (request: Request, response: Response) => {
 			refreshToken,
 			getEnvVar("SECRET")
 		) as jwt.JwtPayload;
+
 		const { id } = decodedRefreshToken;
 		const user = await User.findById(id);
+
 		if (!user || user.refreshToken !== refreshToken) {
 			return response.status(401).json({ error: "Unauthorized" });
 		}
