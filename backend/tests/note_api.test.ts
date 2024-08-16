@@ -2,7 +2,7 @@ import { test, describe, after, beforeEach } from "node:test";
 import assert from "node:assert";
 import supertest from "supertest";
 import mongoose from "mongoose";
-import helper from "./test_helper";
+import * as helper from "./test_helper";
 import app from "../app";
 import Note from "../models/note";
 import User from "../models/user";

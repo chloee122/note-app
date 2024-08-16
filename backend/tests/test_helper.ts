@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import User from "../models/user";
 import Note from "../models/note";
 import getEnvVar from "../utils/getEnvVar";
@@ -42,6 +43,7 @@ export const TEST_USER = {
 		username: "superuser",
 		upperCaseUsername: "Superuser",
 		password: "123456",
+		refreshToken: "ey1234TestToken"
 	},
 	invalid: {
 		wrongUsername: "Superman",
@@ -74,7 +76,7 @@ export const postLogin = async (
 	statusCode: number = 200
 ) => {
 	const response = await api
-		.post("/api/auth")
+		.post("/api/auth/login")
 		.send(credentials)
 		.expect(statusCode)
 		.expect("Content-Type", /application\/json/);
@@ -93,10 +95,19 @@ export const postSignUp = async (
 	statusCode: number = 201
 ) => {
 	const response = await api
-		.post("/api/auth/sign-up")
+		.post("/api/auth/signup")
 		.send(signUpData)
 		.expect(statusCode)
 		.expect("Content-Type", /application\/json/);
 
 	return response;
+};
+
+export const getUsernameFromToken = (token: string): string => {
+	const { username } = jwt.verify(
+		token,
+		getEnvVar("SECRET")
+	) as jwt.JwtPayload;
+
+	return username;
 };

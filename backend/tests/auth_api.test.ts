@@ -1,45 +1,50 @@
-import jwt from "jsonwebtoken";
 import { test, afterEach, after, describe } from "node:test";
 import assert from "node:assert";
 import supertest from "supertest";
 import mongoose from "mongoose";
 import User from "../models/user";
 import app from "../app";
-import getEnvVar from "../utils/getEnvVar";
 import * as helper from "./test_helper";
 
 const api = supertest(app);
 
-describe("POST /api/auth", () => {
+describe("POST /auth/login", () => {
 	afterEach(async () => {
 		await User.deleteMany({});
 	});
-
-	test("retuns correct logged-in user data when the credentials are correct", async () => {
+	test("retuns correct data when the credentials are correct", async () => {
 		await helper.createTestUser();
+
 		const response = await helper.postLogin(api, {
 			username: helper.TEST_USER.valid.username,
 			password: helper.TEST_USER.valid.password,
 		});
 
-		const { token, username, name } = response.body;
+		const { accessToken, refreshToken, username, name } = response.body;
 
-		assert.strictEqual(username, helper.TEST_USER.valid.username);
+		assert.strictEqual(username, helper.TEST_USER.valid.username.toLowerCase());
 		assert.strictEqual(name, helper.TEST_USER.valid.name);
-		assert.ok(token);
+		assert.ok(accessToken);
+		assert.ok(
+			refreshToken && refreshToken !== helper.TEST_USER.valid.refreshToken
+		);
 
-		const decodedToken = jwt.verify(
-			token,
-			getEnvVar("SECRET")
-		) as jwt.JwtPayload;
+		const accessTokenUsername = helper.getUsernameFromToken(accessToken);
 		assert.strictEqual(
-			decodedToken.username,
+			accessTokenUsername,
+			helper.TEST_USER.valid.username.toLowerCase()
+		);
+
+		const refreshTokenUsername = helper.getUsernameFromToken(refreshToken);
+		assert.strictEqual(
+			refreshTokenUsername,
 			helper.TEST_USER.valid.username.toLowerCase()
 		);
 	});
 
-	test("returns correct logged-in user data for valid usernames with uppercases", async () => {
+	test("ignores cases in username and returns correct data with username in lowercase", async () => {
 		await helper.createTestUser();
+
 		const response = await helper.postLogin(api, {
 			username: helper.TEST_USER.valid.upperCaseUsername,
 			password: helper.TEST_USER.valid.password,
@@ -47,10 +52,10 @@ describe("POST /api/auth", () => {
 
 		const { username } = response.body;
 
-		assert.strictEqual(username, helper.TEST_USER.valid.username);
+		assert.strictEqual(username, helper.TEST_USER.valid.username.toLowerCase());
 	});
 
-	test("returns 401 code and error message when the credentials are wrong", async () => {
+	test("returns 401 code and error message when the username or password is wrong", async () => {
 		const invalidUsernameResponse = await helper.postLogin(
 			api,
 			{
@@ -111,12 +116,12 @@ describe("POST /api/auth", () => {
 	});
 });
 
-describe("POST auth/sign-up", () => {
+describe("POST auth/signup", () => {
 	afterEach(async () => {
 		await User.deleteMany({});
 	});
 
-	test("creates a new user and returns correct signed-up user data", async () => {
+	test("creates a new user with a refreshToken in database and returns correct data", async () => {
 		const response = await helper.postSignUp(api, {
 			name: helper.TEST_USER.valid.name,
 			email: helper.TEST_USER.valid.primaryEmail,
@@ -124,20 +129,32 @@ describe("POST auth/sign-up", () => {
 			password: helper.TEST_USER.valid.password,
 		});
 
-		const { username, name, token } = response.body;
+		const { accessToken, refreshToken, username, name } = response.body;
 
-		assert.strictEqual(username, helper.TEST_USER.valid.username);
+		const signedUpUser = await User.findOne({ username });
+
+		assert.ok(signedUpUser);
+		assert.strictEqual(signedUpUser.refreshToken, refreshToken);
+
+		assert.strictEqual(username, helper.TEST_USER.valid.username.toLowerCase());
 		assert.strictEqual(name, helper.TEST_USER.valid.name);
+		assert.ok(accessToken);
+		assert.ok(refreshToken);
 
-		const decodedToken = jwt.verify(
-			token,
-			getEnvVar("SECRET")
-		) as jwt.JwtPayload;
+		const accessTokenUsername = helper.getUsernameFromToken(accessToken);
+		assert.strictEqual(
+			accessTokenUsername,
+			helper.TEST_USER.valid.username.toLowerCase()
+		);
 
-		assert.strictEqual(decodedToken.username, helper.TEST_USER.valid.username);
+		const refreshTokenUsername = helper.getUsernameFromToken(refreshToken);
+		assert.strictEqual(
+			refreshTokenUsername,
+			helper.TEST_USER.valid.username.toLowerCase()
+		);
 	});
 
-	test("ignores cases in username and returns correct signed-up user data with lowercase username", async () => {
+	test("ignores cases in username and returns correct data with username in lowercase", async () => {
 		const response = await helper.postSignUp(api, {
 			name: helper.TEST_USER.valid.name,
 			email: helper.TEST_USER.valid.primaryEmail,
@@ -146,11 +163,12 @@ describe("POST auth/sign-up", () => {
 		});
 
 		const { username } = response.body;
-		assert.strictEqual(username, helper.TEST_USER.valid.username);
+		assert.strictEqual(username, helper.TEST_USER.valid.username.toLowerCase());
 	});
 
-	test("returns 400 code and error message if username or email is not unique", async () => {
+	test("returns 400 code and error message if username or email already exists", async () => {
 		await helper.createTestUser();
+
 		const emailExistsResponse = await helper.postSignUp(
 			api,
 			{
@@ -161,8 +179,8 @@ describe("POST auth/sign-up", () => {
 			},
 			400
 		);
-
 		assert.strictEqual(emailExistsResponse.body.error, "Email already exists");
+
 		const userExistsResponse = await helper.postSignUp(
 			api,
 			{
@@ -173,7 +191,6 @@ describe("POST auth/sign-up", () => {
 			},
 			400
 		);
-
 		assert.strictEqual(userExistsResponse.body.error, "User already exists");
 	});
 
