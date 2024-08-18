@@ -7,7 +7,7 @@ A MERN stack note web app that lets users log into their accounts, view, make ch
 
 👤 **Test account**
 
-username: test
+username: test_user
 
 password: salainen
 
