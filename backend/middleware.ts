@@ -13,7 +13,7 @@ export const requestLogger = (
   logger.info("Body:  ", request.body);
   logger.info("---");
   next();
-  };
+};
 
 export const unknownEndpoint = (_request: Request, response: Response) => {
   response.status(404).send({ error: "unknown endpoint" });
@@ -102,6 +102,28 @@ export const validateSignUpData = (
   if (!email || !email.trim()) {
     return response.status(400).json({ error: "Email is required" });
   }
+
+  if (!username || username.trim().length < 6) {
+    return response
+      .status(400)
+      .json({ error: "Username with 6 or more characters is required" });
+  }
+
+  if (!password || password.trim().length < 6) {
+    return response
+      .status(400)
+      .json({ error: "Password with 6 or more characters is required" });
+  }
+
+  next();
+};
+
+export const validateLogInData = (
+  request: Request,
+  response: Response,
+  next: NextFunction
+) => {
+  const { username, password } = request.body;
 
   if (!username || username.trim().length < 6) {
     return response

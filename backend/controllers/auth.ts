@@ -8,16 +8,17 @@ import createTokens from "../utils/createTokens";
 
 const authRouter = Router();
 
-authRouter.post("/login", async (request: Request, response: Response) => {
-	const { username, password } = request.body;
+authRouter.post("/login", middleware.validateLogInData, async (request: Request, response: Response) => {
+	const { username, password }: {username: string, password: string} = request.body;
+	const formattedUsername = username.trim().toLowerCase();
 
-	const user = await User.findOne({ username });
+	const user = await User.findOne({ username: formattedUsername });
 	const passwordCorrect =
     user === null ? false : await bcrypt.compare(password, user.passwordHash);
 
 	if (!(user && passwordCorrect)) {
 		return response.status(401).json({
-			error: "invalid username or password",
+			error: "Invalid username or password",
 		});
 	}
 
@@ -36,12 +37,14 @@ authRouter.post("/login", async (request: Request, response: Response) => {
 
 authRouter.post("/signup", middleware.validateSignUpData ,async (request, response) => {
 	const { name, email, username, password } = request.body;
+	const formattedUsername = username.toLowerCase();
 
 	const emailExists = await User.findOne({
 		email
 	});
+
 	const userExists = await User.findOne({
-		username
+		username: formattedUsername
 	});
 
 	if (emailExists) {
@@ -56,7 +59,7 @@ authRouter.post("/signup", middleware.validateSignUpData ,async (request, respon
 	const user = new User({
 		name,
 		email,
-		username,
+		username: formattedUsername,
 		passwordHash,
 	});
 
