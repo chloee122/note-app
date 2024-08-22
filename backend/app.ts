@@ -1,4 +1,5 @@
 import express from "express";
+import path from "path";
 import config from "./utils/config";
 import "express-async-errors";
 import cors from "cors";
@@ -32,7 +33,7 @@ if (process.env.NODE_ENV !== "production") {
   app.use(cors());
 }
 
-app.use(express.static("dist"));
+app.use(express.static(path.join(__dirname,"../frontend/dist")));
 app.use(express.json());
 app.use(middleware.requestLogger);
 
