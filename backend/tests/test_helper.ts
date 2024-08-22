@@ -73,7 +73,7 @@ export const createTestUser = async () => {
 export const postLogin = async (
 	api: TestAgent<Test>,
 	credentials: { username: string; password: string },
-	statusCode: number = 200
+	statusCode: number
 ) => {
 	const response = await api
 		.post("/api/auth/login")
@@ -92,7 +92,7 @@ export const postSignUp = async (
 		username: string;
 		password: string;
 	},
-	statusCode: number = 201
+	statusCode: number
 ) => {
 	const response = await api
 		.post("/api/auth/signup")

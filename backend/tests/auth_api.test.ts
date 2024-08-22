@@ -1,68 +1,88 @@
-import { test, afterEach, after, describe } from "node:test";
+import { test, beforeEach, afterEach, after, describe } from "node:test";
 import assert from "node:assert";
 import supertest from "supertest";
 import mongoose from "mongoose";
 import User from "../models/user";
 import app from "../app";
-import * as helper from "./test_helper";
+import {
+	postLogin,
+	postSignUp,
+	createTestUser,
+	TEST_USER,
+	getUsernameFromToken,
+} from "./test_helper";
+
+enum STATUS_CODE {
+	OK = 200,
+	CREATED = 201,
+	UNAUTHORIZED = 401,
+	BAD_REQUEST = 400,
+}
 
 const api = supertest(app);
 
 describe("POST /auth/login", () => {
+	beforeEach(async () => {
+		await createTestUser();
+	});
+
 	afterEach(async () => {
 		await User.deleteMany({});
 	});
-	test("retuns correct data when the credentials are correct", async () => {
-		await helper.createTestUser();
 
-		const response = await helper.postLogin(api, {
-			username: helper.TEST_USER.valid.username,
-			password: helper.TEST_USER.valid.password,
-		});
+	test("retuns correct data when the credentials are correct", async () => {
+		const response = await postLogin(
+			api,
+			{
+				username: TEST_USER.valid.username,
+				password: TEST_USER.valid.password,
+			},
+			STATUS_CODE.OK
+		);
 
 		const { accessToken, refreshToken, username, name } = response.body;
 
-		assert.strictEqual(username, helper.TEST_USER.valid.username.toLowerCase());
-		assert.strictEqual(name, helper.TEST_USER.valid.name);
+		assert.strictEqual(username, TEST_USER.valid.username.toLowerCase());
+		assert.strictEqual(name, TEST_USER.valid.name);
 		assert.ok(accessToken);
-		assert.ok(
-			refreshToken && refreshToken !== helper.TEST_USER.valid.refreshToken
-		);
+		assert.ok(refreshToken && refreshToken !== TEST_USER.valid.refreshToken);
 
-		const accessTokenUsername = helper.getUsernameFromToken(accessToken);
+		const accessTokenUsername = getUsernameFromToken(accessToken);
 		assert.strictEqual(
 			accessTokenUsername,
-			helper.TEST_USER.valid.username.toLowerCase()
+			TEST_USER.valid.username.toLowerCase()
 		);
 
-		const refreshTokenUsername = helper.getUsernameFromToken(refreshToken);
+		const refreshTokenUsername = getUsernameFromToken(refreshToken);
 		assert.strictEqual(
 			refreshTokenUsername,
-			helper.TEST_USER.valid.username.toLowerCase()
+			TEST_USER.valid.username.toLowerCase()
 		);
 	});
 
 	test("ignores cases in username and returns correct data with username in lowercase", async () => {
-		await helper.createTestUser();
-
-		const response = await helper.postLogin(api, {
-			username: helper.TEST_USER.valid.upperCaseUsername,
-			password: helper.TEST_USER.valid.password,
-		});
+		const response = await postLogin(
+			api,
+			{
+				username: TEST_USER.valid.upperCaseUsername,
+				password: TEST_USER.valid.password,
+			},
+			STATUS_CODE.OK
+		);
 
 		const { username } = response.body;
 
-		assert.strictEqual(username, helper.TEST_USER.valid.username.toLowerCase());
+		assert.strictEqual(username, TEST_USER.valid.username.toLowerCase());
 	});
 
 	test("returns 401 code and error message when the username or password is wrong", async () => {
-		const invalidUsernameResponse = await helper.postLogin(
+		const invalidUsernameResponse = await postLogin(
 			api,
 			{
-				username: helper.TEST_USER.invalid.wrongUsername,
-				password: helper.TEST_USER.valid.password,
+				username: TEST_USER.invalid.wrongUsername,
+				password: TEST_USER.valid.password,
 			},
-			401
+			STATUS_CODE.UNAUTHORIZED
 		);
 
 		assert.strictEqual(
@@ -70,13 +90,13 @@ describe("POST /auth/login", () => {
 			"Invalid username or password"
 		);
 
-		const invalidPasswordResponse = await helper.postLogin(
+		const invalidPasswordResponse = await postLogin(
 			api,
 			{
-				username: helper.TEST_USER.valid.username,
-				password: helper.TEST_USER.invalid.wrongPassword,
+				username: TEST_USER.valid.username,
+				password: TEST_USER.invalid.wrongPassword,
 			},
-			401
+			STATUS_CODE.UNAUTHORIZED
 		);
 
 		assert.strictEqual(
@@ -86,13 +106,13 @@ describe("POST /auth/login", () => {
 	});
 
 	test("returns 400 code and error message when username or password doesn't meet validation requirements", async () => {
-		const invalidatedUsernameResponse = await helper.postLogin(
+		const invalidatedUsernameResponse = await postLogin(
 			api,
 			{
-				username: helper.TEST_USER.invalid.shortUsername,
-				password: helper.TEST_USER.valid.password,
+				username: TEST_USER.invalid.shortUsername,
+				password: TEST_USER.valid.password,
 			},
-			400
+			STATUS_CODE.BAD_REQUEST
 		);
 
 		assert.strictEqual(
@@ -100,13 +120,13 @@ describe("POST /auth/login", () => {
 			"Username with 6 or more characters is required"
 		);
 
-		const invalidatedPasswordResponse = await helper.postLogin(
+		const invalidatedPasswordResponse = await postLogin(
 			api,
 			{
-				username: helper.TEST_USER.valid.username,
-				password: helper.TEST_USER.invalid.shortPassword,
+				username: TEST_USER.valid.username,
+				password: TEST_USER.invalid.shortPassword,
 			},
-			400
+			STATUS_CODE.BAD_REQUEST
 		);
 
 		assert.strictEqual(
@@ -122,12 +142,16 @@ describe("POST auth/signup", () => {
 	});
 
 	test("creates a new user with a refreshToken in database and returns correct data", async () => {
-		const response = await helper.postSignUp(api, {
-			name: helper.TEST_USER.valid.name,
-			email: helper.TEST_USER.valid.primaryEmail,
-			username: helper.TEST_USER.valid.username,
-			password: helper.TEST_USER.valid.password,
-		});
+		const response = await postSignUp(
+			api,
+			{
+				name: TEST_USER.valid.name,
+				email: TEST_USER.valid.primaryEmail,
+				username: TEST_USER.valid.username,
+				password: TEST_USER.valid.password,
+			},
+			STATUS_CODE.CREATED
+		);
 
 		const { accessToken, refreshToken, username, name } = response.body;
 
@@ -136,75 +160,79 @@ describe("POST auth/signup", () => {
 		assert.ok(signedUpUser);
 		assert.strictEqual(signedUpUser.refreshToken, refreshToken);
 
-		assert.strictEqual(username, helper.TEST_USER.valid.username.toLowerCase());
-		assert.strictEqual(name, helper.TEST_USER.valid.name);
+		assert.strictEqual(username, TEST_USER.valid.username.toLowerCase());
+		assert.strictEqual(name, TEST_USER.valid.name);
 		assert.ok(accessToken);
 		assert.ok(refreshToken);
 
-		const accessTokenUsername = helper.getUsernameFromToken(accessToken);
+		const accessTokenUsername = getUsernameFromToken(accessToken);
 		assert.strictEqual(
 			accessTokenUsername,
-			helper.TEST_USER.valid.username.toLowerCase()
+			TEST_USER.valid.username.toLowerCase()
 		);
 
-		const refreshTokenUsername = helper.getUsernameFromToken(refreshToken);
+		const refreshTokenUsername = getUsernameFromToken(refreshToken);
 		assert.strictEqual(
 			refreshTokenUsername,
-			helper.TEST_USER.valid.username.toLowerCase()
+			TEST_USER.valid.username.toLowerCase()
 		);
 	});
 
 	test("ignores cases in username and returns correct data with username in lowercase", async () => {
-		const response = await helper.postSignUp(api, {
-			name: helper.TEST_USER.valid.name,
-			email: helper.TEST_USER.valid.primaryEmail,
-			username: helper.TEST_USER.valid.upperCaseUsername,
-			password: helper.TEST_USER.valid.password,
-		});
+		const response = await postSignUp(
+			api,
+			{
+				name: TEST_USER.valid.name,
+				email: TEST_USER.valid.primaryEmail,
+				username: TEST_USER.valid.upperCaseUsername,
+				password: TEST_USER.valid.password,
+			},
+			STATUS_CODE.CREATED
+		);
 
 		const { username } = response.body;
-		assert.strictEqual(username, helper.TEST_USER.valid.username.toLowerCase());
+		assert.strictEqual(username, TEST_USER.valid.username.toLowerCase());
 	});
 
 	test("returns 400 code and error message if username or email already exists", async () => {
-		await helper.createTestUser();
+		await createTestUser();
 
-		const emailExistsResponse = await helper.postSignUp(
+		const emailExistsResponse = await postSignUp(
 			api,
 			{
-				name: helper.TEST_USER.valid.name,
-				email: helper.TEST_USER.valid.primaryEmail,
-				username: helper.TEST_USER.valid.username,
-				password: helper.TEST_USER.valid.password,
+				name: TEST_USER.valid.name,
+				email: TEST_USER.valid.primaryEmail,
+				username: TEST_USER.valid.username,
+				password: TEST_USER.valid.password,
 			},
-			400
+			STATUS_CODE.BAD_REQUEST
 		);
 		assert.strictEqual(emailExistsResponse.body.error, "Email already exists");
 
-		const userExistsResponse = await helper.postSignUp(
+		const userExistsResponse = await postSignUp(
 			api,
 			{
-				name: helper.TEST_USER.valid.name,
-				email: helper.TEST_USER.valid.secondaryEmail,
-				username: helper.TEST_USER.valid.username,
-				password: helper.TEST_USER.valid.password,
+				name: TEST_USER.valid.name,
+				email: TEST_USER.valid.secondaryEmail,
+				username: TEST_USER.valid.username,
+				password: TEST_USER.valid.password,
 			},
-			400
+			STATUS_CODE.BAD_REQUEST
 		);
 		assert.strictEqual(userExistsResponse.body.error, "User already exists");
 	});
 
 	describe("returns 400 code and error message", () => {
 		test("when name is less than 3 characters", async () => {
-			const response = await helper.postSignUp(
+			const response = await postSignUp(
 				api,
 				{
-					name: helper.TEST_USER.invalid.shortName,
-					email: helper.TEST_USER.valid.primaryEmail,
-					username: helper.TEST_USER.valid.username,
-					password: helper.TEST_USER.valid.password,
+					name: TEST_USER.invalid.shortName,
+					email: TEST_USER.valid.primaryEmail,
+					username: TEST_USER.valid.username,
+					password: TEST_USER.valid.password,
 				},
-				400
+				STATUS_CODE.BAD_REQUEST
 			);
 
 			assert.strictEqual(
@@ -214,30 +242,30 @@ describe("POST auth/signup", () => {
 		});
 
 		test("when email is empty", async () => {
-			const response = await helper.postSignUp(
+			const response = await postSignUp(
 				api,
 				{
-					name: helper.TEST_USER.valid.name,
-					email: helper.TEST_USER.invalid.emptyEmail,
-					username: helper.TEST_USER.valid.username,
-					password: helper.TEST_USER.valid.password,
+					name: TEST_USER.valid.name,
+					email: TEST_USER.invalid.emptyEmail,
+					username: TEST_USER.valid.username,
+					password: TEST_USER.valid.password,
 				},
-				400
+				STATUS_CODE.BAD_REQUEST
 			);
 
 			assert.strictEqual(response.body.error, "Email is required");
 		});
 
 		test("when username is less than 6 characters", async () => {
-			const response = await helper.postSignUp(
+			const response = await postSignUp(
 				api,
 				{
-					name: helper.TEST_USER.valid.name,
-					email: helper.TEST_USER.valid.primaryEmail,
-					username: helper.TEST_USER.invalid.shortUsername,
-					password: helper.TEST_USER.valid.password,
+					name: TEST_USER.valid.name,
+					email: TEST_USER.valid.primaryEmail,
+					username: TEST_USER.invalid.shortUsername,
+					password: TEST_USER.valid.password,
 				},
-				400
+				STATUS_CODE.BAD_REQUEST
 			);
 
 			assert.strictEqual(
@@ -247,15 +275,15 @@ describe("POST auth/signup", () => {
 		});
 
 		test("when password is less than 6 characters", async () => {
-			const response = await helper.postSignUp(
+			const response = await postSignUp(
 				api,
 				{
-					name: helper.TEST_USER.valid.name,
-					email: helper.TEST_USER.valid.primaryEmail,
-					username: helper.TEST_USER.valid.username,
-					password: helper.TEST_USER.invalid.shortPassword,
+					name: TEST_USER.valid.name,
+					email: TEST_USER.valid.primaryEmail,
+					username: TEST_USER.valid.username,
+					password: TEST_USER.invalid.shortPassword,
 				},
-				400
+				STATUS_CODE.BAD_REQUEST
 			);
 
 			assert.strictEqual(

@@ -10,9 +10,9 @@ const authRouter = Router();
 
 authRouter.post("/login", middleware.validateLogInData, async (request: Request, response: Response) => {
 	const { username, password }: {username: string, password: string} = request.body;
-	const lowerCaseUsername = username.toLowerCase();
+	const formattedUsername = username.trim().toLowerCase();
 
-	const user = await User.findOne({ username: lowerCaseUsername });
+	const user = await User.findOne({ username: formattedUsername });
 	const passwordCorrect =
     user === null ? false : await bcrypt.compare(password, user.passwordHash);
 
@@ -37,14 +37,14 @@ authRouter.post("/login", middleware.validateLogInData, async (request: Request,
 
 authRouter.post("/signup", middleware.validateSignUpData ,async (request, response) => {
 	const { name, email, username, password } = request.body;
-	const lowerCaseUsername = username.toLowerCase();
+	const formattedUsername = username.toLowerCase();
 
 	const emailExists = await User.findOne({
 		email
 	});
 
 	const userExists = await User.findOne({
-		username: lowerCaseUsername
+		username: formattedUsername
 	});
 
 	if (emailExists) {
@@ -59,7 +59,7 @@ authRouter.post("/signup", middleware.validateSignUpData ,async (request, respon
 	const user = new User({
 		name,
 		email,
-		username: lowerCaseUsername,
+		username: formattedUsername,
 		passwordHash,
 	});
 
