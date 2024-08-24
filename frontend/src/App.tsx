@@ -1,9 +1,10 @@
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import { Routes, Route } from "react-router-dom";
-import Layout from "./components/Layout/Layout";
 import AuthPage from "./components/AuthPage/AuthPage";
 import MainPage from "./components/MainPage/MainPage";
+import Layout from "./components/Layout/Layout";
+import LandingPage from "./components/LandingPage/LandingPage";
 import ProtectedRoute from "./ProtectedRoute";
 import GlobalStyles from "./globalStyle";
 import useAxiosInterceptors from "./hooks/useAxiosInterceptors";
@@ -16,7 +17,8 @@ function App() {
       <GlobalStyles />
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/" element={<AuthPage />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/auth" element={<AuthPage />} />
           <Route
             path="/notes"
             element={

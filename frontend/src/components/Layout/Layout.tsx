@@ -1,17 +1,31 @@
-import { Outlet } from "react-router-dom";
-import Footer from "./Footer";
-import { LayoutWrapper, HeaderWrapper, OutletWrapper } from "../styles/Layout.styled";
+import { Outlet, useNavigate } from "react-router-dom";
+import {
+  LayoutWrapper,
+  Main,
+  NavBar,
+  Logo,
+  LoginButton,
+  Footer,
+} from "../styles/Layout.styled";
+import useTopScroll from "../../hooks/useTopScroll";
 
 function Layout() {
+  const navigate = useNavigate();
+  const scrolled = useTopScroll();
+
   return (
     <LayoutWrapper>
-      <HeaderWrapper>
-        <h1>Note App</h1>
-      </HeaderWrapper>
-      <OutletWrapper>
+      <NavBar $scrolled={scrolled}>
+        <Logo>Jotly</Logo>
+        <LoginButton onClick={() => navigate("/auth")}>Log In</LoginButton>
+      </NavBar>
+      <Main>
         <Outlet />
-      </OutletWrapper>
-      <Footer />
+      </Main>
+      <Footer>
+        <div>Privacy Policy</div>
+        <div>Terms and Conditions</div>
+      </Footer>
     </LayoutWrapper>
   );
 }
