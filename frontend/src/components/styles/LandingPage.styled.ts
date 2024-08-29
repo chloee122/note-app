@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const LandingPageWrapper = styled.div`
+export const Main = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -8,90 +8,66 @@ export const LandingPageWrapper = styled.div`
   padding: 42px 0;
 `;
 
-export const HeroSection = styled.div`
-  flex: 1 1 0%;
+export const NavBar = styled.div<{
+  $scrolled?: boolean;
+}>`
+  position: sticky;
+  left: 0px;
+  right: 0px;
+  top: 0;
+  z-index: 50;
+  background-color: white;
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  padding: 1.5rem;
+  border-bottom: ${(props) => (props.$scrolled ? "1px solid #E5E5E5" : "none")};
+  box-shadow: ${(props) =>
+    props.$scrolled ? "0 1px 2px 0 rgb(0 0 0 / 0.05)" : "none"};
+`;
 
-  @media (max-width: 768px) {
-    gap: 2rem;
+export const Logo = styled.div`
+  font-weight: 600;
+  font-size: 1.3rem;
+`;
+
+export const LoginButton = styled.button`
+  font-weight: 550;
+  font-size: 1.1rem;
+  height: 2.25rem;
+  padding: 0 0.75rem;
+  border: none;
+  background-color: white;
+  color: black;
+  border-radius: 0.5rem;
+
+  &:hover {
+    background-color: #e5e5e5;
+  }
+
+  &:active {
+    background-color: #bfbfbf;
   }
 `;
 
-export const IntroHeading = styled.div`
-  max-width: 48rem;
-  text-align: center;
-  padding: 0 1.5rem;
+export const Footer = styled.div`
+  padding: 1.5rem;
   background-color: white;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-`;
-
-export const Heading = styled.h1`
-  font-size: 1.95rem;
-  line-height: 2.25rem;
-
-  @media (min-width: 640px) {
-    font-size: 3rem;
-    line-height: 1;
-  }
-
-  span {
-    text-decoration: underline;
-    color: #8063f7;
-  }
-`;
-
-export const Description = styled.p`
-  p {
-    font-size: 1.1rem;
-    font-weight: 550;
-    line-height: 1.5rem;
-
-    @media (min-width: 640px) {
-      font-size: 1.25rem;
-      line-height: 1.75rem;
-    }
-  }
-`;
-
-export const ActionButton = styled.button`
-  font-size: 1rem;
+  justify-content: space-between;
   font-weight: 550;
-  padding: 0.6rem 1rem;
-  background-color: black;
-  color: white;
-  border: 1px solid black;
-  border-radius: 0.2rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-`;
-
-export const HeroImage = styled.div`
-  height: 18.75rem;
-  width: 100%;
-
-  @media (min-width: 640px) {
-    height: 24rem;
-  }
+  font-size: 0.9rem;
+  color: #737373;
 
   @media (min-width: 768px) {
-    height: 35rem;
-    width: 90%;
+    justify-content: end;
+    gap: 1.5rem;
   }
 
-  @media (min-width: 1042px) {
-    width: 55rem;
-  }
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  div {
+    display: flex;
+    height: 2.25rem;
+    align-items: center;
   }
 `;

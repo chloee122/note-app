@@ -1,16 +1,20 @@
 import { useState } from "react";
 import LoginForm from "../LoginForm/LoginForm";
-import { AuthFormWrapper } from "../styles/AuthForm.styled";
 import SignUpForm from "../SignUpForm/SignUpForm";
 import { Navigate } from "react-router-dom";
 import useAppContext from "../../hooks/useAppContext";
+import Modal from "./Modal";
 
 enum AuthMode {
   LOGIN = "login",
   SIGNUP = "signup",
 }
 
-function AuthPage() {
+interface AuthModalProps {
+  closeModal: () => void;
+}
+
+function AuthModal({ closeModal }: AuthModalProps) {
   const [authMode, setAuthMode] = useState<AuthMode>(AuthMode.LOGIN);
   const { user } = useAppContext();
 
@@ -23,15 +27,14 @@ function AuthPage() {
   };
 
   return (
-    <AuthFormWrapper>
-      <h1>&quot;The Palest Ink Is Better Than The Best Memory.&quot;</h1>
+    <Modal closeModal={closeModal}>
       {authMode === AuthMode.SIGNUP ? (
         <SignUpForm switchForm={() => switchForm(AuthMode.LOGIN)} />
       ) : (
         <LoginForm switchForm={() => switchForm(AuthMode.SIGNUP)} />
       )}
-    </AuthFormWrapper>
+    </Modal>
   );
 }
 
-export default AuthPage;
+export default AuthModal;

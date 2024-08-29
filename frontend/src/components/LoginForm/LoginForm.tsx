@@ -2,7 +2,7 @@ import { useState } from "react";
 import useAppContext from "../../hooks/useAppContext";
 import Input from "../styles/shared/Input.styled";
 import Button from "../styles/shared/Button.styled";
-import Form from "../styles/shared/Form.styled";
+import { Form, FormField, SwitchFormText } from "../styles/shared/Form.styled";
 import FormWrapper from "../styles/shared/FormWrapper.styled";
 
 interface LoginFormProps {
@@ -25,19 +25,19 @@ function LoginForm({ switchForm }: LoginFormProps) {
       <h2>Log in to your account</h2>
       <Form onSubmit={handleSubmit}>
         <div>
-          <div>
+          <FormField>
             <label>Username</label>
             <Input
               data-testid="username"
               value={username}
               onChange={({ target }) => setUsername(target.value)}
             />
-          </div>
+          </FormField>
           {/* for rendering validation error */}
           {/* <span></span> */}
         </div>
         <div>
-          <div>
+          <FormField>
             <label>Password</label>
             <Input
               data-testid="password"
@@ -45,13 +45,12 @@ function LoginForm({ switchForm }: LoginFormProps) {
               value={password}
               onChange={({ target }) => setPassword(target.value)}
             />
-          </div>
+          </FormField>
           {/* <span></span> */}
         </div>
-        <p>
-          Not registered?{" "}
-          <span onClick={() => switchForm()}>Sign up here</span>
-        </p>
+        <SwitchFormText>
+          Not registered? <span onClick={() => switchForm()}>Sign up here</span>
+        </SwitchFormText>
         <Button $width={100} $noBorder={true} $color={"white"} type="submit">
           Log In
         </Button>

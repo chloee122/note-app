@@ -2,7 +2,7 @@ import { useReducer } from "react";
 import useAppContext from "../../hooks/useAppContext";
 import Input from "../styles/shared/Input.styled";
 import Button from "../styles/shared/Button.styled";
-import Form from "../styles/shared/Form.styled";
+import { Form, FormField, SwitchFormText, ValidationError } from "../styles/shared/Form.styled";
 import FormWrapper from "../styles/shared/FormWrapper.styled";
 import validateFormField from "../../utils/validateFormField";
 import { FormAction, FormActionType, FormState } from "./SignUpForm.types";
@@ -103,7 +103,7 @@ function SignUpForm({ switchForm }: SignUpFormProps) {
     }
     return (
       <div key={key}>
-        <div>
+        <FormField>
           <label>{labelText[key]}</label>
           <Input
             data-testid={key}
@@ -112,9 +112,9 @@ function SignUpForm({ switchForm }: SignUpFormProps) {
             value={formState.inputData[key]}
             onChange={handleChange}
           />
-        </div>
+        </FormField>
         {formState.validationErrors[key] && (
-          <span>{formState.validationErrors[key]}</span>
+          <ValidationError>{formState.validationErrors[key]}</ValidationError>
         )}
       </div>
     );
@@ -131,10 +131,10 @@ function SignUpForm({ switchForm }: SignUpFormProps) {
       <h2>Create an account</h2>
       <Form onSubmit={handleSubmit}>
         {formFields}
-        <p>
+        <SwitchFormText>
           Already registered?{" "}
           <span onClick={() => switchForm()}>Log in here</span>
-        </p>
+        </SwitchFormText>
         <Button
           $width={100}
           $noBorder={true}

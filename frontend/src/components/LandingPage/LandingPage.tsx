@@ -1,41 +1,49 @@
-import { useNavigate } from "react-router-dom";
-import { FiArrowRight } from "react-icons/fi";
-import noteTakingImage from "../../assets/images/note-landing-page.jpg";
+import { useState } from "react";
+import AuthModal from "../AuthModal/AuthModal";
 import {
-  LandingPageWrapper,
-  HeroSection,
-  IntroHeading,
-  Heading,
-  Description,
-  ActionButton,
-  HeroImage,
+  Footer,
+  Main,
+  LoginButton,
+  Logo,
+  NavBar,
 } from "../styles/LandingPage.styled";
+import Hero from "./Hero";
+import useTopScroll from "../../hooks/useTopScroll";
+import useAppContext from "../../hooks/useAppContext";
 
 function LandingPage() {
-  const navigate = useNavigate();
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const { user } = useAppContext();
+  const scrolled = useTopScroll();
 
+  const openModal = () => {
+    setShowAuthModal(true);
+  };
+
+  const closeModal = () => {
+    setShowAuthModal(false);
+  };
   return (
-    <LandingPageWrapper>
-      <HeroSection>
-        <IntroHeading>
-          <Heading>
-            Organize the chaos, one note at a time 💡. Welcome to{" "}
-            <span>Jotly</span>!
-          </Heading>
-          <Description>
-            The perfect place to store, organize, and act on your ideas,
-            <br /> whenever and wherever inspiration strikes.
-          </Description>
-          <ActionButton onClick={() => navigate("/auth")}>
-            Jot now
-            <FiArrowRight />
-          </ActionButton>
-        </IntroHeading>
-        <HeroImage>
-          <img src={noteTakingImage} alt="Note taking image" />
-        </HeroImage>
-      </HeroSection>
-    </LandingPageWrapper>
+    <>
+      {showAuthModal && <AuthModal closeModal={closeModal} />}
+      <NavBar $scrolled={scrolled}>
+        <Logo>Jotly</Logo>
+        {user ? (
+          <p>Welcome, {user.name}</p>
+        ) : (
+          <LoginButton onClick={() => setShowAuthModal(true)}>
+            Log In
+          </LoginButton>
+        )}
+      </NavBar>
+      <Main>
+        <Hero openModal={openModal} />
+      </Main>
+      <Footer>
+        <div>Privacy Policy</div>
+        <div>Terms and Conditions</div>
+      </Footer>
+    </>
   );
 }
 
