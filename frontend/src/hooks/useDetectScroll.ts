@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 const THRESHOLD = 10;
 
-const useTopScroll = () => {
+const useDetectScroll = () => {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -20,4 +20,4 @@ const useTopScroll = () => {
   return scrolled;
 };
 
-export default useTopScroll;
+export default useDetectScroll;

@@ -8,13 +8,13 @@ import {
   NavBar,
 } from "../styles/LandingPage.styled";
 import Hero from "./Hero";
-import useTopScroll from "../../hooks/useTopScroll";
+import useDetectScroll from "../../hooks/useDetectScroll";
 import useAppContext from "../../hooks/useAppContext";
 
 function LandingPage() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const { user } = useAppContext();
-  const scrolled = useTopScroll();
+  const scrolled = useDetectScroll();
 
   const openModal = () => {
     setShowAuthModal(true);
@@ -31,9 +31,7 @@ function LandingPage() {
         {user ? (
           <p>Welcome, {user.name}</p>
         ) : (
-          <LoginButton onClick={() => setShowAuthModal(true)}>
-            Log In
-          </LoginButton>
+          <LoginButton onClick={openModal}>Log In</LoginButton>
         )}
       </NavBar>
       <Main>

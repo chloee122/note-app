@@ -4,21 +4,13 @@ export const Form = styled.form`
   width: 80%;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 15px;
   overflow-y: scroll;
   scrollbar-width: none;
   -ms-overflow-style: none;
   &::-webkit-scrollbar {
     width: 0px;
   }
-
-  /* div {
-    div {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-  } */
 
   button {
     margin: auto;
