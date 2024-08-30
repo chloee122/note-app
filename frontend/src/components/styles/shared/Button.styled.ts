@@ -6,15 +6,13 @@ const Button = styled.button<{
   $noBorder?: boolean;
   $disable?: boolean;
 }>`
-  background-color: ${(props) => (props.$disable ? "#fab6b6": "#ff8787" )};
+  background-color: ${(props) => (props.$disable ? "#c4b6fb" : "#9c86f9")};
   border: ${(props) => (props.$noBorder ? "none" : "1px solid black")};
   min-width: ${(props) => (props.$width ? props.$width + "px" : "none")};
-  min-height: 45px;
-  padding: 10px;
+  padding: 0.6rem 1rem;
   color: ${(props) => (props.$color ? props.$color : "black")};
-  font-weight: bold;
-  font-size: 1.1rem;
-  border-radius: 10px;
+  font-weight: 550;
+  border-radius: 5px;
 `;
 
 export default Button;

@@ -1,12 +1,10 @@
 import styled from "styled-components";
 
 const Input = styled.input`
-  min-height: 50px;
-  border-radius: 10px;
+  min-height: 2.5rem;
+  border-radius: 8px;
   border: 1px solid grey;
-  margin: 15px 0;
-  padding-left: 10px;
-  font-size: inherit;
+  padding-left: 0.5rem;
 `;
 
 export default Input;

@@ -1,7 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
-@import url("https://fonts.googleapis.com/css2?family=Playwrite+IT+Moderna:wght@100..400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 
 * {
     box-sizing: border-box;
@@ -9,20 +9,33 @@ const GlobalStyles = createGlobalStyle`
 }
 
 body {
-  background-color: #f3f0ff;
-  font-family: "Playwrite IT Moderna", 'Times New Roman';
-  font-size: 1.2rem;
+  font-family: sans-serif;
 }
 
 input,
 textarea,
 button {
   font-family: inherit;
+  font-size: 1.1rem;
+
+  @media (min-width: 640px){
+  font-size: 1.25rem;
+}
 }
 
 button {
-  font-size: 0.75rem;
   cursor: pointer;
+}
+
+p, label {
+  font-size: 1.1rem;
+  line-height: 1.5rem;
+
+  @media (min-width: 640px){
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
 }
 `;
 
