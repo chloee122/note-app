@@ -2,17 +2,29 @@ import { useReducer } from "react";
 import useAppContext from "../../hooks/useAppContext";
 import Input from "../styles/shared/Input.styled";
 import Button from "../styles/shared/Button.styled";
-import { Form, FormField, SwitchFormText, ValidationError } from "../styles/shared/Form.styled";
+import {
+  Form,
+  FormField,
+  SwitchFormText,
+  ValidationError,
+} from "../styles/shared/Form.styled";
 import FormWrapper from "../styles/shared/FormWrapper.styled";
 import validateFormField from "../../utils/validateFormField";
-import { FormAction, FormActionType, FormState } from "./SignUpForm.types";
+import {
+  FormAction,
+  FormActionType,
+  SignupFormState,
+} from "../../common/form.types";
 import validateForm from "../../utils/validateForm";
 
 interface SignUpFormProps {
   switchForm: () => void;
 }
 
-const formReducer = (state: FormState, action: FormAction): FormState => {
+const formReducer = (
+  state: SignupFormState,
+  action: FormAction
+): SignupFormState => {
   switch (action.type) {
   case FormActionType.HANDLE_INPUT_DATA:
     return {
@@ -32,7 +44,7 @@ const formReducer = (state: FormState, action: FormAction): FormState => {
   }
 };
 
-const initialFormValue: FormState = {
+const initialFormValue: SignupFormState = {
   inputData: {
     name: "",
     email: "",
@@ -44,7 +56,7 @@ const initialFormValue: FormState = {
   submitted: false,
 };
 
-type LabelText = { [key in keyof FormState["inputData"]]: string };
+type LabelText = { [key in keyof SignupFormState["inputData"]]: string };
 
 const labelText: LabelText = {
   name: "Name",
@@ -68,7 +80,7 @@ function SignUpForm({ switchForm }: SignUpFormProps) {
 
     dispatch({
       type: FormActionType.HANDLE_INPUT_DATA,
-      field: e.target.name as keyof FormState["inputData"],
+      field: e.target.name as keyof SignupFormState["inputData"],
       payload: e.target.value,
       error: error,
     });
@@ -93,7 +105,7 @@ function SignUpForm({ switchForm }: SignUpFormProps) {
   };
 
   const formFields = (
-    Object.keys(formState.inputData) as (keyof FormState["inputData"])[]
+    Object.keys(formState.inputData) as (keyof SignupFormState["inputData"])[]
   ).map((key) => {
     let inputType;
     if (key === "email") {
@@ -123,7 +135,7 @@ function SignUpForm({ switchForm }: SignUpFormProps) {
   const isFormDataValid = (
     Object.keys(
       formState.validationErrors
-    ) as (keyof FormState["validationErrors"])[]
+    ) as (keyof SignupFormState["validationErrors"])[]
   ).every((key) => formState.validationErrors[key] === "");
 
   return (
