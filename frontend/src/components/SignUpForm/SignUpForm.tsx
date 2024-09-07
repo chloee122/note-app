@@ -38,7 +38,7 @@ const formReducer = (
   case FormActionType.SET_VALIDATION_ERROR:
     return { ...state, validationErrors: action.payload };
   case FormActionType.SET_SUBMITTED:
-    return { ...state, submitted: true };
+    return { ...state, isSubmitted: true };
   default:
     return state;
   }
@@ -53,7 +53,7 @@ const initialFormValue: SignupFormState = {
     confirmPassword: "",
   },
   validationErrors: {},
-  submitted: false,
+  isSubmitted: false,
 };
 
 type LabelText = { [key in keyof SignupFormState["inputData"]]: string };
@@ -74,7 +74,7 @@ function SignUpForm({ switchForm }: SignUpFormProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     let error = "";
-    if (formState.submitted) {
+    if (formState.isSubmitted) {
       error = validateFormField(name, value, formState.inputData.password);
     }
 
@@ -89,7 +89,7 @@ function SignUpForm({ switchForm }: SignUpFormProps) {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!formState.submitted) dispatch({ type: FormActionType.SET_SUBMITTED });
+    if (!formState.isSubmitted) dispatch({ type: FormActionType.SET_SUBMITTED });
 
     const validationErrors = validateForm(formState.inputData);
 

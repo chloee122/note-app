@@ -13,7 +13,7 @@ export interface SignupFormState {
     password?: string;
     confirmPassword?: string;
   };
-  submitted: boolean;
+  isSubmitted: boolean;
 }
 
 export interface LoginFormState {
@@ -28,6 +28,8 @@ export interface LoginFormState {
   isSubmitted: boolean;
 }
 
+type FormState = SignupFormState | LoginFormState;
+
 export enum FormActionType {
   HANDLE_INPUT_DATA = "handle_input_data",
   SET_VALIDATION_ERROR = "set_validation_error",
@@ -36,14 +38,14 @@ export enum FormActionType {
 
 interface HandleInputDataAction {
   type: FormActionType.HANDLE_INPUT_DATA;
-  field: keyof SignupFormState["inputData"];
+  field: keyof LoginFormState["inputData"] | keyof SignupFormState["inputData"];
   payload: string;
   error: string;
 }
 
 interface SetValidationErrorAction {
   type: FormActionType.SET_VALIDATION_ERROR;
-  payload: SignupFormState["validationErrors"];
+  payload: FormState["validationErrors"];
 }
 
 interface SetSubmittedAction {
