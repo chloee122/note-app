@@ -1,4 +1,4 @@
-export interface FormState {
+export interface SignupFormState {
   inputData: {
     name: string;
     email: string;
@@ -13,8 +13,23 @@ export interface FormState {
     password?: string;
     confirmPassword?: string;
   };
-  submitted: boolean;
+  isSubmitted: boolean;
 }
+
+export interface LoginFormState {
+  inputData: {
+    username: string;
+    password: string;
+  };
+  validationErrors: {
+    username?: string;
+    password?: string;
+  };
+  isSubmitted: boolean;
+}
+
+type FormState = SignupFormState | LoginFormState;
+type KeysOfUnion<T> = T extends T ? keyof T : never;
 
 export enum FormActionType {
   HANDLE_INPUT_DATA = "handle_input_data",
@@ -24,7 +39,7 @@ export enum FormActionType {
 
 interface HandleInputDataAction {
   type: FormActionType.HANDLE_INPUT_DATA;
-  field: keyof FormState["inputData"];
+  field: KeysOfUnion<FormState["inputData"]>;
   payload: string;
   error: string;
 }
@@ -38,4 +53,7 @@ interface SetSubmittedAction {
   type: FormActionType.SET_SUBMITTED;
 }
 
-export type FormAction = HandleInputDataAction | SetValidationErrorAction | SetSubmittedAction;
+export type FormAction =
+  | HandleInputDataAction
+  | SetValidationErrorAction
+  | SetSubmittedAction;
