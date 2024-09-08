@@ -29,6 +29,7 @@ export interface LoginFormState {
 }
 
 type FormState = SignupFormState | LoginFormState;
+type KeysOfUnion<T> = T extends T ? keyof T : never;
 
 export enum FormActionType {
   HANDLE_INPUT_DATA = "handle_input_data",
@@ -38,7 +39,7 @@ export enum FormActionType {
 
 interface HandleInputDataAction {
   type: FormActionType.HANDLE_INPUT_DATA;
-  field: keyof LoginFormState["inputData"] | keyof SignupFormState["inputData"];
+  field: KeysOfUnion<FormState["inputData"]>;
   payload: string;
   error: string;
 }
