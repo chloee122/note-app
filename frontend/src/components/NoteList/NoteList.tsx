@@ -1,5 +1,6 @@
 import type { Note } from "../../common/internal";
 import NoteItem from "./NoteItem";
+import NotesToolBar from "../NotesToolBar";
 import { NoteListWrapper, ListWrapper } from "../styles/NoteList.styled";
 
 interface NoteListProps {
@@ -13,6 +14,7 @@ function NoteList({ notes }: NoteListProps) {
 
   return (
     <NoteListWrapper>
+      <NotesToolBar />
       <ListWrapper>{listOfNotes}</ListWrapper>
     </NoteListWrapper>
   );

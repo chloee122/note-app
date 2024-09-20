@@ -1,36 +1,46 @@
 import styled from "styled-components";
 
-export const NoteItemWrapper = styled.li<{ $important?: boolean }>`
-  border: 1.5px solid black;
-  list-style: none;
-  min-height: 100px;
-  padding: 15px 20px;
-  border-radius: 25px;
-  margin: 0px 20px 15px 0px;
-  background-color: ${(props) => (props.$important ? "#ff8787" : "#ffc9c9")};
-  display: grid;
-  grid-template-columns: 78% 22%;
+export const NoteItemWrapper = styled.div`
+  margin-left: 10px;
+  padding: 0 12px;
+  height: 104px;
+  overflow: hidden;
 
-  button {
-    background-color: ${(props) => (props.$important ? "#ff8787" : "#ffc9c9")};
-    padding: 5px 8px;
-    color: black;
-    border-radius: 8px;
-    min-width: 80%;
+  &:hover {
+    border-radius: 5px;
+    background-color: #eff1f2;
   }
+`;
 
-  .btns {
-    display: flex;
-    flex-direction: column;
-    align-items: end;
-    justify-content: space-between;
-  }
+export const NoteItemContent = styled.div`
+  border-bottom: 1px solid #bfbfbf;
+  font-size: 14px;
+  line-height: 1.4;
+  height: 100%;
+  padding: 10px 0;
 
-  .delete {
-    border: none;
-    padding: 0;
-    color: black;
-    font-size: 1.2rem;
-    min-width: auto;
+  span {
+    font-size: 12px;
+    color: #818181;
   }
+`;
+
+export const NoteItemHeader = styled.h4`
+  color: #222222;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`;
+
+export const NoteItemText = styled.p`
+  color: #525252;
+  line-height: 1.4;
+  font-size: 14px;
+  overflow: hidden;
+  height: 37px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  white-space: break-spaces;
+  margin: 4px 0 5px 0;
 `;
