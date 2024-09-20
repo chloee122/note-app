@@ -1,9 +1,11 @@
 import styled from "styled-components";
 
-export const NotesToolBarWrapper = styled.div`
+export const NotesToolBarWrapper = styled.div<{ $borderEffect?: boolean }>`
   padding: 10px;
-  border-bottom: 0.5px solid #dcdcdc;
-  box-shadow: #e9e9e9 0px 1px 1px 0px;
+  border-bottom: ${(props) =>
+    props.$borderEffect ? "0.5px solid #dcdcdc" : "none"};
+  box-shadow: ${(props) =>
+    props.$borderEffect ? "#e9e9e9 0px 1px 1px 0px" : "none"};
   z-index: 10;
   display: flex;
   justify-content: space-between;

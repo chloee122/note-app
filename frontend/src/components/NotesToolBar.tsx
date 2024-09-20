@@ -7,9 +7,13 @@ import {
   NoteOptionsDropdown,
 } from "./styles/NotesToolBar.styled";
 
-function NotesToolBar() {
+interface NotesToolBarProps {
+  noteListScrolled: boolean;
+}
+
+function NotesToolBar({ noteListScrolled }: NotesToolBarProps) {
   return (
-    <NotesToolBarWrapper>
+    <NotesToolBarWrapper $borderEffect={noteListScrolled}>
       <NoteOptionsDropdown>
         Notes
         <RiArrowDownSLine size={14} strokeWidth={1} color="#909191" />
