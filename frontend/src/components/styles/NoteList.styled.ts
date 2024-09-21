@@ -1,18 +1,15 @@
 import styled from "styled-components";
 
 export const NoteListWrapper = styled.div`
-  background-color: white;
-  border-radius: 28px;
-  width: 480px;
-  border: black 2px solid;
-  min-height: 500px;
-  padding: 40px 0;
+  background-color: #f9f9f9;
+  width: 370px;
+  border-right: 1px solid #bfbfbf;
+  display: flex;
+  flex-direction: column;
 `;
 
-export const ListWrapper = styled.ul`
-  width: 95%;
-  margin: 0 0 0 35px;
-  max-height: 550px;
+export const ListWrapper = styled.div`
+  flex: 1 1 0%;
   overflow-y: scroll;
-  padding-left: 0px;
+  scrollbar-color: #aaaaaa #f9f9f9;
 `;
