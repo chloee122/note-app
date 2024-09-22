@@ -1,44 +1,44 @@
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 
-export const NoteToolBarWrapper = styled.div<{ $borderEffect?: boolean }>`
-  padding: 10px 10px 10px 20px;
-  border-bottom: ${(props) =>
-    props.$borderEffect ? "0.5px solid #dcdcdc" : "none"};
-  box-shadow: ${(props) =>
-    props.$borderEffect ? "#e9e9e9 0px 1px 1px 0px" : "none"};
-  z-index: 10;
-  display: flex;
-  justify-content: space-between;
-`;
-
-export const NoteActionBtns = styled.div`
-  display: flex;
-  align-items: center;
-  color: #909191;
-  gap: 4px;
-  
-  div {
-    padding: 4px 7px;
-    display: flex;
-    &:hover {
-      background-color: #eff1f2;
-      border-radius: 5px;
-    }
+const fadeIn = keyframes`
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 `;
 
-export const NoteTitle = styled.div`
+const fadeOut = keyframes`
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+`;
+
+export const NoteTitle = styled.div<{ $fadeEffect?: boolean }>`
   display: flex;
   place-items: center;
   position: relative;
   top: 1px;
 
   div {
-    width: 560px;
+    padding-left: 10px;
+    width: 740px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
     font-size: 16px;
     font-weight: 600;
+    animation: ${(props) =>
+    props.$fadeEffect
+      ? css`
+            ${fadeIn} 0.2s ease-in forwards
+          `
+      : css`
+            ${fadeOut} 0.2s ease-in forwards
+          `};
   }
 `;

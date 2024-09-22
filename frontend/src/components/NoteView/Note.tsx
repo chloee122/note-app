@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { NoteBody, NoteTitle, NoteWrapper } from "./styles/Note.styled";
+import { NoteBody, NoteTitle, NoteWrapper } from "../styles/Note.styled";
 
 interface NoteProps {
   setNoteScrolled: (arg: boolean) => void;

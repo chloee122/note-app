@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Note from "./Note";
 import NoteToolBar from "./NoteToolBar";
-import { NoteViewWrapper } from "./styles/NoteView.styled";
+import { NoteViewWrapper } from "../styles/NoteView.styled";
 
 function NoteView() {
   const [noteScrolled, setNoteScrolled] = useState(false);

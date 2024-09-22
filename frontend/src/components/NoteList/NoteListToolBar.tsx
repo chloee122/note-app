@@ -1,33 +1,30 @@
 import { RiArrowDownSLine } from "react-icons/ri";
 import { PiNotePencilLight } from "react-icons/pi";
 import { GoSearch } from "react-icons/go";
-import {
-  NotesToolBarWrapper,
-  NoteActionBtns,
-  NoteOptionsDropdown,
-} from "./styles/NotesToolBar.styled";
+import { NoteOptionsDropdown } from "../styles/NoteListToolBar.styled";
+import { ActionBtns, ToolBarWrapper } from "../styles/shared/ToolBar.styled";
 
-interface NotesToolBarProps {
+interface NoteListToolBarProps {
   noteListScrolled: boolean;
 }
 
-function NotesToolBar({ noteListScrolled }: NotesToolBarProps) {
+function NoteListToolBar({ noteListScrolled }: NoteListToolBarProps) {
   return (
-    <NotesToolBarWrapper $borderEffect={noteListScrolled}>
+    <ToolBarWrapper $borderEffect={noteListScrolled}>
       <NoteOptionsDropdown>
         Notes
         <RiArrowDownSLine size={14} strokeWidth={1} color="#909191" />
       </NoteOptionsDropdown>
-      <NoteActionBtns>
+      <ActionBtns>
         <div>
           <PiNotePencilLight strokeWidth={4} size={23} />
         </div>
         <div>
           <GoSearch strokeWidth={0.3} size={21} />
         </div>
-      </NoteActionBtns>
-    </NotesToolBarWrapper>
+      </ActionBtns>
+    </ToolBarWrapper>
   );
 }
 
-export default NotesToolBar;
+export default NoteListToolBar;

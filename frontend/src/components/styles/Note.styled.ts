@@ -11,6 +11,7 @@ export const NoteTitle = styled.div`
   font-size: 28px;
   font-weight: 900;
   line-height: 1.5;
+  margin-bottom: 7px;
 `;
 
 export const NoteBody = styled.div`
