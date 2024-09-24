@@ -5,17 +5,18 @@ import { NoteViewWrapper } from "../styles/NoteView.styled";
 
 function NoteView() {
   const [noteScrolled, setNoteScrolled] = useState(false);
-  const [showTitleOnToolBar, setShowTitleOnToolBar] = useState(false);
+  const [shouldShowTitleOnToolBar, setShouldShowTitleOnToolBar] =
+    useState(false);
 
   return (
     <NoteViewWrapper>
       <NoteToolBar
         noteScrolled={noteScrolled}
-        showTitleOnToolBar={showTitleOnToolBar}
+        shouldShowTitleOnToolBar={shouldShowTitleOnToolBar}
       />
       <Note
         setNoteScrolled={setNoteScrolled}
-        setShowTitleOnToolBar={setShowTitleOnToolBar}
+        setShouldShowTitleOnToolBar={setShouldShowTitleOnToolBar}
       />
     </NoteViewWrapper>
   );

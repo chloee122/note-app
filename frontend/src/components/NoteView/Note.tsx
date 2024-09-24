@@ -3,10 +3,10 @@ import { NoteBody, NoteTitle, NoteWrapper } from "../styles/Note.styled";
 
 interface NoteProps {
   setNoteScrolled: (arg: boolean) => void;
-  setShowTitleOnToolBar: (arg: boolean) => void;
+  setShouldShowTitleOnToolBar: (arg: boolean) => void;
 }
 
-function Note({ setNoteScrolled, setShowTitleOnToolBar }: NoteProps) {
+function Note({ setNoteScrolled, setShouldShowTitleOnToolBar }: NoteProps) {
   const noteRef = useRef<HTMLDivElement>(null);
   const noteHeadingRef = useRef<HTMLDivElement>(null);
 
@@ -15,7 +15,7 @@ function Note({ setNoteScrolled, setShowTitleOnToolBar }: NoteProps) {
     setNoteScrolled(scrollPosition > 0);
 
     const noteHeadingHeight = noteHeadingRef.current?.clientHeight || 0;
-    setShowTitleOnToolBar(scrollPosition > noteHeadingHeight);
+    setShouldShowTitleOnToolBar(scrollPosition > noteHeadingHeight);
   };
 
   return (

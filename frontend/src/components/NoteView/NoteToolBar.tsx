@@ -8,13 +8,13 @@ import { ActionBtns, NoteToolBarWrapper } from "../styles/shared/ToolBar.styled"
 
 interface NoteToolBarProps {
   noteScrolled: boolean;
-  showTitleOnToolBar: boolean;
+  shouldShowTitleOnToolBar: boolean;
 }
 
-function NoteToolBar({ noteScrolled, showTitleOnToolBar }: NoteToolBarProps) {
+function NoteToolBar({ noteScrolled, shouldShowTitleOnToolBar }: NoteToolBarProps) {
   return (
     <NoteToolBarWrapper $borderEffect={noteScrolled}>
-      <NoteTitle $fadeEffect={showTitleOnToolBar}>
+      <NoteTitle $fadeEffect={shouldShowTitleOnToolBar}>
         <div>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel
           sapien at diam laoreet sollicitudin.
