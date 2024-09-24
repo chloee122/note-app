@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { CgNotes } from "react-icons/cg";
 import { RiExpandUpDownLine } from "react-icons/ri";
-import useAppContext from "../hooks/useAppContext";
+import useAppContext from "../../hooks/useAppContext";
 import UserModal from "./UserModal";
 import {
   NoteNavItem,
   SideMenuWrapper,
   UserName,
-} from "./styles/SideMenu.styled";
-import { UserSection } from "./styles/SideMenu.styled";
+} from "../styles/SideMenu.styled";
+import { UserSection } from "../styles/SideMenu.styled";
 
 function SideMenu() {
   const { user } = useAppContext();

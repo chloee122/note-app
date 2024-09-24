@@ -7,7 +7,7 @@ export const SideMenuWrapper = styled.div`
   color: #d4d4d4;
 
   @media (min-width: 768px) {
-    min-width: 240px;
+    min-width: 180px;
   }
 `;
 

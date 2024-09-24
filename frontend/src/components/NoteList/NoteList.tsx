@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import type { Note } from "../../common/internal";
 import NoteItem from "./NoteItem";
-import NotesToolBar from "../NotesToolBar";
+import NoteListToolBar from "./NoteListToolBar";
 import { NoteListWrapper, ListWrapper } from "../styles/NoteList.styled";
 
 interface NoteListProps {
@@ -23,7 +23,7 @@ function NoteList({ notes }: NoteListProps) {
 
   return (
     <NoteListWrapper>
-      <NotesToolBar noteListScrolled={noteListScrolled} />
+      <NoteListToolBar noteListScrolled={noteListScrolled} />
       <ListWrapper ref={noteListRef} onScroll={handleScroll}>
         {listOfNotes}
       </ListWrapper>

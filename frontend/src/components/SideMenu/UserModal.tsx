@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import useAppContext from "../hooks/useAppContext";
+import useAppContext from "../../hooks/useAppContext";
 import {
   UserModalBackground,
   UserModalWrapper,
   UserInfo,
   LogoutBtn,
   Separator,
-} from "./styles/UserModal.styled";
+} from "../styles/UserModal.styled";
 
 interface UserModalProps {
   setShowUserModal: (arg: boolean) => void;

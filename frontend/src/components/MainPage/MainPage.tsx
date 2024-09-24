@@ -1,7 +1,7 @@
 import useAppContext from "../../hooks/useAppContext";
 import NoteList from "../NoteList/NoteList";
-import NoteView from "../NoteView";
-import SideMenu from "../SideMenu";
+import NoteView from "../NoteView/NoteView";
+import SideMenu from "../SideMenu/SideMenu";
 import { MainPageWrapper } from "../styles/MainPage.styled";
 
 function MainPage() {
