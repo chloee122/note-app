@@ -2,9 +2,15 @@ import styled from "styled-components";
 
 export const NoteWrapper = styled.div`
   flex: 1 1 0%;
-  padding: 5px 130px 100px 130px;
   overflow-y: scroll;
   scrollbar-color: #aaaaaa #f9f9f9;
+`;
+
+export const NoteContent = styled.div`
+  box-sizing: border-box;
+  padding: 5px 55px 100px 55px;
+  max-width: 620px;
+  margin: auto;
 `;
 
 export const NoteTitle = styled.div`

@@ -4,17 +4,23 @@ import { IoInformationCircleOutline } from "react-icons/io5";
 import { PiDotsThreeVerticalBold } from "react-icons/pi";
 import { RxUnderline } from "react-icons/rx";
 import { NoteTitle } from "../styles/NoteToolBar.styled";
-import { ActionBtns, NoteToolBarWrapper } from "../styles/shared/ToolBar.styled";
+import {
+  ActionBtns,
+  NoteToolBarWrapper,
+} from "../styles/shared/ToolBar.styled";
 
 interface NoteToolBarProps {
   noteScrolled: boolean;
   shouldShowTitleOnToolBar: boolean;
 }
 
-function NoteToolBar({ noteScrolled, shouldShowTitleOnToolBar }: NoteToolBarProps) {
+function NoteToolBar({
+  noteScrolled,
+  shouldShowTitleOnToolBar,
+}: NoteToolBarProps) {
   return (
     <NoteToolBarWrapper $borderEffect={noteScrolled}>
-      <NoteTitle $fadeEffect={shouldShowTitleOnToolBar}>
+      <NoteTitle $shouldShowTitle={shouldShowTitleOnToolBar}>
         <div>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel
           sapien at diam laoreet sollicitudin.

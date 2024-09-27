@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const NoteItemWrapper = styled.div`
   margin-left: 10px;
+  margin-right: 5px;
   padding: 0 12px;
   height: 104px;
   overflow: hidden;
