@@ -1,14 +1,10 @@
 import styled from "styled-components";
 
 export const SideMenuWrapper = styled.div`
-  min-width: 224px;
+  min-width: 180px;
   position: relative;
   background-color: #232527;
   color: #d4d4d4;
-
-  @media (min-width: 768px) {
-    min-width: 180px;
-  }
 `;
 
 export const UserSection = styled.div`
