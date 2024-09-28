@@ -35,24 +35,24 @@ const loginFormReducer = (
   action: FormAction
 ): LoginFormState => {
   switch (action.type) {
-  case FormActionType.HANDLE_INPUT_DATA:
-    return {
-      ...state,
-      inputData: { ...state.inputData, [action.field]: action.payload },
-      validationErrors: {
-        ...state.validationErrors,
-        [action.field]: action.error,
-      },
-    };
-  case FormActionType.SET_VALIDATION_ERROR:
-    return { ...state, validationErrors: action.payload };
-  case FormActionType.SET_SUBMITTED:
-    return {
-      ...state,
-      isSubmitted: true,
-    };
-  default:
-    return state;
+    case FormActionType.HANDLE_INPUT_DATA:
+      return {
+        ...state,
+        inputData: { ...state.inputData, [action.field]: action.payload },
+        validationErrors: {
+          ...state.validationErrors,
+          [action.field]: action.error,
+        },
+      };
+    case FormActionType.SET_VALIDATION_ERROR:
+      return { ...state, validationErrors: action.payload };
+    case FormActionType.SET_SUBMITTED:
+      return {
+        ...state,
+        isSubmitted: true,
+      };
+    default:
+      return state;
   }
 };
 

@@ -26,21 +26,21 @@ const formReducer = (
   action: FormAction
 ): SignupFormState => {
   switch (action.type) {
-  case FormActionType.HANDLE_INPUT_DATA:
-    return {
-      ...state,
-      inputData: { ...state.inputData, [action.field]: action.payload },
-      validationErrors: {
-        ...state.validationErrors,
-        [action.field]: action.error,
-      },
-    };
-  case FormActionType.SET_VALIDATION_ERROR:
-    return { ...state, validationErrors: action.payload };
-  case FormActionType.SET_SUBMITTED:
-    return { ...state, isSubmitted: true };
-  default:
-    return state;
+    case FormActionType.HANDLE_INPUT_DATA:
+      return {
+        ...state,
+        inputData: { ...state.inputData, [action.field]: action.payload },
+        validationErrors: {
+          ...state.validationErrors,
+          [action.field]: action.error,
+        },
+      };
+    case FormActionType.SET_VALIDATION_ERROR:
+      return { ...state, validationErrors: action.payload };
+    case FormActionType.SET_SUBMITTED:
+      return { ...state, isSubmitted: true };
+    default:
+      return state;
   }
 };
 
@@ -89,7 +89,8 @@ function SignUpForm({ switchForm }: SignUpFormProps) {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!formState.isSubmitted) dispatch({ type: FormActionType.SET_SUBMITTED });
+    if (!formState.isSubmitted)
+      dispatch({ type: FormActionType.SET_SUBMITTED });
 
     const validationErrors = validateForm(formState.inputData);
 

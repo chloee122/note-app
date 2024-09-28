@@ -8,101 +8,118 @@ import createTokens from "../utils/createTokens";
 
 const authRouter = Router();
 
-authRouter.post("/login", middleware.validateLogInData, async (request: Request, response: Response) => {
-	const { username, password }: {username: string, password: string} = request.body;
-	const formattedUsername = username.trim().toLowerCase();
+authRouter.post(
+  "/login",
+  middleware.validateLogInData,
+  async (request: Request, response: Response) => {
+    const { username, password }: { username: string; password: string } =
+      request.body;
+    const formattedUsername = username.trim().toLowerCase();
 
-	const user = await User.findOne({ username: formattedUsername });
-	const passwordCorrect =
-    user === null ? false : await bcrypt.compare(password, user.passwordHash);
+    const user = await User.findOne({ username: formattedUsername });
+    const passwordCorrect =
+      user === null ? false : await bcrypt.compare(password, user.passwordHash);
 
-	if (!(user && passwordCorrect)) {
-		return response.status(401).json({
-			error: "Invalid username or password",
-		});
-	}
+    if (!(user && passwordCorrect)) {
+      return response.status(401).json({
+        error: "Invalid username or password",
+      });
+    }
 
-	const { accessToken, refreshToken } = createTokens(user.username, user.id);
+    const { accessToken, refreshToken } = createTokens(user.username, user.id);
 
-	user.refreshToken = refreshToken;
-	await user.save();
+    user.refreshToken = refreshToken;
+    await user.save();
 
-	response.status(200).send({
-		accessToken,
-		refreshToken,
-		username: user.username,
-		name: user.name,
-	});
-});
+    response.status(200).send({
+      accessToken,
+      refreshToken,
+      username: user.username,
+      name: user.name,
+    });
+  }
+);
 
-authRouter.post("/signup", middleware.validateSignUpData ,async (request, response) => {
-	const { name, email, username, password } = request.body;
-	const formattedUsername = username.toLowerCase();
+authRouter.post(
+  "/signup",
+  middleware.validateSignUpData,
+  async (request, response) => {
+    const { name, email, username, password } = request.body;
+    const formattedUsername = username.toLowerCase();
 
-	const emailExists = await User.findOne({
-		email
-	});
+    const emailExists = await User.findOne({
+      email,
+    });
 
-	const userExists = await User.findOne({
-		username: formattedUsername
-	});
+    const userExists = await User.findOne({
+      username: formattedUsername,
+    });
 
-	if (emailExists) {
-		return response.status(400).json( { error: "Email already exists" } );
-	} else if (userExists) {
-		return response.status(400).json( { error: "User already exists" } );
-	}
+    if (emailExists) {
+      return response.status(400).json({ error: "Email already exists" });
+    } else if (userExists) {
+      return response.status(400).json({ error: "User already exists" });
+    }
 
-	const saltRounds = 10;
-	const passwordHash = await bcrypt.hash(password, saltRounds);
+    const saltRounds = 10;
+    const passwordHash = await bcrypt.hash(password, saltRounds);
 
-	const user = new User({
-		name,
-		email,
-		username: formattedUsername,
-		passwordHash,
-	});
+    const user = new User({
+      name,
+      email,
+      username: formattedUsername,
+      passwordHash,
+    });
 
-	const createdUser = await user.save();
+    const createdUser = await user.save();
 
-	const { accessToken, refreshToken } = createTokens(createdUser.username, createdUser.id);
+    const { accessToken, refreshToken } = createTokens(
+      createdUser.username,
+      createdUser.id
+    );
 
-	user.refreshToken = refreshToken;
-	await user.save();
+    user.refreshToken = refreshToken;
+    await user.save();
 
-	response.status(201).json({
-		accessToken,
-		refreshToken,
-		username: createdUser.username,
-		name: createdUser.name
-	});
-});
+    response.status(201).json({
+      accessToken,
+      refreshToken,
+      username: createdUser.username,
+      name: createdUser.name,
+    });
+  }
+);
 
 authRouter.post("/refresh", async (request: Request, response: Response) => {
-	const { refreshToken } = request.body;
-	if (!refreshToken) {
-		return response.status(401).json({ error: "Unauthorized" });
-	}
+  const { refreshToken } = request.body;
+  if (!refreshToken) {
+    return response.status(401).json({ error: "Unauthorized" });
+  }
 
-	try {
-		const decodedRefreshToken = jwt.verify(
-			refreshToken,
-			getEnvVar("SECRET")
-		) as jwt.JwtPayload;
+  try {
+    const decodedRefreshToken = jwt.verify(
+      refreshToken,
+      getEnvVar("SECRET")
+    ) as jwt.JwtPayload;
 
-		const { id } = decodedRefreshToken;
-		const user = await User.findById(id);
+    const { id } = decodedRefreshToken;
+    const user = await User.findById(id);
 
-		if (!user || user.refreshToken !== refreshToken) {
-			return response.status(401).json({ error: "Unauthorized" });
-		}
+    if (!user || user.refreshToken !== refreshToken) {
+      return response.status(401).json({ error: "Unauthorized" });
+    }
 
-		const { accessToken } = createTokens(user.username, user.id);
+    const { accessToken } = createTokens(user.username, user.id);
 
-		response.status(200).json({  accessToken: accessToken  });
-	} catch (error) {
-		response.status(401).json({ error: "Your session has expired. Please log in again to continue using the app." });
-	}
+    response.status(200).json({ accessToken: accessToken });
+  } catch (error) {
+    response
+      .status(401)
+      .json({
+        error:
+          "Your session has expired. Please log in again to continue using the app.",
+      });
+  }
 });
 
 export default authRouter;

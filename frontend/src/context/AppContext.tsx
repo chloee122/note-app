@@ -2,7 +2,11 @@ import { createContext, useState, useEffect, ReactNode } from "react";
 import * as noteService from "../api/notes";
 import * as authService from "../api/auth";
 import type { AuthResponse, Note, User } from "../common/internal";
-import type { LoginInFormData, NoteToSend, SignUpFormData } from "../common/api.types";
+import type {
+  LoginInFormData,
+  NoteToSend,
+  SignUpFormData,
+} from "../common/api.types";
 import showToastError from "../utils/showToastError";
 
 interface AppProviderProps {
@@ -51,7 +55,9 @@ export function AppProvider({ children }: AppProviderProps) {
 
   const signup = async (signUpFormData: SignUpFormData) => {
     try {
-      const authResponse: AuthResponse = await authService.createUser(signUpFormData);
+      const authResponse: AuthResponse = await authService.createUser(
+        signUpFormData
+      );
       const user = { username: authResponse.username, name: authResponse.name };
       const tokens = {
         accessToken: authResponse.accessToken,

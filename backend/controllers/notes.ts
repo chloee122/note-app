@@ -8,81 +8,82 @@ import convertNoteModelToNoteResponse from "../utils/convertNoteModelToNoteRespo
 const notesRouter = Router();
 
 export interface NoteResponse {
-	content: string;
-	important: boolean;
-	id: string;
+  content: string;
+  important: boolean;
+  id: string;
 }
 
 notesRouter.get("/", async (_request, response) => {
-	const notes = await Note.find({});
-	const notesToReponse: NoteResponse[] = notes.map(
-		convertNoteModelToNoteResponse
-	);
-	response.json(notesToReponse);
+  const notes = await Note.find({});
+  const notesToReponse: NoteResponse[] = notes.map(
+    convertNoteModelToNoteResponse
+  );
+  response.json(notesToReponse);
 });
 
 notesRouter.get("/:id", async (request, response) => {
-	const note = await Note.findById(request.params.id);
-	if (note) {
-		const noteToReponse: NoteResponse =
-      convertNoteModelToNoteResponse(note);
-		response.json(noteToReponse);
-	} else {
-		response.status(404).end();
-	}
+  const note = await Note.findById(request.params.id);
+  if (note) {
+    const noteToReponse: NoteResponse = convertNoteModelToNoteResponse(note);
+    response.json(noteToReponse);
+  } else {
+    response.status(404).end();
+  }
 });
 
 notesRouter.post(
-	"/",
-	middleware.validateToken,
-	async (request: RequestWithUserId, response) => {
-		const body = request.body;
-		const user = await User.findById(request.userId);
-		if (!user) {
-			response.status(403).json({ error: "Unauthorized user" });
-		} else {
-			const note = new Note({
-				content: body.content,
-				important: body.important || false,
-				userId: user.id,
-			});
-			const createdNote = await note.save();
+  "/",
+  middleware.validateToken,
+  async (request: RequestWithUserId, response) => {
+    const body = request.body;
+    const user = await User.findById(request.userId);
+    if (!user) {
+      response.status(403).json({ error: "Unauthorized user" });
+    } else {
+      const note = new Note({
+        content: body.content,
+        important: body.important || false,
+        userId: user.id,
+      });
+      const createdNote = await note.save();
 
-			const noteToResponse: NoteResponse =
+      const noteToResponse: NoteResponse =
         convertNoteModelToNoteResponse(createdNote);
 
-			response.status(201).json(noteToResponse);
-		}
-	}
+      response.status(201).json(noteToResponse);
+    }
+  }
 );
 
 notesRouter.delete("/:id", async (request, response) => {
-	const deletedNote = await Note.findByIdAndDelete(request.params.id);
-	if(!deletedNote) {
-		return response.status(404).json({ error: "Failed to remove note. Note not found." });
-	}
+  const deletedNote = await Note.findByIdAndDelete(request.params.id);
+  if (!deletedNote) {
+    return response
+      .status(404)
+      .json({ error: "Failed to remove note. Note not found." });
+  }
 
-	response.status(204).end();
+  response.status(204).end();
 });
 
 notesRouter.put("/:id", async (request, response) => {
-	const body = request.body;
+  const body = request.body;
 
-	const note = {
-		content: body.content,
-		important: body.important,
-	};
+  const note = {
+    content: body.content,
+    important: body.important,
+  };
 
-	const updatedNote = await Note.findByIdAndUpdate(request.params.id, note, {
-		new: true,
-	});
-	if (updatedNote) {
-		const noteToReponse: NoteResponse =
+  const updatedNote = await Note.findByIdAndUpdate(request.params.id, note, {
+    new: true,
+  });
+  if (updatedNote) {
+    const noteToReponse: NoteResponse =
       convertNoteModelToNoteResponse(updatedNote);
-		response.json(noteToReponse);
-	} else {
-		response.status(404).end();
-	}
+    response.json(noteToReponse);
+  } else {
+    response.status(404).end();
+  }
 });
 
 export default notesRouter;
