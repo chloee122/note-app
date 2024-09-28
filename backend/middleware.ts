@@ -7,7 +7,7 @@ export const requestLogger = (
   request: Request,
   _response: Response,
   next: NextFunction
-  ) => {
+) => {
   logger.info("Method:", request.method);
   logger.info("Path:  ", request.path);
   logger.info("Body:  ", request.body);
@@ -75,15 +75,15 @@ export const validateToken = (
     return response.status(401).json({ error: "Token is not provided" });
   }
   try {
-		const decodedToken = jwt.verify(
-			token,
-			getEnvVar("SECRET")
-		) as jwt.JwtPayload;
-		request.userId = decodedToken.id;
-		next();
-	} catch (error) {
-		response.status(401).json({ error: "Unauthorized" });
-	}
+    const decodedToken = jwt.verify(
+      token,
+      getEnvVar("SECRET")
+    ) as jwt.JwtPayload;
+    request.userId = decodedToken.id;
+    next();
+  } catch (error) {
+    response.status(401).json({ error: "Unauthorized" });
+  }
 };
 
 export const validateSignUpData = (
