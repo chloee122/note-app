@@ -7,6 +7,7 @@ import { NoteTitle } from "../styles/NoteToolBar.styled";
 import {
   ActionBtns,
   NoteToolBarWrapper,
+  ToolBarContent,
 } from "../styles/shared/ToolBar.styled";
 
 interface NoteToolBarProps {
@@ -20,25 +21,27 @@ function NoteToolBar({
 }: NoteToolBarProps) {
   return (
     <NoteToolBarWrapper $borderEffect={noteScrolled}>
-      <NoteTitle $shouldShowTitle={shouldShowTitleOnToolBar}>
-        <div>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel
-          sapien at diam laoreet sollicitudin.
-        </div>
-      </NoteTitle>
-      <ActionBtns>
-        <div>
-          <GoBold size={18} strokeWidth={0.5} />
-          <FiItalic size={17} />
-          <RxUnderline size={19} strokeWidth={0.1} />
-        </div>
-        <div>
-          <IoInformationCircleOutline size={23} />
-        </div>
-        <div>
-          <PiDotsThreeVerticalBold size={21} strokeWidth={6} />
-        </div>
-      </ActionBtns>
+      <ToolBarContent>
+        <NoteTitle $shouldShowTitle={shouldShowTitleOnToolBar}>
+          <div>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel
+            sapien at diam laoreet sollicitudin.
+          </div>
+        </NoteTitle>
+        <ActionBtns>
+          <div>
+            <GoBold size={18} strokeWidth={0.5} />
+            <FiItalic size={17} />
+            <RxUnderline size={19} strokeWidth={0.1} />
+          </div>
+          <div>
+            <IoInformationCircleOutline size={23} />
+          </div>
+          <div>
+            <PiDotsThreeVerticalBold size={21} strokeWidth={6} />
+          </div>
+        </ActionBtns>
+      </ToolBarContent>
     </NoteToolBarWrapper>
   );
 }

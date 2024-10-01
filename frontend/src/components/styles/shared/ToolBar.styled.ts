@@ -9,6 +9,10 @@ export const ToolBarWrapper = styled.div<{
   box-shadow: ${(props) =>
     props.$borderEffect ? "#e9e9e9  0px 1px 1px 0px" : "none"};
   z-index: 10;
+  position: relative;
+`;
+
+export const ToolBarContent = styled.div`
   display: flex;
   justify-content: space-between;
 `;
