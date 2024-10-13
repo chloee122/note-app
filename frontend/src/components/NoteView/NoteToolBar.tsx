@@ -13,11 +13,15 @@ import {
 interface NoteToolBarProps {
   noteScrolled: boolean;
   shouldShowTitleOnToolBar: boolean;
+  setShouldShowEditorMenuBar: (arg: boolean) => void;
+  shouldShowEditorMenuBar: boolean;
 }
 
 function NoteToolBar({
   noteScrolled,
   shouldShowTitleOnToolBar,
+  setShouldShowEditorMenuBar,
+  shouldShowEditorMenuBar,
 }: NoteToolBarProps) {
   return (
     <NoteToolBarWrapper $borderEffect={noteScrolled}>
@@ -28,7 +32,9 @@ function NoteToolBar({
             sapien at diam laoreet sollicitudin.
           </div>
         </NoteTitle>
-        <ActionBtns>
+        <ActionBtns
+          onClick={() => setShouldShowEditorMenuBar(!shouldShowEditorMenuBar)}
+        >
           <div>
             <GoBold size={18} strokeWidth={0.5} />
             <FiItalic size={17} />
