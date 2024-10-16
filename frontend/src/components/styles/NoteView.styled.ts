@@ -7,4 +7,5 @@ export const NoteViewWrapper = styled.div`
   min-width: 275px;
   color: #222222;
   background-color: #faf9f9;
+  position: relative;
 `;

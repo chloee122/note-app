@@ -18,6 +18,18 @@ export const NoteTitle = styled.div`
   font-weight: 900;
   line-height: 1.5;
   margin-bottom: 7px;
+  textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    resize: none;
+    overflow: auto;
+    font-size: 28px;
+    font-weight: 900;
+    line-height: 1.5;
+    overflow: hidden;
+  }
 `;
 
 export const NoteBody = styled.div`
