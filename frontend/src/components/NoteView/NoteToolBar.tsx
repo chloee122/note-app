@@ -32,10 +32,10 @@ function NoteToolBar({
             sapien at diam laoreet sollicitudin.
           </div>
         </NoteTitle>
-        <ActionBtns
-          onClick={() => setShouldShowEditorMenuBar(!shouldShowEditorMenuBar)}
-        >
-          <div>
+        <ActionBtns>
+          <div
+            onClick={() => setShouldShowEditorMenuBar(!shouldShowEditorMenuBar)}
+          >
             <GoBold size={18} strokeWidth={0.5} />
             <FiItalic size={17} />
             <RxUnderline size={19} strokeWidth={0.1} />

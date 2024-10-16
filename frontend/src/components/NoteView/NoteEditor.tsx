@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { EditorContent, JSONContent, useEditor } from "@tiptap/react";
+import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import Highlight from "@tiptap/extension-highlight";
+import TaskItem from "@tiptap/extension-task-item";
+import TaskList from "@tiptap/extension-task-list";
 import EditorMenuBar from "./EditorMenuBar";
 
 interface NoteEditorProps {
@@ -10,20 +12,30 @@ interface NoteEditorProps {
 }
 
 function NoteEditor({ shouldShowEditorMenuBar }: NoteEditorProps) {
-  const [editorContent, setEditorContent] = useState<JSONContent | null>(null);
+  const [editorContent, setEditorContent] = useState("");
 
   const editor = useEditor({
     extensions: [
       StarterKit,
-      Highlight,
+      Highlight.configure({ multicolor: true }),
       Placeholder.configure({
-        placeholder: "Write something…",
+        placeholder: ({ node }) => {
+          if (node.type.name === "taskList") {
+            return "";
+          } else {
+            return "Write something...";
+          }
+        },
+      }),
+      TaskList,
+      TaskItem.configure({
+        nested: true,
       }),
     ],
     autofocus: true,
     content: editorContent,
     onUpdate: ({ editor }) => {
-      setEditorContent(editor.getJSON());
+      setEditorContent(editor.getHTML());
     },
   });
 
