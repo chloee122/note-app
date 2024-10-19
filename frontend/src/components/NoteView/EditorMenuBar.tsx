@@ -30,16 +30,22 @@ function EditorMenuBar({ editor }: EditorMenuBarProps) {
     useState(false);
   const [shouldShowListBtns, setShouldShowListBtns] = useState(false);
 
+  const focusedEditor = editor.chain().focus();
+  const canFocusedEditorRun = editor.can().chain().focus();
+  const getMarkClassName = (
+    mark: string,
+    attribute?: { level: Level } | { color: string }
+  ) => (editor.isActive(mark, attribute || {}) ? "active" : "");
+
   const headingBtns = (HEADING_NUMBERS as Level[]).map((headingNum) => {
     return (
       <button
+        key={headingNum}
         onClick={() => {
           setShouldShowHeadingBtns(false);
-          editor.chain().focus().toggleHeading({ level: headingNum }).run();
+          focusedEditor.toggleHeading({ level: headingNum }).run();
         }}
-        className={
-          editor.isActive("heading", { level: headingNum }) ? "active" : ""
-        }
+        className={getMarkClassName("heading", { level: headingNum })}
       >
         Heading {headingNum}
       </button>
@@ -50,13 +56,12 @@ function EditorMenuBar({ editor }: EditorMenuBarProps) {
     const { colorName, colorCode } = colorObj;
     return (
       <button
+        key={colorCode}
         onClick={() => {
           setShouldShowHighlightColorBtns(false);
-          editor.chain().focus().toggleHighlight({ color: colorCode }).run();
+          focusedEditor.toggleHighlight({ color: colorCode }).run();
         }}
-        className={
-          editor.isActive("highlight", { color: colorCode }) ? "active" : ""
-        }
+        className={getMarkClassName("highlight", { color: colorCode })}
       >
         {colorName}
       </button>
@@ -68,18 +73,18 @@ function EditorMenuBar({ editor }: EditorMenuBarProps) {
       <button
         onClick={() => {
           setShouldShowListBtns(false);
-          editor.chain().focus().toggleBulletList().run();
+          focusedEditor.toggleBulletList().run();
         }}
-        className={editor.isActive("bulletList") ? "active" : ""}
+        className={getMarkClassName("bulletList")}
       >
         List
       </button>
       <button
         onClick={() => {
           setShouldShowListBtns(false);
-          editor.chain().focus().toggleOrderedList().run();
+          focusedEditor.toggleOrderedList().run();
         }}
-        className={editor.isActive("orderedList") ? "active" : ""}
+        className={getMarkClassName("orderedList")}
       >
         Ordered List
       </button>
@@ -94,29 +99,29 @@ function EditorMenuBar({ editor }: EditorMenuBarProps) {
         <MdExpandMore size={13} />
       </button>
       <button
-        onClick={() => editor.chain().focus().toggleTaskList().run()}
-        className={editor.isActive("taskList") ? "is-active" : ""}
+        onClick={() => focusedEditor.toggleTaskList().run()}
+        className={getMarkClassName("taskList")}
       >
         <GoCheckbox size={18} />
       </button>
       <button
-        onClick={() => editor.chain().focus().toggleBold().run()}
-        disabled={!editor.can().chain().focus().toggleBold().run()}
-        className={editor.isActive("bold") ? "active" : ""}
+        onClick={() => focusedEditor.toggleBold().run()}
+        disabled={!canFocusedEditorRun.toggleBold().run()}
+        className={getMarkClassName("bold")}
       >
         <GoBold size={18} strokeWidth={0.5} />
       </button>
       <button
-        onClick={() => editor.chain().focus().toggleItalic().run()}
-        disabled={!editor.can().chain().focus().toggleItalic().run()}
-        className={editor.isActive("italic") ? "active" : ""}
+        onClick={() => focusedEditor.toggleItalic().run()}
+        disabled={!canFocusedEditorRun.toggleItalic().run()}
+        className={getMarkClassName("italic")}
       >
         <FiItalic size={17} />
       </button>
       <button
-        onClick={() => editor.chain().focus().toggleStrike().run()}
-        disabled={!editor.can().chain().focus().toggleStrike().run()}
-        className={editor.isActive("strike") ? "active" : ""}
+        onClick={() => focusedEditor.toggleUnderline().run()}
+        disabled={!canFocusedEditorRun.toggleUnderline().run()}
+        className={getMarkClassName("underline")}
       >
         <RxUnderline size={19} strokeWidth={0.1} />
       </button>

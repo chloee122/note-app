@@ -2,6 +2,7 @@ import { useState } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
+import Underline from "@tiptap/extension-underline";
 import Highlight from "@tiptap/extension-highlight";
 import TaskItem from "@tiptap/extension-task-item";
 import TaskList from "@tiptap/extension-task-list";
@@ -17,6 +18,7 @@ function NoteEditor({ shouldShowEditorMenuBar }: NoteEditorProps) {
   const editor = useEditor({
     extensions: [
       StarterKit,
+      Underline,
       Highlight.configure({ multicolor: true }),
       Placeholder.configure({
         placeholder: ({ node }) => {
