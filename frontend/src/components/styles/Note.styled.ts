@@ -7,9 +7,8 @@ export const NoteWrapper = styled.div`
 `;
 
 export const NoteContent = styled.div`
-  box-sizing: border-box;
   padding: 5px 55px 100px 55px;
-  max-width: 620px;
+  max-width: 800px;
   margin: auto;
 `;
 
