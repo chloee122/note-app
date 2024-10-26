@@ -39,7 +39,7 @@ export function AppProvider({ children }: AppProviderProps) {
   useEffect(() => {
     const getNotes = async () => {
       try {
-        const response: Note[] = await noteService.getAll();
+        const response: Note[] = await noteService.getAllNotes();
         setNotes(response);
       } catch (error) {
         showToastError(error, false);
@@ -104,7 +104,7 @@ export function AppProvider({ children }: AppProviderProps) {
 
   const addNote = async (noteObject: NoteToSend) => {
     try {
-      const returnedNote: Note = await noteService.create(noteObject);
+      const returnedNote: Note = await noteService.createNote(noteObject);
       setNotes(notes.concat(returnedNote));
       navigate(`notes/${returnedNote.id}`);
     } catch (error) {
@@ -114,7 +114,7 @@ export function AppProvider({ children }: AppProviderProps) {
 
   const removeNote = async (id: string) => {
     try {
-      await noteService.remove(id);
+      await noteService.removeNote(id);
       const filteredNotes = notes.filter((note) => note.id !== id);
       setNotes(filteredNotes);
     } catch (error) {
