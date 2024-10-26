@@ -4,10 +4,12 @@ import type { NoteResponse } from "../controllers/notes";
 const convertNoteModelToNoteResponse = (
   noteFromDatabase: INote
 ): NoteResponse => {
+  const { id, title, htmlContent, plainTextContent } = noteFromDatabase;
   return {
-    content: noteFromDatabase.content,
-    important: noteFromDatabase.important,
-    id: noteFromDatabase.id,
+    id,
+    title,
+    htmlContent,
+    plainTextContent,
   };
 };
 

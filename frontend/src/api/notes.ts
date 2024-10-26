@@ -14,6 +14,11 @@ export const getAll = async (): Promise<Note[]> => {
   return response.data;
 };
 
+export const getNote = async (id: string): Promise<Note> => {
+  const response = await noteAxiosClient.get<Note>(`/${id}`);
+  return response.data;
+};
+
 export const create = async (noteData: NoteToSend): Promise<Note> => {
   const response = await noteAxiosClient.post<Note>("", noteData);
   return response.data;

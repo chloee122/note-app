@@ -1,6 +1,6 @@
+import { Outlet } from "react-router-dom";
 import useAppContext from "../../hooks/useAppContext";
 import NoteList from "../NoteList/NoteList";
-import NoteView from "../NoteView/NoteView";
 import SideMenu from "../SideMenu/SideMenu";
 import { MainPageWrapper } from "../styles/MainPage.styled";
 
@@ -11,7 +11,7 @@ function MainPage() {
     <MainPageWrapper>
       <SideMenu />
       <NoteList notes={notes} />
-      <NoteView />
+      <Outlet />
     </MainPageWrapper>
   );
 }

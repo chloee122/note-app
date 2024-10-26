@@ -1,16 +1,16 @@
 import { Router } from "express";
 import Note from "../models/note";
 import User from "../models/user";
-import * as middleware from "../middleware";
 import type { RequestWithUserId } from "../middleware";
 import convertNoteModelToNoteResponse from "../utils/convertNoteModelToNoteResponse";
 
 const notesRouter = Router();
 
 export interface NoteResponse {
-  content: string;
-  important: boolean;
   id: string;
+  title: string;
+  htmlContent: string;
+  plainTextContent: string;
 }
 
 notesRouter.get("/", async (_request, response) => {
@@ -31,29 +31,26 @@ notesRouter.get("/:id", async (request, response) => {
   }
 });
 
-notesRouter.post(
-  "/",
-  middleware.validateToken,
-  async (request: RequestWithUserId, response) => {
-    const body = request.body;
-    const user = await User.findById(request.userId);
-    if (!user) {
-      response.status(403).json({ error: "Unauthorized user" });
-    } else {
-      const note = new Note({
-        content: body.content,
-        important: body.important || false,
-        userId: user.id,
-      });
-      const createdNote = await note.save();
+notesRouter.post("/", async (request: RequestWithUserId, response) => {
+  const { title, htmlContent, plainTextContent } = request.body;
+  const user = await User.findById(request.userId);
+  if (!user) {
+    response.status(403).json({ error: "Unauthorized user" });
+  } else {
+    const note = new Note({
+      title,
+      htmlContent,
+      plainTextContent,
+      userId: user.id,
+    });
+    const createdNote = await note.save();
 
-      const noteToResponse: NoteResponse =
-        convertNoteModelToNoteResponse(createdNote);
+    const noteToResponse: NoteResponse =
+      convertNoteModelToNoteResponse(createdNote);
 
-      response.status(201).json(noteToResponse);
-    }
+    response.status(201).json(noteToResponse);
   }
-);
+});
 
 notesRouter.delete("/:id", async (request, response) => {
   const deletedNote = await Note.findByIdAndDelete(request.params.id);
