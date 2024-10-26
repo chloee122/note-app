@@ -9,21 +9,29 @@ export const noteAxiosClient = axios.create({
   },
 });
 
-export const getAll = async (): Promise<Note[]> => {
+export const getAllNotes = async (): Promise<Note[]> => {
   const response = await noteAxiosClient.get<Note[]>("");
   return response.data;
 };
 
-export const create = async (noteData: NoteToSend): Promise<Note> => {
+export const getNote = async (id: string): Promise<Note> => {
+  const response = await noteAxiosClient.get<Note>(`/${id}`);
+  return response.data;
+};
+
+export const createNote = async (noteData: NoteToSend): Promise<Note> => {
   const response = await noteAxiosClient.post<Note>("", noteData);
   return response.data;
 };
 
-export const update = async (id: string, updatedNote: Note): Promise<Note> => {
+export const updateNote = async (
+  id: string,
+  updatedNote: Note
+): Promise<Note> => {
   const response = await noteAxiosClient.put<Note>(`/${id}`, updatedNote);
   return response.data;
 };
 
-export const remove = async (id: string): Promise<void> => {
+export const removeNote = async (id: string): Promise<void> => {
   await noteAxiosClient.delete(`/${id}`);
 };

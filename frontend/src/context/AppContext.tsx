@@ -8,6 +8,7 @@ import type {
   SignUpFormData,
 } from "../common/api.types";
 import showToastError from "../utils/showToastError";
+import { useNavigate } from "react-router-dom";
 
 interface AppProviderProps {
   children: ReactNode;
@@ -16,12 +17,13 @@ interface AppProviderProps {
 interface AppContextType {
   user: User | null;
   notes: Note[];
+  selectedNote: Note | null;
   signup: (signUpFormData: SignUpFormData) => void;
   login: (logInFormData: LoginInFormData) => void;
   logout: () => void;
   addNote: (note: NoteToSend) => void;
-  toggleImportance: (id: string) => void;
   removeNote: (id: string) => void;
+  getNote: (id: string) => void;
 }
 
 export const AppContext = createContext<null | AppContextType>(null);
@@ -29,11 +31,15 @@ export const AppContext = createContext<null | AppContextType>(null);
 export function AppProvider({ children }: AppProviderProps) {
   const [user, setUser] = useState<AppContextType["user"]>(null);
   const [notes, setNotes] = useState<AppContextType["notes"]>([]);
+  const [selectedNote, setSelectedNote] =
+    useState<AppContextType["selectedNote"]>(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getNotes = async () => {
       try {
-        const response: Note[] = await noteService.getAll();
+        const response: Note[] = await noteService.getAllNotes();
         setNotes(response);
       } catch (error) {
         showToastError(error, false);
@@ -98,21 +104,9 @@ export function AppProvider({ children }: AppProviderProps) {
 
   const addNote = async (noteObject: NoteToSend) => {
     try {
-      const returnedNote: Note = await noteService.create(noteObject);
+      const returnedNote: Note = await noteService.createNote(noteObject);
       setNotes(notes.concat(returnedNote));
-    } catch (error) {
-      showToastError(error);
-    }
-  };
-
-  const toggleImportance = async (id: string): Promise<void> => {
-    const note = notes.find((n) => n.id === id);
-    if (!note) return;
-    const changedNote = { ...note, important: !note.important };
-
-    try {
-      const returnedNote = await noteService.update(id, changedNote);
-      setNotes(notes.map((note) => (note.id !== id ? note : returnedNote)));
+      navigate(`notes/${returnedNote.id}`);
     } catch (error) {
       showToastError(error);
     }
@@ -120,9 +114,18 @@ export function AppProvider({ children }: AppProviderProps) {
 
   const removeNote = async (id: string) => {
     try {
-      await noteService.remove(id);
+      await noteService.removeNote(id);
       const filteredNotes = notes.filter((note) => note.id !== id);
       setNotes(filteredNotes);
+    } catch (error) {
+      showToastError(error);
+    }
+  };
+
+  const getNote = async (id: string) => {
+    try {
+      const note: Note = await noteService.getNote(id);
+      setSelectedNote(note);
     } catch (error) {
       showToastError(error);
     }
@@ -133,12 +136,13 @@ export function AppProvider({ children }: AppProviderProps) {
       value={{
         user,
         notes,
+        selectedNote,
         signup,
         login,
         logout,
         addNote,
-        toggleImportance,
         removeNote,
+        getNote,
       }}
     >
       {children}

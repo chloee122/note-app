@@ -2,18 +2,20 @@ import mongoose from "mongoose";
 
 export interface INote {
   id: string;
-  content: string;
-  important: boolean;
+  title: string;
+  htmlContent: string;
+  plainTextContent: string;
   userId: mongoose.Types.ObjectId;
 }
 
 const noteSchema = new mongoose.Schema<INote>({
-  content: {
+  title: { type: String, required: true },
+  htmlContent: {
     type: String,
-    minLength: 5,
-    required: true,
   },
-  important: Boolean,
+  plainTextContent: {
+    type: String,
+  },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
   },

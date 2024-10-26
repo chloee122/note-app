@@ -13,20 +13,35 @@ import {
 } from "../styles/shared/ToolBar.styled";
 import { useState } from "react";
 import SearchNoteInput from "./SearchNoteInput";
+import useAppContext from "../../hooks/useAppContext";
 
 interface NoteListToolBarProps {
   noteListScrolled: boolean;
 }
 
 function NoteListToolBar({ noteListScrolled }: NoteListToolBarProps) {
-  const [shouldShowSearchNoteInput, setShouldShowSearchNoteInput] = useState(false);
+  const [shouldShowSearchNoteInput, setShouldShowSearchNoteInput] =
+    useState(false);
+
+  const { addNote } = useAppContext();
+
+  const handleAddNote = () => {
+    const initialNote = {
+      title: "Untitled",
+      htmlContent: "",
+      plainTextContent: "",
+    };
+    addNote(initialNote);
+  };
 
   return (
     <ToolBarWrapper $borderEffect={noteListScrolled}>
       <ToolBarContent>
         {shouldShowSearchNoteInput && (
           <SearchNoteInputContainer>
-            <SearchNoteInput setShouldShowSearchNoteInput={setShouldShowSearchNoteInput} />
+            <SearchNoteInput
+              setShouldShowSearchNoteInput={setShouldShowSearchNoteInput}
+            />
           </SearchNoteInputContainer>
         )}
         <NoteOptionsDropdown $shrinkEffect={shouldShowSearchNoteInput}>
@@ -34,7 +49,10 @@ function NoteListToolBar({ noteListScrolled }: NoteListToolBarProps) {
           <RiArrowDownSLine size={14} strokeWidth={1} color="#909191" />
         </NoteOptionsDropdown>
         <ActionBtns>
-          <IconBtn $shrinkEffect={shouldShowSearchNoteInput}>
+          <IconBtn
+            $shrinkEffect={shouldShowSearchNoteInput}
+            onClick={handleAddNote}
+          >
             <PiNotePencilLight strokeWidth={4} size={23} />
           </IconBtn>
           <IconBtn

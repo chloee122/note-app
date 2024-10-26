@@ -1,13 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Note from "./Note";
 import NoteToolBar from "./NoteToolBar";
 import { NoteViewWrapper } from "../styles/NoteView.styled";
+import { useParams } from "react-router-dom";
+import useAppContext from "../../hooks/useAppContext";
+import useAxiosInterceptors from "../../hooks/useAxiosInterceptors";
 
 function NoteView() {
+  useAxiosInterceptors();
+
   const [noteScrolled, setNoteScrolled] = useState(false);
   const [shouldShowTitleOnToolBar, setShouldShowTitleOnToolBar] =
     useState(false);
   const [shouldShowEditorMenuBar, setShouldShowEditorMenuBar] = useState(false);
+
+  const { noteId } = useParams();
+  const { getNote, selectedNote } = useAppContext();
+
+  useEffect(() => {
+    if (noteId) getNote(noteId);
+  }, [noteId]);
 
   return (
     <NoteViewWrapper>
@@ -17,11 +29,13 @@ function NoteView() {
         setShouldShowEditorMenuBar={setShouldShowEditorMenuBar}
         shouldShowEditorMenuBar={shouldShowEditorMenuBar}
       />
-      <Note
-        setNoteScrolled={setNoteScrolled}
-        setShouldShowTitleOnToolBar={setShouldShowTitleOnToolBar}
-        shouldShowEditorMenuBar={shouldShowEditorMenuBar}
-      />
+      {selectedNote && (
+        <Note
+          setNoteScrolled={setNoteScrolled}
+          setShouldShowTitleOnToolBar={setShouldShowTitleOnToolBar}
+          shouldShowEditorMenuBar={shouldShowEditorMenuBar}
+        />
+      )}
     </NoteViewWrapper>
   );
 }

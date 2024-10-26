@@ -1,7 +1,8 @@
 export interface Note {
   id: string;
-  content: string;
-  important: boolean;
+  title: string;
+  htmlContent: string;
+  plainTextContent: string;
 }
 
 export interface AuthResponse {

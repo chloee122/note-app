@@ -15,7 +15,7 @@ function NoteItem({ note }: NoteDetailsProps) {
     <NoteItemWrapper className="note">
       <NoteItemContent>
         <NoteItemHeader>A wonderful new note</NoteItemHeader>
-        <NoteItemText>{note.content}</NoteItemText>
+        <NoteItemText>{note.plainTextContent}</NoteItemText>
         <span>Just now</span>
       </NoteItemContent>
     </NoteItemWrapper>

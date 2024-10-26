@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
@@ -7,6 +7,7 @@ import Highlight from "@tiptap/extension-highlight";
 import TaskItem from "@tiptap/extension-task-item";
 import TaskList from "@tiptap/extension-task-list";
 import EditorMenuBar from "./EditorMenuBar";
+import useAppContext from "../../hooks/useAppContext";
 
 interface NoteEditorProps {
   shouldShowEditorMenuBar: boolean;
@@ -14,6 +15,12 @@ interface NoteEditorProps {
 
 function NoteEditor({ shouldShowEditorMenuBar }: NoteEditorProps) {
   const [editorContent, setEditorContent] = useState("");
+
+  const { selectedNote } = useAppContext();
+
+  useEffect(() => {
+    if (selectedNote) setEditorContent(selectedNote.htmlContent);
+  }, [selectedNote]);
 
   const editor = useEditor({
     extensions: [
