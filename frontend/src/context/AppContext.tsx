@@ -24,6 +24,7 @@ interface AppContextType {
   addNote: (note: NoteToSend) => void;
   removeNote: (id: string) => void;
   getNote: (id: string) => void;
+  isLoadingUser: boolean;
 }
 
 export const AppContext = createContext<null | AppContextType>(null);
@@ -33,6 +34,7 @@ export function AppProvider({ children }: AppProviderProps) {
   const [notes, setNotes] = useState<AppContextType["notes"]>([]);
   const [selectedNote, setSelectedNote] =
     useState<AppContextType["selectedNote"]>(null);
+  const [isLoadingUser, setIsLoadingUser] = useState(true);
 
   const navigate = useNavigate();
 
@@ -57,6 +59,7 @@ export function AppProvider({ children }: AppProviderProps) {
       const loggedUser = JSON.parse(loggedUserJSON) as User;
       setUser(loggedUser);
     }
+    setIsLoadingUser(false);
   }, []);
 
   const signup = async (signUpFormData: SignUpFormData) => {
@@ -137,6 +140,7 @@ export function AppProvider({ children }: AppProviderProps) {
         user,
         notes,
         selectedNote,
+        isLoadingUser,
         signup,
         login,
         logout,
