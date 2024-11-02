@@ -23,6 +23,7 @@ function LandingPage() {
   const closeModal = () => {
     setShowAuthModal(false);
   };
+  
   return (
     <>
       {showAuthModal && <AuthModal closeModal={closeModal} />}

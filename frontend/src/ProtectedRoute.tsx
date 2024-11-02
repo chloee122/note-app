@@ -7,12 +7,11 @@ interface ProtectedRouteProps {
 }
 
 function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const { user } = useAppContext();
-  if (!user) {
-    return <Navigate to="/" />;
-  }
+  const { user, isLoadingUser } = useAppContext();
 
-  return children;
+  if (isLoadingUser) return <div>Loading...</div>;
+
+  return user ? children : <Navigate to="/" />;
 }
 
 export default ProtectedRoute;
