@@ -26,7 +26,7 @@ export const createNote = async (noteData: NoteToSend): Promise<Note> => {
 
 export const updateNote = async (
   id: string,
-  updatedNote: Note
+  updatedNote: NoteToSend
 ): Promise<Note> => {
   const response = await noteAxiosClient.put<Note>(`/${id}`, updatedNote);
   return response.data;

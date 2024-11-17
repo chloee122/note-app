@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Note from "./Note";
+import NoteContainer from "./NoteContainer";
 import NoteToolBar from "./NoteToolBar";
 import { NoteViewWrapper } from "../styles/NoteView.styled";
 import { useParams } from "react-router-dom";
@@ -30,10 +30,11 @@ function NoteView() {
         shouldShowEditorMenuBar={shouldShowEditorMenuBar}
       />
       {selectedNote && (
-        <Note
+        <NoteContainer
           setNoteScrolled={setNoteScrolled}
           setShouldShowTitleOnToolBar={setShouldShowTitleOnToolBar}
           shouldShowEditorMenuBar={shouldShowEditorMenuBar}
+          selectedNote={selectedNote}
         />
       )}
     </NoteViewWrapper>

@@ -6,19 +6,25 @@ import {
   NoteWrapper,
 } from "../styles/Note.styled";
 import NoteEditor from "./NoteEditor";
+import useDebounceSave from "../../hooks/useDebounceSave";
+import { Note } from "../../common/internal";
 
 interface NoteProps {
   setNoteScrolled: (arg: boolean) => void;
   setShouldShowTitleOnToolBar: (arg: boolean) => void;
   shouldShowEditorMenuBar: boolean;
+  selectedNote: Note;
 }
 
-function Note({
+function NoteContainer({
   setNoteScrolled,
   setShouldShowTitleOnToolBar,
   shouldShowEditorMenuBar,
+  selectedNote,
 }: NoteProps) {
-  const [title, setTitle] = useState("Untitled");
+  const [activeNote, setActiveNote] = useState(selectedNote);
+
+  useDebounceSave(activeNote);
 
   const noteRef = useRef<HTMLDivElement>(null);
   const noteHeadingRef = useRef<HTMLDivElement>(null);
@@ -37,7 +43,7 @@ function Note({
       textareaRef.current.style.height = "auto";
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
-  }, [title]);
+  }, [activeNote.title]);
 
   return (
     <NoteWrapper ref={noteRef} onScroll={handleScroll}>
@@ -47,11 +53,13 @@ function Note({
             ref={textareaRef}
             rows={1}
             placeholder="Untitled"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            value={activeNote.title}
+            onChange={(e) => {
+              setActiveNote({ ...activeNote, title: e.target.value });
+            }}
             onBlur={() => {
-              if (!title.trim()) {
-                setTitle("Untitled");
+              if (!activeNote.title.trim()) {
+                setActiveNote({ ...activeNote, title: "Untitled" });
               }
             }}
             onKeyDown={(e) => {
@@ -62,11 +70,15 @@ function Note({
           ></textarea>
         </NoteTitle>
         <NoteBody>
-          <NoteEditor shouldShowEditorMenuBar={shouldShowEditorMenuBar} />
+          <NoteEditor
+            shouldShowEditorMenuBar={shouldShowEditorMenuBar}
+            activeNote={activeNote}
+            setActiveNote={setActiveNote}
+          />
         </NoteBody>
       </NoteContent>
     </NoteWrapper>
   );
 }
 
-export default Note;
+export default NoteContainer;
