@@ -24,6 +24,7 @@ interface AppContextType {
   addNote: (note: NoteToSend) => void;
   removeNote: (id: string) => void;
   getNote: (id: string) => void;
+  editNote: (id: string, updatedNote: NoteToSend) => void;
   isLoadingUser: boolean;
 }
 
@@ -127,8 +128,17 @@ export function AppProvider({ children }: AppProviderProps) {
 
   const getNote = async (id: string) => {
     try {
+      setSelectedNote(null);
       const note: Note = await noteService.getNote(id);
       setSelectedNote(note);
+    } catch (error) {
+      showToastError(error);
+    }
+  };
+
+  const editNote = async (id: string, updatedNote: NoteToSend) => {
+    try {
+      await noteService.updateNote(id, updatedNote);
     } catch (error) {
       showToastError(error);
     }
@@ -147,6 +157,7 @@ export function AppProvider({ children }: AppProviderProps) {
         addNote,
         removeNote,
         getNote,
+        editNote,
       }}
     >
       {children}

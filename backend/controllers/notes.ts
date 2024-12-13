@@ -64,11 +64,12 @@ notesRouter.delete("/:id", async (request, response) => {
 });
 
 notesRouter.put("/:id", async (request, response) => {
-  const body = request.body;
+  const { title, htmlContent, plainTextContent } = request.body;
 
   const note = {
-    content: body.content,
-    important: body.important,
+    title,
+    htmlContent,
+    plainTextContent,
   };
 
   const updatedNote = await Note.findByIdAndUpdate(request.params.id, note, {
