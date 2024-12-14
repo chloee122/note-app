@@ -1,3 +1,4 @@
+import { useNavigate, useParams } from "react-router-dom";
 import type { Note } from "../../common/internal";
 import {
   NoteItemContent,
@@ -11,10 +12,18 @@ interface NoteDetailsProps {
 }
 
 function NoteItem({ note }: NoteDetailsProps) {
+  const navigate = useNavigate();
+
+  const { noteId } = useParams();
+
   return (
-    <NoteItemWrapper className="note">
+    <NoteItemWrapper
+      className="note"
+      onClick={() => navigate(`/notes/${note.id}`)}
+      $highlight={note.id === noteId}
+    >
       <NoteItemContent>
-        <NoteItemHeader>A wonderful new note</NoteItemHeader>
+        <NoteItemHeader>{note.title}</NoteItemHeader>
         <NoteItemText>{note.plainTextContent}</NoteItemText>
         <span>Just now</span>
       </NoteItemContent>
