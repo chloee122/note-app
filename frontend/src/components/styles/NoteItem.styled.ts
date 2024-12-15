@@ -1,15 +1,29 @@
 import styled from "styled-components";
 
-export const NoteItemWrapper = styled.div`
+export const NoteItemWrapper = styled.div<{ $highlight: boolean }>`
   margin-left: 10px;
   margin-right: 5px;
   padding: 0 12px;
   height: 104px;
   overflow: hidden;
+  position: relative;
+  background-color: ${(props) => (props.$highlight ? "#eff1f2" : "none")};
 
   &:hover {
-    border-radius: 5px;
+    border-radius: 4px;
     background-color: #eff1f2;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: ${(props) => (props.$highlight ? "5px" : "0px")};
+    height: 100%;
+    background-color: #2278c5;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
   }
 `;
 
