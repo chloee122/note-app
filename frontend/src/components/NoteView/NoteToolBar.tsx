@@ -3,12 +3,14 @@ import { FiItalic } from "react-icons/fi";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import { PiDotsThreeVerticalBold } from "react-icons/pi";
 import { RxUnderline } from "react-icons/rx";
-import { NoteTitle } from "../styles/NoteToolBar.styled";
+import { AiOutlineDelete } from "react-icons/ai";
+import { DeleteBtn, NoteTitle } from "../styles/NoteToolBar.styled";
 import {
   ActionBtns,
   NoteToolBarWrapper,
   ToolBarContent,
 } from "../styles/shared/ToolBar.styled";
+import useAppContext from "../../hooks/useAppContext";
 
 interface NoteToolBarProps {
   noteScrolled: boolean;
@@ -23,6 +25,13 @@ function NoteToolBar({
   setShouldShowEditorMenuBar,
   shouldShowEditorMenuBar,
 }: NoteToolBarProps) {
+  const { selectedNote, removeNote } = useAppContext();
+
+  const handleDeleteNote = () => {
+    if (!selectedNote) return;
+    removeNote(selectedNote.id);
+  };
+
   return (
     <NoteToolBarWrapper $borderEffect={noteScrolled}>
       <ToolBarContent>
@@ -43,6 +52,9 @@ function NoteToolBar({
           <div>
             <IoInformationCircleOutline size={23} />
           </div>
+          <DeleteBtn>
+            <AiOutlineDelete size={21} onClick={handleDeleteNote} />
+          </DeleteBtn>
           <div>
             <PiDotsThreeVerticalBold size={21} strokeWidth={6} />
           </div>
