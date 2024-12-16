@@ -18,3 +18,7 @@ export const NoteTitle = styled.div<{ $shouldShowTitle?: boolean }>`
     transition: opacity 0.2s ease-in;
   }
 `;
+
+export const DeleteBtn = styled.div`
+  margin-bottom: 1px;
+`;

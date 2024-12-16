@@ -119,8 +119,19 @@ export function AppProvider({ children }: AppProviderProps) {
   const removeNote = async (id: string) => {
     try {
       await noteService.removeNote(id);
+
+      const noteIndex = notes.findIndex((note) => note.id === id);
+      if (noteIndex === -1) return;
+
       const filteredNotes = notes.filter((note) => note.id !== id);
       setNotes(filteredNotes);
+
+      if (noteIndex < filteredNotes.length) {
+        navigate(`notes/${filteredNotes[noteIndex].id}`);
+      } else {
+        setSelectedNote(null);
+        navigate("notes");
+      }
     } catch (error) {
       showToastError(error);
     }
