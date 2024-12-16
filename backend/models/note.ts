@@ -6,20 +6,26 @@ export interface INote {
   htmlContent: string;
   plainTextContent: string;
   userId: mongoose.Types.ObjectId;
+  createdAt: string;
+  updatedAt: string;
 }
 
-const noteSchema = new mongoose.Schema<INote>({
-  title: { type: String, required: true },
-  htmlContent: {
-    type: String,
+const noteSchema = new mongoose.Schema<INote>(
+  {
+    title: { type: String, required: true },
+    htmlContent: {
+      type: String,
+    },
+    plainTextContent: {
+      type: String,
+    },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    },
   },
-  plainTextContent: {
-    type: String,
-  },
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-  },
-});
+  { timestamps: true }
+);
 
 const Note = mongoose.model<INote>("Note", noteSchema);
 export default Note;

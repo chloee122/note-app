@@ -11,10 +11,12 @@ export interface NoteResponse {
   title: string;
   htmlContent: string;
   plainTextContent: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 notesRouter.get("/", async (_request, response) => {
-  const notes = await Note.find({});
+  const notes = await Note.find({}).sort({ updatedAt: -1 });
   const notesToReponse: NoteResponse[] = notes.map(
     convertNoteModelToNoteResponse
   );
