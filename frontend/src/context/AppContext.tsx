@@ -109,7 +109,7 @@ export function AppProvider({ children }: AppProviderProps) {
   const addNote = async (noteObject: NoteToSend) => {
     try {
       const returnedNote: Note = await noteService.createNote(noteObject);
-      setNotes(notes.concat(returnedNote));
+      setNotes([returnedNote, ...notes]);
       navigate(`notes/${returnedNote.id}`);
     } catch (error) {
       showToastError(error);

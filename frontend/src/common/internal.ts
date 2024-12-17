@@ -3,6 +3,8 @@ export interface Note {
   title: string;
   htmlContent: string;
   plainTextContent: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface AuthResponse {
