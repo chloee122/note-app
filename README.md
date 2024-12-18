@@ -1,9 +1,9 @@
 
-# Full-stack NoteApp
+# Jotly - Full-stack note-taking app
 
-A MERN stack note web app that lets users log into their accounts, view, make changes and create notes.
+A MERN stack note-taking web app that lets users sign up, log in, and manage notes with features to view, create, edit, and delete them.
 
-👉🏻 Hosted website: https://noteapp-1-49bk.onrender.com
+👉🏻 Hosted website: [https://noteapp-cys6.onrender.com](https://noteapp-cys6.onrender.com/)
 
 👤 **Test account**
 
@@ -14,7 +14,7 @@ password: salainen
 
 ## Screenshots
 
-![App Screenshot](https://github.com/user-attachments/assets/04279120-7f92-4eb8-862b-91fa0e6a2f05)
+![App Screenshot](https://github.com/user-attachments/assets/527a173b-72b1-4776-ad79-be60f3c34177)
 
 
 ## Tech Stack
@@ -27,13 +27,20 @@ password: salainen
 - styled-components
 - Node Test/Vitest/Playwright
 - Eslint, typescript-eslint
+  
+Other libraries:
+- React Router
+- Tiptap
 
 ## Features
 
+- Sign up accounts
 - Log in/log out user accounts
-- View list of notes
-- Change notes’ state
+- View a list of notes with real-time update
 - Create new notes
+- View a specific note
+- Write and edit a note with a rich text editor
+- Delete a note
 
 
 ## Getting started
