@@ -9,7 +9,7 @@ import {
   postSignUp,
   createTestUser,
   TEST_USER,
-  getUsernameFromToken,
+  getValuesFromToken,
 } from "./test_helper";
 
 enum STATUS_CODE {
@@ -47,13 +47,13 @@ describe("POST /auth/login", () => {
     assert.ok(accessToken);
     assert.ok(refreshToken && refreshToken !== TEST_USER.valid.refreshToken);
 
-    const accessTokenUsername = getUsernameFromToken(accessToken);
+    const accessTokenUsername = getValuesFromToken(accessToken).username;
     assert.strictEqual(
       accessTokenUsername,
       TEST_USER.valid.username.toLowerCase()
     );
 
-    const refreshTokenUsername = getUsernameFromToken(refreshToken);
+    const refreshTokenUsername = getValuesFromToken(refreshToken).username;
     assert.strictEqual(
       refreshTokenUsername,
       TEST_USER.valid.username.toLowerCase()
@@ -165,13 +165,13 @@ describe("POST auth/signup", () => {
     assert.ok(accessToken);
     assert.ok(refreshToken);
 
-    const accessTokenUsername = getUsernameFromToken(accessToken);
+    const accessTokenUsername = getValuesFromToken(accessToken).username;
     assert.strictEqual(
       accessTokenUsername,
       TEST_USER.valid.username.toLowerCase()
     );
 
-    const refreshTokenUsername = getUsernameFromToken(refreshToken);
+    const refreshTokenUsername = getValuesFromToken(refreshToken).username;
     assert.strictEqual(
       refreshTokenUsername,
       TEST_USER.valid.username.toLowerCase()
