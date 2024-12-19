@@ -21,11 +21,23 @@ const noteSchema = new mongoose.Schema<INote>(
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
   },
   { timestamps: true }
 );
+
+noteSchema.set("toJSON", {
+  transform: (_document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString();
+    returnedObject.createdAt = returnedObject.createdAt.toISOString();
+    returnedObject.updatedAt = returnedObject.updatedAt.toISOString();
+    returnedObject.userId = returnedObject.userId.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
+  },
+});
 
 const Note = mongoose.model<INote>("Note", noteSchema);
 export default Note;
