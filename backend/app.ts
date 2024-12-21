@@ -10,7 +10,6 @@ import testingRouter from "./controllers/testing";
 import mongoose from "mongoose";
 import logger from "./utils/logger";
 import * as middleware from "./middleware";
-import redirectToRootRouter from "./controllers/redirectToRoot";
 
 const app = express();
 
@@ -41,7 +40,10 @@ app.use(middleware.requestLogger);
 app.use("/api/notes", middleware.validateToken, notesRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/auth", authRouter);
-app.use("*", redirectToRootRouter);
+
+app.get("*", (_request, response) => {
+  response.sendFile(path.join(__dirname, "../../frontend/dist", "index.html"));
+});
 
 if (process.env.NODE_ENV === "test") {
   app.use("/api/end-to-end-testing", testingRouter);
