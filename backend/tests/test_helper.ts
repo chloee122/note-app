@@ -8,17 +8,29 @@ import { Test } from "supertest";
 
 export const initialNotes = [
   {
-    content: "HTML is easy",
-    important: false,
+    title: "A sample note to test api",
+    htmlContent:
+      "<p>This is a sample note used for api-level integration test.</p>",
+    plainTextContent:
+      "This is a sample note used for api-level integration test.",
+    userId: "",
   },
   {
-    content: "Browser can execute only JavaScript",
-    important: true,
+    title: "An test awesome note",
+    htmlContent: "<p>The palest ink is better than the best memory</p>",
+    plainTextContent: "The palest ink is better than the best memory",
+    userId: "",
   },
 ];
 
-export const nonExistingId = async () => {
-  const note = new Note({ content: "willremovethissoon" });
+export const getNonExistingNoteId = async (userId: string) => {
+  const note = new Note({
+    title: "A non-existing note",
+    htmlContent: "<p>This is a non-existing note</p>",
+    plainTextContent: "This is a non-existing note",
+    userId,
+  });
+
   await note.save();
   await note.deleteOne();
 
@@ -103,8 +115,13 @@ export const postSignUp = async (
   return response;
 };
 
-export const getUsernameFromToken = (token: string): string => {
-  const { username } = jwt.verify(token, getEnvVar("SECRET")) as jwt.JwtPayload;
+export const getValuesFromToken = (
+  token: string
+): { username: string; userId: string } => {
+  const { username, id } = jwt.verify(
+    token,
+    getEnvVar("SECRET")
+  ) as jwt.JwtPayload;
 
-  return username;
+  return { username, userId: id };
 };
