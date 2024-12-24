@@ -36,10 +36,7 @@ function NoteToolBar({
     <NoteToolBarWrapper $borderEffect={noteScrolled}>
       <ToolBarContent>
         <NoteTitle $shouldShowTitle={shouldShowTitleOnToolBar}>
-          <div>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel
-            sapien at diam laoreet sollicitudin.
-          </div>
+          <div>{selectedNote?.title}</div>
         </NoteTitle>
         <ActionBtns>
           <div
