@@ -31,15 +31,11 @@ describe("when there are initially some notes saved", () => {
     await api.post("/api/auth/signup").send(userToCreate);
 
     // Login to get token
-    const user = {
-      username: "test_user",
-      password: "salainen",
-    };
-    const result = await api.post("/api/auth/login").send(user);
-    token = result.body.accessToken;
+    const response = await api.post("/api/auth/login").send(userToCreate);
+    token = response.body.accessToken;
 
     // Get userId
-    userId = getValuesFromToken(token).id;
+    userId = getValuesFromToken(token).userId;
   });
 
   beforeEach(async () => {
@@ -56,28 +52,17 @@ describe("when there are initially some notes saved", () => {
     await Note.insertMany(notes);
   });
 
-  test("notes are returned as json", async () => {
-    await api
+  test("initial notes are returned as json", async () => {
+    const response = await api
       .get("/api/notes")
       .set("Authorization", `Bearer ${token}`)
       .expect(200)
       .expect("Content-Type", /application\/json/);
-  });
-
-  test("all notes are returned", async () => {
-    const response = await api
-      .get("/api/notes")
-      .set("Authorization", `Bearer ${token}`);
+      
     assert.strictEqual(response.body.length, initialNotes.length);
-  });
-
-  test("a specific note is within the returned notes", async () => {
-    const response = await api
-      .get("/api/notes")
-      .set("Authorization", `Bearer ${token}`);
 
     const titles = response.body.map((e: { title: string }) => e.title);
-    assert(titles.includes("A sample note to test api"));
+    assert(titles.includes(initialNotes[0].title));
   });
 
   describe("view a specific note", () => {
@@ -127,7 +112,7 @@ describe("when there are initially some notes saved", () => {
       assert.strictEqual(notesAtEnd.length, initialNotes.length + 1);
 
       const titles = notesAtEnd.map((n) => n.title);
-      assert(titles.includes("async/await simplifies making async calls"));
+      assert(titles.includes(newNote.title));
     });
 
     test("fails with status code 400 if data invalid", async () => {

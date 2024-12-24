@@ -117,11 +117,11 @@ export const postSignUp = async (
 
 export const getValuesFromToken = (
   token: string
-): { username: string; id: string } => {
+): { username: string; userId: string } => {
   const { username, id } = jwt.verify(
     token,
     getEnvVar("SECRET")
   ) as jwt.JwtPayload;
 
-  return { username, id };
+  return { username, userId: id };
 };
