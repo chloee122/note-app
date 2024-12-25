@@ -21,6 +21,7 @@ interface AppContextType {
   signup: (signUpFormData: SignUpFormData) => void;
   login: (logInFormData: LoginInFormData) => void;
   logout: () => void;
+  getNotes: () => void;
   addNote: (note: NoteToSend) => void;
   removeNote: (id: string) => void;
   getNote: (id: string) => void;
@@ -40,15 +41,6 @@ export function AppProvider({ children }: AppProviderProps) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const getNotes = async () => {
-      try {
-        const response: Note[] = await noteService.getAllNotes();
-        setNotes(response);
-      } catch (error) {
-        showToastError(error, false);
-      }
-    };
-
     if (user) {
       getNotes();
     }
@@ -104,6 +96,15 @@ export function AppProvider({ children }: AppProviderProps) {
   const logout = () => {
     window.localStorage.clear();
     setUser(null);
+  };
+
+  const getNotes = async () => {
+    try {
+      const response: Note[] = await noteService.getAllNotes();
+      setNotes(response);
+    } catch (error) {
+      showToastError(error, false);
+    }
   };
 
   const addNote = async (noteObject: NoteToSend) => {
@@ -165,6 +166,7 @@ export function AppProvider({ children }: AppProviderProps) {
         signup,
         login,
         logout,
+        getNotes,
         addNote,
         removeNote,
         getNote,

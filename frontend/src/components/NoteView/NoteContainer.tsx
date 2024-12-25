@@ -6,7 +6,7 @@ import {
   NoteWrapper,
 } from "../styles/Note.styled";
 import NoteEditor from "./NoteEditor";
-import useDebounceSave from "../../hooks/useDebounceSave";
+import useDebounceSaveNoteAndFetchNoteList from "../../hooks/useDebounceSaveNoteAndFetchNoteList";
 import { Note } from "../../common/internal";
 
 interface NoteProps {
@@ -24,7 +24,7 @@ function NoteContainer({
 }: NoteProps) {
   const [activeNote, setActiveNote] = useState(selectedNote);
 
-  useDebounceSave(activeNote);
+  useDebounceSaveNoteAndFetchNoteList(activeNote);
 
   const noteRef = useRef<HTMLDivElement>(null);
   const noteHeadingRef = useRef<HTMLDivElement>(null);
