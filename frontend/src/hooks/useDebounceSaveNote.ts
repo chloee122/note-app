@@ -3,10 +3,9 @@ import { Note } from "../common/internal";
 import useAppContext from "./useAppContext";
 
 const DEBOUNCE_SAVE_NOTE_DELAY = 500;
-const DEBOUNCE_FETCH_NOTE_LIST_DELAY = 1500;
 
-const useDebounceSaveNoteAndFetchNoteList = (note: Note) => {
-  const { editNote, getNotes } = useAppContext();
+const useDebounceSaveNote = (note: Note) => {
+  const { editNote } = useAppContext();
 
   const [isInitialRender, setIsInitialRender] = useState(true);
 
@@ -24,15 +23,10 @@ const useDebounceSaveNoteAndFetchNoteList = (note: Note) => {
       });
     }, DEBOUNCE_SAVE_NOTE_DELAY);
 
-    const debounceFetchNoteListTimer = setTimeout(() => {
-      getNotes();
-    }, DEBOUNCE_FETCH_NOTE_LIST_DELAY);
-
     return () => {
       clearTimeout(debounceSaveNoteTimer);
-      clearTimeout(debounceFetchNoteListTimer);
     };
   }, [note]);
 };
 
-export default useDebounceSaveNoteAndFetchNoteList;
+export default useDebounceSaveNote;
