@@ -1,6 +1,6 @@
 import type { Note } from "./internal";
 
-export type NoteToSend = Omit<Note, "id">;
+export type NoteToSend = Omit<Note, "id" | "createdAt" | "updatedAt">;
 
 export interface SignUpFormData {
   username: string;
