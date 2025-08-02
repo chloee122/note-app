@@ -6,7 +6,7 @@ const JUST_NOW_THRESHOLD = 5;
 
 export const formatUpdateTime = (dateStr: string) => {
   const date = new Date(dateStr);
-  const diffMs = Date.now() - date.getTime();
+  const diffMs = Math.max(Date.now() - date.getTime(), 0);
   const hours = Math.floor(diffMs / MS_PER_HOUR);
 
   if (hours >= HOURS_PER_DAY)

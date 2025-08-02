@@ -83,4 +83,11 @@ describe("formatUpdateTime", () => {
       expect(result).toMatch("Dec");
     });
   });
+
+  describe("edge cases", () => {
+    test('should return "Just now" for future time', () => {
+      const date = new Date("2024-12-18T12:05:00.459Z").toISOString();
+      expect(formatUpdateTime(date)).toBe("Just now");
+    });
+  });
 });
