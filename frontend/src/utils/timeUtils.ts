@@ -2,14 +2,14 @@ const MS_PER_HOUR = 3600000;
 const MS_PER_SECOND = 1000;
 const HOURS_PER_DAY = 24;
 const SEC_PER_MINUTE = 60;
-const JUST_NOW_THRESHOLD = 3;
+const JUST_NOW_THRESHOLD = 5;
 
-export const showLatestUpdateTime = (dateStr: string) => {
+export const formatUpdateTime = (dateStr: string) => {
   const date = new Date(dateStr);
   const diffMs = Date.now() - date.getTime();
   const hours = Math.floor(diffMs / MS_PER_HOUR);
 
-  if (hours > HOURS_PER_DAY)
+  if (hours >= HOURS_PER_DAY)
     return new Intl.DateTimeFormat("en", { dateStyle: "medium" }).format(date);
 
   const seconds = Math.floor(diffMs / MS_PER_SECOND);

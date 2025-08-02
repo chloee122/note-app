@@ -6,7 +6,7 @@ import {
   NoteItemText,
   NoteItemWrapper,
 } from "../styles/NoteItem.styled";
-import { showLatestUpdateTime } from "../../utils/timeUtils";
+import { formatUpdateTime } from "../../utils/timeUtils";
 
 interface NoteDetailsProps {
   note: Note;
@@ -26,7 +26,7 @@ function NoteItem({ note }: NoteDetailsProps) {
       <NoteItemContent>
         <NoteItemHeader>{note.title}</NoteItemHeader>
         <NoteItemText>{note.plainTextContent}</NoteItemText>
-        <span>{showLatestUpdateTime(note.updatedAt)}</span>
+        <span>{formatUpdateTime(note.updatedAt)}</span>
       </NoteItemContent>
     </NoteItemWrapper>
   );
