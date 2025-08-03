@@ -9,7 +9,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
     "preview": "vite preview",
     "server": "json-server -p3001 --watch db.json",
-    "test": "vitest run"
+    "test": "vitest run --reporter=verbose"
   },
   "dependencies": {
     "@tiptap/extension-document": "^2.8.0",
